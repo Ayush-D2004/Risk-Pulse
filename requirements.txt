@@ -1,0 +1,6 @@
+pandas>=2.2
+numpy>=1.26
+torch>=2.2
+transformers>=4.45
+scikit-learn>=1.5
+jupyter>=1.0
