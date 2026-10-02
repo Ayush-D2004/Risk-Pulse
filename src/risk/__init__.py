@@ -3,6 +3,9 @@
 Risk Signal Engine
 ==================
 Core data structures and scoring modules for evaluating financial risk signals.
+
+Note: MarketEnrichedScorer lives in src.risk.market_enriched_scorer and is
+imported directly to avoid circular import with src.market.market_context.
 """
 
 from src.risk.impact_scorer import (
