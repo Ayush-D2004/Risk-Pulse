@@ -1,0 +1,29 @@
+{
+  "financial_keywords": [
+    "merger", "acquisition", "acquire", "stake", "buyout", "bankruptcy", 
+    "chapter 11", "sec", "earnings", "revenue", "guidance", "profit",
+    "lawsuit", "sues", "antitrust", "fda", "dividend", "layoff", "restructuring",
+    "stock", "shares", "bond", "yield", "interest", "minority"
+  ],
+
+  "trusted_financial_domains": [
+    "reuters.com",
+    "bloomberg.com",
+    "wsj.com",
+    "ft.com",
+    "cnbc.com",
+    "marketwatch.com",
+    "sec.gov",
+    "prnewswire.com",
+    "businesswire.com",
+    "barrons.com"
+  ],
+
+  "gdelt_financial_theme_prefixes": [
+    "ECON_",
+    "CRISISLEX_",
+    "TAX_FNCACT"
+  ],
+
+  "_gdelt_theme_note": "The GDELT DOC API (artlist mode) does NOT return GKG themes in the article record. Themes are only available via the separate GKG data files or GKG API. The theme signal is therefore unavailable for documents ingested via the current DOC API feed and will always evaluate to False. These prefixes are preserved for future use if the ingestion source is expanded to include GKG-enriched records."
+}
