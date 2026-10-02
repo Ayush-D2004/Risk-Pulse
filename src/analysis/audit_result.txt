@@ -1,0 +1,435 @@
+================================================================================
+EVENT CLASSIFIER AUDIT
+================================================================================
+
+Prediction rows: 2,913
+Rows successfully joined to original data: 2,913
+
+--- Event distribution ---
+NO_EVENT                         1,988  ( 68.2%)
+Other / Unclear                    414  ( 14.2%)
+Geopolitical                       163  (  5.6%)
+Market / Liquidity                 136  (  4.7%)
+Corporate / Earnings               100  (  3.4%)
+Macroeconomic                       28  (  1.0%)
+Regulatory / Legal                  25  (  0.9%)
+Commodity / Supply Chain            21  (  0.7%)
+Merger & Acquisition                19  (  0.7%)
+Product / Technology                14  (  0.5%)
+Credit Event                         5  (  0.2%)
+
+--- Confidence statistics by event ---
+                          count  mean  median   min   max
+EVENT_TYPE                                               
+NO_EVENT                   1988 0.000   0.000 0.000 0.000
+Other / Unclear             414 0.293   0.269 0.147 0.853
+Geopolitical                163 0.480   0.442 0.149 0.872
+Market / Liquidity          136 0.290   0.256 0.148 0.732
+Corporate / Earnings        100 0.306   0.264 0.168 0.843
+Macroeconomic                28 0.397   0.286 0.139 0.806
+Regulatory / Legal           25 0.372   0.381 0.158 0.783
+Commodity / Supply Chain     21 0.416   0.335 0.195 0.804
+Merger & Acquisition         19 0.363   0.404 0.210 0.666
+Product / Technology         14 0.242   0.210 0.147 0.519
+Credit Event                  5 0.264   0.255 0.153 0.365
+
+--- Low-confidence predictions (< 0.60) ---
+Count: 2,837 (97.4%)
+EVENT_TYPE  EVENT_CONFIDENCE                                                                                                                                                                                             TWEET
+  NO_EVENT               0.0                                                                                                       RT @DrJimmyStar: Check out gx by Gwen Stefani Hadda Purse NWT https://t.co/19wQIBu0UV @eBay
+  NO_EVENT               0.0                                                                                 Sweet Earth Burrito, Baja Breakfast, 7 Ounce (Pack of 12) This Sweet Earth™ https://t.co/5iVzBpFvqp via @amazon\r
+  NO_EVENT               0.0                                                                                       RT @DrJimmyStar: Check out BBetsey Johnson Multi-Color Polka Dot Tote Bag NWT https://t.co/rI8FkTdPSY @eBay
+  NO_EVENT               0.0                                                                                       RT @DrJimmyStar: Check out BBetsey Johnson Multi-Color Polka Dot Tote Bag NWT https://t.co/rI8FkTdPSY @eBay
+  NO_EVENT               0.0                                                                                       RT @DrJimmyStar: Check out BBetsey Johnson Multi-Color Polka Dot Tote Bag NWT https://t.co/rI8FkTdPSY @eBay
+  NO_EVENT               0.0                                                                                                       RT @DrJimmyStar: Check out gx by Gwen Stefani Hadda Purse NWT https://t.co/19wQIBu0UV @eBay
+  NO_EVENT               0.0                                                                                                                                         RT @Drops: yo fuck you @McDonalds https://t.co/NEUCDMBGMe
+  NO_EVENT               0.0                                                                          @nytpolitics Woah woah woah, is this for real? @nbc @CBS @ABC @FOXTV  Is this nation now just a shitty pageant? Gross.\r
+  NO_EVENT               0.0                                                                                              RT @DrJimmyStar: Check out g By Marciano Ladies Animal Print Purse NWT https://t.co/9g9PqwAdex @eBay
+  NO_EVENT               0.0                                                                                                                       RT @trvo512: are you fucking kidding me? @McDonalds https://t.co/YgNCoLqJhr
+  NO_EVENT               0.0                                                       @usa_wk  Thanks for following me! Be sure to ✔ out my book "The Twins of Aerobith" available @amazon / @BNBuzz /… https://t.co/hQh72wBfy5\r
+  NO_EVENT               0.0                                                              RT @SherriHill: Just got this from the warehouse where they filled an entire @UPS trailer. New dresses will be in your local store… 
+  NO_EVENT               0.0 RT @BigWangTheoryy: Uber CEO came out like: \r\r\r\r\r\r\n\r\r\r\r\r\r\nYOU going broke! &amp; YOU going broke!! We all going BROKE!!\r\r\r\r\r\r\n\r\r\r\r\r\r\n@TeslaMotors @GM @pepsi @IBM… \r
+  NO_EVENT               0.0                                                                                                                       RT @trvo512: are you fucking kidding me? @McDonalds https://t.co/YgNCoLqJhr
+  NO_EVENT               0.0                                                                                                       Will be the END of @Starbucks ... finally! 💥🇺🇸💥@Charlie4Trump @Olivemykids3 @DebAlwaystrump
+  NO_EVENT               0.0                                                                                                          RT @DrJimmyStar: Check out Betsey Johnson Cosmetic Bag NWT https://t.co/3WNMpr9Wzw @eBay
+  NO_EVENT               0.0                                                                           RT @DrJimmyStar: Check out Westland Giftware Ceramic Spiderman Cookie Jar NIB Multi-Color https://t.co/IB65e9yvXS @eBay
+  NO_EVENT               0.0                                                                      Please RT @eBay! https://t.co/TnWJsNyxiJ … via @eBay #ebay #clothing #namebrand #coogi #rag&amp;bone https://t.co/q2PbC3rhFK
+  NO_EVENT               0.0                                                 RT @Starbucks: We believe in acceptance, inclusivity, and humanity—for everyone. 💚\r\r\r\r\r\r\nhttps://t.co/WTFJI7nmkB https://t.co/qufSIUpUHz\r
+  NO_EVENT               0.0                                                        RT @TheMarket76: Wade Whimsies, Jack, Canadian Red Rose Tea Promotion 1971-79  https://t.co/qZkuMYkjv9 via @eBay https://t.co/2xkjJZOb6e\r
+  NO_EVENT               0.0                                                    RT @TheMarket76: QUEST STRING, Wooden Puzzle Game, Strategy Game, Brain Teaser, Travel size, NEW  https://t.co/onCVPE1tTu via @eBay https:/…\r
+  NO_EVENT               0.0                                                        Check out #Vintage #Glasbake Milk Glass #GreenDaisy Casserole Dishes, 2 QT &amp; 1 1/2 QT  https://t.co/khzoM004gs via @eBay #gotvintage\r
+  NO_EVENT               0.0                                                                      Check out Lot 4 DAVE PELZER Child Called It Lost Boy Man Named Dave Privilege Youth Abuse  https://t.co/SvBmb6lQmu via @eBay
+  NO_EVENT               0.0                                                                           Check out Grateful Dead Bears Rare Tie Dye 25th Anniversary 1990 Tour T Shirt MINT Mens L https://t.co/Ey8XctxX2x @eBay
+  NO_EVENT               0.0                                                                                                                       RT @trvo512: are you fucking kidding me? @McDonalds https://t.co/YgNCoLqJhr
+
+--- Representative examples by event type ---
+
+--------------------------------------------------------------------------------
+NO_EVENT | n=1,988
+
+row_id=4 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+RT @loadsofvans: Retweet this post &amp; follow @loadsofvans for a chance to win a £100 @amazon voucher #win #giveaway #competition… 
+
+row_id=5 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+RT @Disney: See The Newest Trailer for #BeautyAndTheBeast: https://t.co/JfINQL6EbV https://t.co/jZjNR0GRk9
+
+row_id=6 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+RT @tarastrong: Just got @facebook back! I REALLY want to thank you all for your support. Being able to speak out against bullies is SO IMP…
+
+row_id=8 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+RT @DrJimmyStar: Check out Mens Encore by Fiesso Black Leather Driving Shoes Size 12 https://t.co/QzMHHh7Cbv @eBay
+
+row_id=9 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+RT @DrJimmyStar: Check out Betsey Johnson Heart Tab Red Dual Handle Two Tassel Purse NWT https://t.co/11nAogJeiY @eBay
+
+row_id=10 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+@Reuters lol anyone who challenges him gets fired. Soon it will be jail or they'll go missing- maybe to a gulag
+
+row_id=11 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+RT @jhill1105: @loadsofvans Retweet this post &amp; follow @loadsofvans for a chance to win a £100 @amazon voucher #win #giveaway #competition
+
+row_id=13 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+Congrats to our #CNWF alumni @helenshang! Don't miss her episode of #h50 on @CBS this Friday! #AAPIwriters… https://t.co/G3OrzrtK7W
+
+row_id=14 | confidence=0.000 | FinBERT= | stock=Starbucks | date=31/01/2017
+ For SO long.… 
+
+row_id=15 | confidence=0.000 | FinBERT= | stock=N/A | date=N/A
+RT @DrJimmyStar: Check out Mens Encore by Fiesso Black Leather Driving Shoes Size 12 https://t.co/QzMHHh7Cbv @eBay
+
+--------------------------------------------------------------------------------
+Other / Unclear | n=414
+
+row_id=809 | confidence=0.853 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: ⚡️ “An ancient festival in Spain”  Explore an unusual event - https://t.co/VhyipFoYdJ https://t.co/uHXs20Fw6K
+
+row_id=2205 | confidence=0.665 | FinBERT= | stock=TripAdvisor | date=01/02/2017
+RT @TripAdvisor: Today, Lerwick, #Scotland lights up for the Up Helly AA Festival, a celebration of the longer, lighter days to come. https…
+
+row_id=736 | confidence=0.648 | FinBERT= | stock=N/A | date=N/A
+Check out Win Cleaner USB As Seen on TV One Click PC Computer Clean Repair Protect-NEW!  https://t.co/qaGKb5kHqS via @eBay
+
+row_id=1947 | confidence=0.639 | FinBERT= | stock=N/A | date=N/A
+Just saw this on Amazon: VORKE Z1 Amlogic S912 KODI 16.1 4K 3G DDR4/32G eMMC ... by Vorke for $99.99 https://t.co/JdHuIcurSX via @amazon
+
+row_id=1617 | confidence=0.632 | FinBERT= | stock=Amazon | date=31/01/2017
+Just saw this on Amazon: TaoTronics Bluetooth Headphones, Wireless I... by TaoTronics for $16.99 https://t.co/3crpkofKwz via @amazon
+
+row_id=202 | confidence=0.611 | FinBERT= | stock=N/A | date=N/A
+Just saw this on Amazon: YI Home Camera Wireless IP Security Surveil... by YI for $38.99 https://t.co/UtrEX7852G via @amazon
+
+row_id=2363 | confidence=0.591 | FinBERT= | stock=N/A | date=N/A
+Confusion:-Kenya's syndicated loan delayed- bankers frustrated with GOK https://t.co/KwocCbfgLg via @Reuters
+
+row_id=2103 | confidence=0.583 | FinBERT= | stock=N/A | date=N/A
+Dear @Apple @NintendoAmerica @Sony @samsung @LGUS @ATT &amp; Other #CellPhone #VideoGames stop making so many #devices #update old end waste
+
+row_id=177 | confidence=0.542 | FinBERT= | stock=Cisco | date=31/01/2017
+More collaboration going on. @Bosch, @Cisco, @Gemalto and More: Tech Giants Team For #Blockchain-#IoT… https://t.co/HayjD0wqc9
+
+row_id=288 | confidence=0.531 | FinBERT= | stock=N/A | date=N/A
+Dear @Apple the iphone 6s I bought 13 months ago switches off randomly even if battery is over 40%. 4th &amp; 5th char of serial are QK. Help
+
+--------------------------------------------------------------------------------
+Geopolitical | n=163
+
+row_id=696 | confidence=0.872 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Iran will not use ballistic missiles to attack any country: foreign minister. Via @ReutersTV https://t.co/Aj8c2qMCwh https://t…
+
+row_id=685 | confidence=0.872 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Iran will not use ballistic missiles to attack any country: foreign minister. Via @ReutersTV https://t.co/Aj8c2qMCwh https://t…
+
+row_id=331 | confidence=0.861 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Iran will not use ballistic missiles to attack any country: foreign minister https://t.co/oNCoa19Kie https://t.co/f85hnZf0u0
+
+row_id=2469 | confidence=0.833 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: U.N. Security Council expresses 'grave concern' over Ukraine https://t.co/khjsHCOtvM https://t.co/B3vvMiDA98
+
+row_id=2479 | confidence=0.828 | FinBERT= | stock=N/A | date=N/A
+RT @TheRickWilson: U.N. Security Council expresses 'grave concern' over Ukraine https://t.co/eW9OPEtL8l via @Reuters
+
+row_id=2319 | confidence=0.828 | FinBERT= | stock=N/A | date=N/A
+RT @TheRickWilson: U.N. Security Council expresses 'grave concern' over Ukraine https://t.co/eW9OPEtL8l via @Reuters
+
+row_id=1824 | confidence=0.828 | FinBERT= | stock=N/A | date=N/A
+RT @TheRickWilson: U.N. Security Council expresses 'grave concern' over Ukraine https://t.co/eW9OPEtL8l via @Reuters
+
+row_id=2559 | confidence=0.802 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: U.N. to vote Tuesday on Syria sanctions despite Russia veto pledge https://t.co/wXK2d75lUe
+
+row_id=669 | confidence=0.800 | FinBERT= | stock=Reuters | date=31/01/2017
+#Turkey dismissed more than 90,000 public servants in post-coup purge https://t.co/zYBBf8BNtI via @Reuters
+
+row_id=1949 | confidence=0.799 | FinBERT= | stock=Reuters | date=01/02/2017
+Pence, Jordan's Abdullah discuss Islamic State, Syria, U.S. embassy in Israel: White House https://t.co/Cdd9GUL6FZ via @Reuters
+
+--------------------------------------------------------------------------------
+Market / Liquidity | n=136
+
+row_id=677 | confidence=0.732 | FinBERT= | stock=N/A | date=N/A
+Only Moments Away from a Major Breakout in @intel Stock https://t.co/Raj1djRAdX #ProfitCo #stocks #Intel https://t.co/DI3NQzsHzg
+
+row_id=76 | confidence=0.725 | FinBERT= | stock=N/A | date=N/A
+@TheTweetest @Starbucks @LadyJMurray made some bets on how low Starbucks stock will drop lowest bet was $1.87
+
+row_id=2627 | confidence=0.713 | FinBERT= | stock=N/A | date=N/A
+@MorganStanley trims its @Flipkart valuation once again https://t.co/4ZV7QrTEvE https://t.co/WqeEvowKn8
+
+row_id=814 | confidence=0.689 | FinBERT= | stock=N/A | date=N/A
+RT @MorganStanley: Markets are displaying myriad similarities to the late 1990s. Can investors also expect an #equities blow-off rally… 
+
+row_id=210 | confidence=0.681 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Wall Street falls the most this year as Trump honeymoon sours https://t.co/uE97HeElFY https://t.co/3MoFUFSLt3
+
+row_id=306 | confidence=0.681 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Wall Street falls the most this year as Trump honeymoon sours https://t.co/uE97HeElFY https://t.co/3MoFUFSLt3
+
+row_id=777 | confidence=0.626 | FinBERT= | stock=N/A | date=N/A
+The customer service of @VW @vwdrives during the #Dieselgate buy back is horrible. I was planning on buying another… https://t.co/9Euc5pTrok
+
+row_id=92 | confidence=0.609 | FinBERT= | stock=N/A | date=N/A
+Look at our new stock on @eBay: https://t.co/3b0sbgxc0s
+
+row_id=1123 | confidence=0.531 | FinBERT= | stock=Amazon | date=31/01/2017
+@KAPPKVEW @amazon cancelling my prime &amp; ordering somewhere else. Stick to selling, not politics.
+
+row_id=2316 | confidence=0.490 | FinBERT= | stock=JPMorgan | date=01/02/2017
+RT @jpmorgan: $JPM Research: "We expect S&amp;P 500 to reach 2,400 by year-end 2017."  See more insights. https://t.co/JHxb64nZyY
+
+--------------------------------------------------------------------------------
+Corporate / Earnings | n=100
+
+row_id=1396 | confidence=0.843 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: BREAKING: Apple iPhone sales beat estimates, marking their first quarterly growth in a year. https://t.co/VWopNteu4P https://t…
+
+row_id=1445 | confidence=0.843 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: BREAKING: Apple iPhone sales beat estimates, marking their first quarterly growth in a year. https://t.co/VWopNteu4P https://t…
+
+row_id=2063 | confidence=0.615 | FinBERT= | stock=N/A | date=N/A
+RT @EbyFordLincoln: Congrats Jeanne &amp; Stan Atkinson of #Goshen on ur 2017 @Ford Explorer https://t.co/ysoyhb9mcs Thank you folks @EbyFordLi…
+
+row_id=2720 | confidence=0.602 | FinBERT= | stock=N/A | date=N/A
+RT @DeutscheBank: Is calm returning to the European utilities sector? Revenues set to rise again for the first time since 2011. #DrStephan
+
+row_id=2541 | confidence=0.591 | FinBERT= | stock=N/A | date=N/A
+RT @VittoVe: @Starbucks CEO Howard Schultz @Unibocconi captured by #italian #Excellence in F&amp;B #MFB success is bigger when share… 
+
+row_id=1465 | confidence=0.591 | FinBERT= | stock=N/A | date=N/A
+Apple iPhone sales beat estimates https://t.co/VZWdTEMew1 via @Reuters
+
+row_id=2689 | confidence=0.573 | FinBERT= | stock=N/A | date=N/A
+FMCG will continue to be growth driver for @amazon https://t.co/1fyn942jal https://t.co/ypyIb4B87r
+
+row_id=2716 | confidence=0.509 | FinBERT= | stock=N/A | date=N/A
+RT @PatMartinet: .@OracleServCloud helps @CarrefourGroup to improve productivity by 40% &amp; increase #customer satisfaction rates… 
+
+row_id=759 | confidence=0.497 | FinBERT= | stock=Bayer | date=31/01/2017
+ @focusonline… 
+
+row_id=360 | confidence=0.466 | FinBERT= | stock=N/A | date=N/A
+BBC: @Volkswagen overtakes @Toyota as the world's biggest carmaker https://t.co/xGw36RakBX by #SubEWL via @c0nvey
+
+--------------------------------------------------------------------------------
+Macroeconomic | n=28
+
+row_id=407 | confidence=0.806 | FinBERT= | stock=N/A | date=N/A
+RT @DeutscheBank: #Germany: rate of inflation up to 1.9% in January – energy and food in particular becoming more expensive. #DrStephan
+
+row_id=2387 | confidence=0.758 | FinBERT= | stock=N/A | date=N/A
+RT @BTVI: #India awaits the big #Budget boost https://t.co/DBLTTGdNB0 @szarabi @arunjaitley @FinMinIndia @jpmorgan @Barclays #BudgetWithBTVi
+
+row_id=2769 | confidence=0.711 | FinBERT= | stock=Reuters | date=28/02/2017
+@Reuters if we cut taxes on the rich it will "trickle down" and the "job creators" will save the economy.
+
+row_id=129 | confidence=0.646 | FinBERT= | stock=N/A | date=N/A
+Fed likely to keep rates steady as it awaits Trump economic plan https://t.co/R9U7vsavA9 via @Reuters
+
+row_id=2856 | confidence=0.646 | FinBERT= | stock=N/A | date=N/A
+Peru central bank to loosen reserve requirements starting Wednesday https://t.co/wmXU5jFf50 via @Reuters
+
+row_id=82 | confidence=0.610 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Fed likely to keep rates steady as it awaits Trump economic plan https://t.co/e9hefH27mG
+
+row_id=464 | confidence=0.601 | FinBERT= | stock=Morgan Stanley | date=31/01/2017
+Chetan Ahya, @MorganStanley: Consolidated fiscal deficit for India remains fairly high at current level. #ETNOWExclusive
+
+row_id=2502 | confidence=0.550 | FinBERT= | stock=N/A | date=N/A
+@RealJamesWoods @ETTalkShow @Reuters Hopefully Trump will end the Federal Reserve's as-yet-interminable war &amp; uproot the institution.
+
+row_id=2362 | confidence=0.548 | FinBERT= | stock=N/A | date=N/A
+Dollar sags after Trump takes aim at currency policies of U.S. partners https://t.co/OpaWmxTkEt via @Reuters
+
+row_id=2707 | confidence=0.530 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Exclusive - China eyes 12 percent broad money supply rise in 2017: sources https://t.co/ox5mNpIz2j https://t.co/6Ze4aRu9B0
+
+--------------------------------------------------------------------------------
+Regulatory / Legal | n=25
+
+row_id=160 | confidence=0.783 | FinBERT= | stock=N/A | date=N/A
+.@TheFCA fines @DeutscheBank £163M for serious #AML controls failings. Largest fine ever imposed for this by #FCA/… https://t.co/x3HsJmisC8
+
+row_id=1747 | confidence=0.442 | FinBERT= | stock=N/A | date=N/A
+@Google what would it take to get a website removed permanently from Google search thay steals &amp; sells others content without permission?
+
+row_id=1081 | confidence=0.440 | FinBERT= | stock=N/A | date=N/A
+I've just sent a thank you e-mail to the CEO of @amazon thanking him for taking legal action against Trump's #musilmban. Well done him.
+
+row_id=1173 | confidence=0.402 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: 1,700 residents of Flint, Michigan sue EPA over water crisis https://t.co/FE54Y5Augm
+
+row_id=1199 | confidence=0.401 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: 1,700 residents of Flint, Michigan sue EPA over water crisis https://t.co/FE54Y5Augm
+
+row_id=1214 | confidence=0.401 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: 1,700 residents of Flint, Michigan sue EPA over water crisis https://t.co/FE54Y5Augm
+
+row_id=1216 | confidence=0.401 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: 1,700 residents of Flint, Michigan sue EPA over water crisis https://t.co/FE54Y5Augm
+
+row_id=1179 | confidence=0.401 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: 1,700 residents of Flint, Michigan sue EPA over water crisis https://t.co/FE54Y5Augm
+
+row_id=1221 | confidence=0.401 | FinBERT= | stock=Reuters | date=31/01/2017
+RT @Reuters: 1,700 residents of Flint, Michigan sue EPA over water crisis https://t.co/FE54Y5Augm
+
+row_id=863 | confidence=0.382 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: BREAKING: San Francisco is first city to sue over Trump directive to withhold federal money from sanctuary cities. https://t.c…
+
+--------------------------------------------------------------------------------
+Commodity / Supply Chain | n=21
+
+row_id=2609 | confidence=0.804 | FinBERT= | stock=N/A | date=N/A
+.@IdeaDeals @eBay @Comercio_Center Perth Mint 2.5g gold ingot for sale. https://t.co/YsdN5SGcra #Gold #Promote #Save https://t.co/ZkGkNW1tPg
+
+row_id=1616 | confidence=0.798 | FinBERT= | stock=N/A | date=N/A
+Check out 14k Yellow Gold London Blue Topaz Diamond Ring  Size 5.5  100% REAL #UniQJewels https://t.co/BYHUeiWKOu via @eBay #gold #sale
+
+row_id=1345 | confidence=0.749 | FinBERT= | stock=N/A | date=N/A
+RT @KevinSerfas: All the canola oil used at every @McDonalds in N America is grown &amp; crushed in Canada. 3.3Million MT over past 10 years. #…
+
+row_id=2741 | confidence=0.591 | FinBERT= | stock=N/A | date=N/A
+RT @DeutscheBank: #Oil producers prepared to accept lower prices in exchange for reliable cash flow. #DrStephan
+
+row_id=2653 | confidence=0.591 | FinBERT= | stock=N/A | date=N/A
+UPDATE 1-Russia says may speed up oil output cuts https://t.co/3MNG07fWid via @Reuters
+
+row_id=2264 | confidence=0.554 | FinBERT= | stock=N/A | date=N/A
+How hard is it to deliver a goddamn package. Isn't that the entire purpose of your company. @UPS
+
+row_id=2566 | confidence=0.461 | FinBERT= | stock=N/A | date=N/A
+Check out 925 STERLING SILVER CUTE DESIGN AMETHYST STONE PENDANT S. 2 cm #SilvexImagesIndiaPvtLtd https://t.co/NbTr57pVuQ via @eBay
+
+row_id=1710 | confidence=0.428 | FinBERT= | stock=N/A | date=N/A
+@exxonmobil Develops Efficient New Technology to Dehydrate Natural Gas #energy https://t.co/fLZ8mVPlv3
+
+row_id=1052 | confidence=0.403 | FinBERT= | stock=N/A | date=N/A
+How Russia sold its oil jewel: without saying who bought it https://t.co/t5JZdrBiar via @Reuters
+
+row_id=2608 | confidence=0.394 | FinBERT= | stock=Reuters | date=28/02/2017
+ https://t.co/T4KFTFx9yk via @Reuters
+
+--------------------------------------------------------------------------------
+Merger & Acquisition | n=19
+
+row_id=503 | confidence=0.666 | FinBERT= | stock=Reuters | date=31/01/2017
+Who is the real buyer of a 19.5 percent stake in Rosneft? Journalists, truth-seekers - we need you. https://t.co/Vh6hYBQOx7 via @Reuters
+
+row_id=1730 | confidence=0.530 | FinBERT= | stock=N/A | date=N/A
+RT @WeWillBoycott: .@CMRobJohnson @CouncilmanTim are you voting YES w/ @Lisa_Herbold to DIVEST $3B from @WellsFargo? Counting on you!… 
+
+row_id=1318 | confidence=0.445 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Warren Buffett says he bought $12 billion of stock after Trump won. More here: https://t.co/bj1hoReru6 https://t.co/zCefdOC1ms
+
+row_id=1703 | confidence=0.445 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Warren Buffett says he bought $12 billion of stock after Trump won. More here: https://t.co/bj1hoReru6 https://t.co/zCefdOC1ms
+
+row_id=1148 | confidence=0.444 | FinBERT= | stock=N/A | date=N/A
+Warren Buffett: I bought $12 billion of stock after Trump won https://t.co/6bVnhVksZE via @Reuters
+
+row_id=842 | confidence=0.429 | FinBERT= | stock=N/A | date=N/A
+Warren Buffett: I bought $12 billion of stock after Trump won https://t.co/1Q35OkviH8 via @Reuters
+
+row_id=838 | confidence=0.428 | FinBERT= | stock=N/A | date=N/A
+Warren Buffett: I bought $12 billion of stock after Trump won https://t.co/mwKkm4XOAh via @Reuters
+
+row_id=928 | confidence=0.422 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Warren Buffett says he bought $12 billion of stock after Trump won. More here: https://t.co/Doh57zpobG https://t.co/NCrlbSQo3m
+
+row_id=1827 | confidence=0.422 | FinBERT= | stock=N/A | date=N/A
+RT @Reuters: Warren Buffett says he bought $12 billion of stock after Trump won. More here: https://t.co/Doh57zpobG https://t.co/NCrlbSQo3m
+
+row_id=1779 | confidence=0.404 | FinBERT= | stock=N/A | date=N/A
+@HondaCustSvc I've done this once already and I had to pay 1/2 for @Honda to fix all the problem areas.  That was $1K.  Guess what?  Now the
+
+--------------------------------------------------------------------------------
+Product / Technology | n=14
+
+row_id=2229 | confidence=0.519 | FinBERT= | stock=N/A | date=N/A
+RT @gregPAphilly: AT&amp;T’s multi-gigabit wireless over power lines. This #tech will #disrupt #wireless @ATT #stocks https://t.co/jB2MguBKhG
+
+row_id=73 | confidence=0.285 | FinBERT= | stock=Microsoft | date=31/01/2017
+RT @DigitalTrends: Yes, @Microsoft does have plans to release a Hololens headset for consumers https://t.co/IUt1yz5xiO
+
+row_id=542 | confidence=0.274 | FinBERT= | stock=N/A | date=N/A
+Amazon Launches STEM Club Toy Subscription for Kids 3 to 13 @amazon https://t.co/P8FhrJ1ukP https://t.co/7GBoisjRed
+
+row_id=1632 | confidence=0.267 | FinBERT= | stock=N/A | date=N/A
+Check out Guard Dog Orion 400 Lumen Waterproof RECHARGEABLE Tactical Flashlight BRONZE #GuardDog https://t.co/27LymcOzIy via @eBay
+
+row_id=2214 | confidence=0.261 | FinBERT= | stock=N/A | date=N/A
+Check out PENTAX 645D 40.0 MP Digital SLR Camera Black BODY BOXED Shutter Count about 1800 #pentax https://t.co/cyXgitHcsW via @eBay
+
+row_id=2309 | confidence=0.241 | FinBERT= | stock=Microsoft | date=01/02/2017
+Just lost half my lunch break because when you "shutdown" Win 10, it doesn't perform a full shutdown. Thanks for the heap of crap @Microsoft
+
+row_id=2549 | confidence=0.211 | FinBERT= | stock=N/A | date=N/A
+RT @ashwinpatel1a: New USB Rechargeable Electric LIGHTER @facebook https://t.co/RpoBxeFjiW https://t.co/ysBP45YhtT
+
+row_id=401 | confidence=0.209 | FinBERT= | stock=Yahoo | date=31/01/2017
+RT @IonicMaterials: "Imagine: Three days of life on every phone charge instead of one and a half." @Pogue @Yahoo https://t.co/UslbOvQ5Bw
+
+row_id=1644 | confidence=0.207 | FinBERT= | stock=N/A | date=N/A
+Check out US Army Combat Uniform Coat Medium Regular ACU Digital Camo SPM1C1-09-D-F009 #USARMY https://t.co/c8jSQgdcYH via @eBay
+
+row_id=1089 | confidence=0.202 | FinBERT= | stock=N/A | date=N/A
+Check out HDE E336 Waterproof Rear Vehicle Backup Camera With 170 degree Viewing Angle #HDE https://t.co/nN7T6cEeDO via @eBay
+
+--------------------------------------------------------------------------------
+Credit Event | n=5
+
+row_id=156 | confidence=0.365 | FinBERT= | stock=N/A | date=N/A
+Hello fellow deplorables. Lets remember to #BoycottStarbucks into bankruptcy. Do not patronize @Starbucks. @jjauthor @Camtemp @seanhannity
+
+row_id=300 | confidence=0.311 | FinBERT= | stock=N/A | date=N/A
+its a repay I need $845.00 #saltbeltrust @Hyundai https://t.co/1qh6NFaEwq
+
+row_id=1418 | confidence=0.255 | FinBERT= | stock=N/A | date=N/A
+RT @NARAL: .@NYGovCuomo calls for amending state constitution to protect #reprorights: https://t.co/2WF1XOYyXn @Reuters #WeWontGoBack
+
+row_id=1206 | confidence=0.238 | FinBERT= | stock=N/A | date=N/A
+I'm waiting to have my fin hacked off then @FedEx will ship my body parts far away from me  #StopShippingSharkFin  https://t.co/pyHgm0S0GO
+
+row_id=995 | confidence=0.153 | FinBERT= | stock=Wells Fargo | date=31/01/2017
+Dear @CMRobJohnson, as your constituent in 98115, please vote YES to cancel @WellsFargo contract. WF is liability and we should dump them
+
+================================================================================
+CREDIT EVENT FOCUSED AUDIT
+================================================================================
+
+row_id=156 | confidence=0.365
+Hello fellow deplorables. Lets remember to #BoycottStarbucks into bankruptcy. Do not patronize @Starbucks. @jjauthor @Camtemp @seanhannity
+
+row_id=300 | confidence=0.311
+its a repay I need $845.00 #saltbeltrust @Hyundai https://t.co/1qh6NFaEwq
+
+row_id=995 | confidence=0.153
+Dear @CMRobJohnson, as your constituent in 98115, please vote YES to cancel @WellsFargo contract. WF is liability and we should dump them
+
+row_id=1206 | confidence=0.238
+I'm waiting to have my fin hacked off then @FedEx will ship my body parts far away from me  #StopShippingSharkFin  https://t.co/pyHgm0S0GO
+
+row_id=1418 | confidence=0.255
+RT @NARAL: .@NYGovCuomo calls for amending state constitution to protect #reprorights: https://t.co/2WF1XOYyXn @Reuters #WeWontGoBack
+
+Audit complete.
+
