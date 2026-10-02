@@ -296,3 +296,10 @@ if __name__ == "__main__":
         max_length=args.max_length,
         overwrite=args.overwrite,
     )
+
+
+# Test run : python src/nlp/finbert_inference.py \
+#   --input data/processed/reduced_dataset-release.csv \
+#   --output data/processed/finbert_reduced_predictions.csv \
+#   --max-rows 5000 \
+#   --batch-size 64
