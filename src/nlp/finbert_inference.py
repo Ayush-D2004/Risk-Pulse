@@ -194,6 +194,7 @@ def infer_csv(
     reader = pd.read_csv(
         input_csv,
         chunksize=chunk_size,
+        lineterminator="\n",
         low_memory=False,
     )
 

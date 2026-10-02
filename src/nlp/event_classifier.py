@@ -299,7 +299,7 @@ def main() -> None:
     # This CLI intentionally uses a single DataFrame for the first baseline.
     # Once the taxonomy is validated, we will add chunked inference analogous
     # to finbert_inference.py.
-    df = pd.read_csv(args.input, nrows=args.max_rows)
+    df = pd.read_csv(args.input, nrows=args.max_rows, lineterminator="\n", low_memory=False)
     if "row_id" not in df.columns:
         if "Unnamed: 0" in df.columns:
             df = df.rename(columns={"Unnamed: 0": "row_id"})

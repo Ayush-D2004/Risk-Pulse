@@ -79,6 +79,7 @@ def load_input(path, max_rows=None):
     # the actual dataframe row index as row_id.
     df = pd.read_csv(
         path,
+        lineterminator="\n",
         low_memory=False,
         nrows=max_rows,
         on_bad_lines="skip",

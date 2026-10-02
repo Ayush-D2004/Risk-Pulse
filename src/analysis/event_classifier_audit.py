@@ -30,6 +30,7 @@ def read_csv(path, usecols=None):
     return pd.read_csv(
         path,
         usecols=usecols,
+        lineterminator="\n",
         low_memory=False,
         on_bad_lines="skip",
     )
@@ -67,8 +68,11 @@ def main():
         raise ValueError(f"Prediction file missing columns: {sorted(missing)}")
 
     pred["row_id"] = pd.to_numeric(pred["row_id"], errors="coerce")
-    pred = pred.dropna(subset=["row_id"]).copy()
-    pred["row_id"] = pred["row_id"].astype(int)
+    if pred["row_id"].isna().any():
+        pred["row_id"] = range(len(pred))
+    else:
+        pred["row_id"] = pred["row_id"].astype(int)
+
     pred["EVENT_CONFIDENCE"] = pd.to_numeric(
         pred["EVENT_CONFIDENCE"], errors="coerce"
     )
@@ -98,8 +102,10 @@ def main():
             original.insert(0, "row_id", range(len(original)))
 
     original["row_id"] = pd.to_numeric(original["row_id"], errors="coerce")
-    original = original.dropna(subset=["row_id"]).copy()
-    original["row_id"] = original["row_id"].astype(int)
+    if original["row_id"].isna().any() or len(original) == len(pred):
+        original["row_id"] = range(len(original))
+    else:
+        original["row_id"] = original["row_id"].astype(int)
 
     df = pred.merge(original, on="row_id", how="left", suffixes=("", "_original"))
 
