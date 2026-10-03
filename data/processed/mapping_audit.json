@@ -1,0 +1,849 @@
+{
+  "audit": [
+    {
+      "historical_stock_name": "21CF",
+      "current_mapped_ticker": "FOXA",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "FOXA (Historical 21CF)",
+      "exchange": "US",
+      "mapping_status": "HISTORICAL_TICKER_REQUIRED",
+      "explanation": "Twenty-First Century Fox traded as FOXA in 2017. The current FOXA ticker represents the post-Disney-acquisition Fox Corporation spin-off, which breaks historical continuity."
+    },
+    {
+      "historical_stock_name": "ASOS",
+      "current_mapped_ticker": "ASC.L",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "ASC.L",
+      "exchange": "LSE",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "AT&T",
+      "current_mapped_ticker": "T",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "T",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Adobe",
+      "current_mapped_ticker": "ADBE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "ADBE",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Allianz",
+      "current_mapped_ticker": "ALV.DE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "ALV.DE",
+      "exchange": "Xetra",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Amazon",
+      "current_mapped_ticker": "AMZN",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "AMZN",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "American Express",
+      "current_mapped_ticker": "AXP",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "AXP",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Apple",
+      "current_mapped_ticker": "AAPL",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "AAPL",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "AstraZeneca",
+      "current_mapped_ticker": "AZN",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "AZN",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Audi",
+      "current_mapped_ticker": "NSU.DE",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "NSU.DE or VOW3.DE",
+      "exchange": "Xetra",
+      "mapping_status": "AMBIGUOUS",
+      "explanation": "Audi traded as NSU.DE, but is part of Volkswagen Group. Ambiguous whether the tweet refers to the listed subsidiary or the parent group."
+    },
+    {
+      "historical_stock_name": "BMW",
+      "current_mapped_ticker": "BMW.DE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "BMW.DE",
+      "exchange": "Xetra",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "BP",
+      "current_mapped_ticker": "BP",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "BP",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Bank of America",
+      "current_mapped_ticker": "BAC",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "BAC",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Bayer",
+      "current_mapped_ticker": "BAYN.DE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "BAYN.DE",
+      "exchange": "Xetra",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "BlackRock",
+      "current_mapped_ticker": "BLK",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "BLK",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Boeing",
+      "current_mapped_ticker": "BA",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "BA",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Burberry",
+      "current_mapped_ticker": "BRBY.L",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "BRBY.L",
+      "exchange": "LSE",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "CBS",
+      "current_mapped_ticker": "CBS",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "CBS (Delisted)",
+      "exchange": "US",
+      "mapping_status": "HISTORICAL_TICKER_REQUIRED",
+      "explanation": "CBS merged with Viacom to form ViacomCBS (now Paramount Global, PARA). CBS ticker is delisted."
+    },
+    {
+      "historical_stock_name": "Carrefour",
+      "current_mapped_ticker": "CA.PA",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "CA.PA",
+      "exchange": "Euronext Paris",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Chevron",
+      "current_mapped_ticker": "CVX",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "CVX",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Cisco",
+      "current_mapped_ticker": "CSCO",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "CSCO",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Citigroup",
+      "current_mapped_ticker": "C",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "C",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "CocaCola",
+      "current_mapped_ticker": "KO",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "KO",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Comcast",
+      "current_mapped_ticker": "CMCSA",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "CMCSA",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Costco",
+      "current_mapped_ticker": "COST",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "COST",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Deutsche Bank",
+      "current_mapped_ticker": "DB",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "DB",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Disney",
+      "current_mapped_ticker": "DIS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "DIS",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Expedia",
+      "current_mapped_ticker": "EXPE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "EXPE",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Exxon",
+      "current_mapped_ticker": "XOM",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "XOM",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Facebook",
+      "current_mapped_ticker": "META",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "FB",
+      "exchange": "US",
+      "mapping_status": "HISTORICAL_TICKER_REQUIRED",
+      "explanation": "Facebook traded as FB in 2017. META is the current ticker."
+    },
+    {
+      "historical_stock_name": "FedEx",
+      "current_mapped_ticker": "FDX",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "FDX",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Ford",
+      "current_mapped_ticker": "F",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "F",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "GSK",
+      "current_mapped_ticker": "GSK",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "GSK",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "General Electric",
+      "current_mapped_ticker": "GE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "GE",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Gillette",
+      "current_mapped_ticker": "PG",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "PG",
+      "exchange": "US",
+      "mapping_status": "PARENT_COMPANY_PROXY",
+      "explanation": "Gillette is a brand owned by Procter & Gamble. Using parent company PG as a proxy."
+    },
+    {
+      "historical_stock_name": "Goldman Sachs",
+      "current_mapped_ticker": "GS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "GS",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Google",
+      "current_mapped_ticker": "GOOGL",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "GOOGL",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Groupon",
+      "current_mapped_ticker": "GRPN",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "GRPN",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "H&M",
+      "current_mapped_ticker": "HM-B.ST",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "HM-B.ST",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "HP",
+      "current_mapped_ticker": "HPQ",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "HPQ",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "HSBC",
+      "current_mapped_ticker": "HSBC",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "HSBC",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Heineken",
+      "current_mapped_ticker": "HEIA.AS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "HEIA.AS",
+      "exchange": "Euronext Amsterdam",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Home Depot",
+      "current_mapped_ticker": "HD",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "HD",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Honda",
+      "current_mapped_ticker": "HMC",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "HMC",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Hyundai",
+      "current_mapped_ticker": "005380.KS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "005380.KS",
+      "exchange": "KRX",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "IBM",
+      "current_mapped_ticker": "IBM",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "IBM",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Intel",
+      "current_mapped_ticker": "INTC",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "INTC",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "JPMorgan",
+      "current_mapped_ticker": "JPM",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "JPM",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "John Deere",
+      "current_mapped_ticker": "DE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "DE",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Kellogg's",
+      "current_mapped_ticker": "K",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "K",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Kroger",
+      "current_mapped_ticker": "KR",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "KR",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "L'Oreal",
+      "current_mapped_ticker": "OR.PA",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "OR.PA",
+      "exchange": "Euronext Paris",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Mastercard",
+      "current_mapped_ticker": "MA",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "MA",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "McDonald's",
+      "current_mapped_ticker": "MCD",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "MCD",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Microsoft",
+      "current_mapped_ticker": "MSFT",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "MSFT",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Morgan Stanley",
+      "current_mapped_ticker": "MS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "MS",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Nestle",
+      "current_mapped_ticker": "NESN.SW",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "NESN.SW",
+      "exchange": "SIX Swiss",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Netflix",
+      "current_mapped_ticker": "NFLX",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "NFLX",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Next",
+      "current_mapped_ticker": "NXT.L",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "NXT.L",
+      "exchange": "LSE",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Nike",
+      "current_mapped_ticker": "NKE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "NKE",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Nissan",
+      "current_mapped_ticker": "7201.T",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "7201.T",
+      "exchange": "Tokyo",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Oracle",
+      "current_mapped_ticker": "ORCL",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "ORCL",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "PayPal",
+      "current_mapped_ticker": "PYPL",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "PYPL",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Pepsi",
+      "current_mapped_ticker": "PEP",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "PEP",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Pfizer",
+      "current_mapped_ticker": "PFE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "PFE",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Reuters",
+      "current_mapped_ticker": null,
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": null,
+      "exchange": "US",
+      "mapping_status": "NO_EQUITY_TICKER",
+      "explanation": "Thomson Reuters is TRI, but Reuters is a news agency subsidiary."
+    },
+    {
+      "historical_stock_name": "Ryanair",
+      "current_mapped_ticker": "RYA.L",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "RYA.L",
+      "exchange": "LSE",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "SAP",
+      "current_mapped_ticker": "SAP",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "SAP",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Samsung",
+      "current_mapped_ticker": "005930.KS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "005930.KS",
+      "exchange": "KRX",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Santander",
+      "current_mapped_ticker": "SAN",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "SAN",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Shell",
+      "current_mapped_ticker": "SHEL",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "RDS.A",
+      "exchange": "US",
+      "mapping_status": "HISTORICAL_TICKER_REQUIRED",
+      "explanation": "Royal Dutch Shell traded as RDS.A / RDS.B in 2017. It unified shares into SHEL in 2022."
+    },
+    {
+      "historical_stock_name": "Siemens",
+      "current_mapped_ticker": "SIE.DE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "SIE.DE",
+      "exchange": "Xetra",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Sony",
+      "current_mapped_ticker": "SONY",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "SONY",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Starbucks",
+      "current_mapped_ticker": "SBUX",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "SBUX",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "TMobile",
+      "current_mapped_ticker": "TMUS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "TMUS",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Tesco",
+      "current_mapped_ticker": "TSCO.L",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "TSCO.L",
+      "exchange": "LSE",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Thales",
+      "current_mapped_ticker": "HO.PA",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "HO.PA",
+      "exchange": "Euronext Paris",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Toyota",
+      "current_mapped_ticker": "TM",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "TM",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "TripAdvisor",
+      "current_mapped_ticker": "TRIP",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "TRIP",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "UPS",
+      "current_mapped_ticker": "UPS",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "UPS",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Verizon",
+      "current_mapped_ticker": "VZ",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "VZ",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Viacom",
+      "current_mapped_ticker": "VIAB",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "VIAB (Delisted)",
+      "exchange": "US",
+      "mapping_status": "HISTORICAL_TICKER_REQUIRED",
+      "explanation": "Viacom merged with CBS (now PARA). VIAB is a delisted ticker."
+    },
+    {
+      "historical_stock_name": "Visa",
+      "current_mapped_ticker": "V",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "V",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Vodafone",
+      "current_mapped_ticker": "VOD",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "VOD",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Volkswagen",
+      "current_mapped_ticker": "VWAGY",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "VWAGY",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Walmart",
+      "current_mapped_ticker": "WMT",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "WMT",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Wells Fargo",
+      "current_mapped_ticker": "WFC",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "WFC",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "Yahoo",
+      "current_mapped_ticker": "YHOO",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "YHOO (Delisted)",
+      "exchange": "US",
+      "mapping_status": "HISTORICAL_TICKER_REQUIRED",
+      "explanation": "Yahoo traded as YHOO in 2017. Later became Altaba (AABA) and liquidated. YHOO is a dead ticker on modern data providers."
+    },
+    {
+      "historical_stock_name": "adidas",
+      "current_mapped_ticker": "ADS.DE",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "ADS.DE",
+      "exchange": "Xetra",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "bookingcom",
+      "current_mapped_ticker": "BKNG",
+      "existed_and_represented_in_2017": false,
+      "historical_ticker": "PCLN",
+      "exchange": "US",
+      "mapping_status": "HISTORICAL_TICKER_REQUIRED",
+      "explanation": "The Priceline Group traded as PCLN in early 2017. Name changed to Booking Holdings (BKNG) in Feb 2018."
+    },
+    {
+      "historical_stock_name": "eBay",
+      "current_mapped_ticker": "EBAY",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "EBAY",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "easyJet",
+      "current_mapped_ticker": "EZJ.L",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "EZJ.L",
+      "exchange": "LSE",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    },
+    {
+      "historical_stock_name": "salesforce.com",
+      "current_mapped_ticker": "CRM",
+      "existed_and_represented_in_2017": true,
+      "historical_ticker": "CRM",
+      "exchange": "US",
+      "mapping_status": "VALID",
+      "explanation": "Ticker exists and represented the intended security during Jan-Mar 2017."
+    }
+  ],
+  "statistics": {
+    "total_unique_stocks": 93,
+    "valid_mappings": 83,
+    "historical_ticker_mappings": 7,
+    "ambiguous_mappings": 1,
+    "parent_proxies": 1,
+    "no_ticker_entities": 1
+  }
+}

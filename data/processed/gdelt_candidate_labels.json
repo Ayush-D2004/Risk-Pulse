@@ -1,0 +1,1872 @@
+[
+  {
+    "document": {
+      "document_id": "03f94523ca561017647ce00cdb0043189b3ef2218c34127174bc123f66c7f8ec",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Major bank announces merger with regional lender",
+      "body": null,
+      "url": "https://news.example.com/article/df9c10b3469dc95d705b269705e884c1",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/df9c10b3469dc95d705b269705e884c1",
+        "title": "Major bank announces merger with regional lender",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "c46d5d4d0ac90b5b95bbda8bec8bc9827323a805c6f4d6e0b56ebd8a04110380",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Tech company reports record earnings and raises guidance",
+      "body": null,
+      "url": "https://news.example.com/article/796d2da33a9add611647cee34691ace3",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/796d2da33a9add611647cee34691ace3",
+        "title": "Tech company reports record earnings and raises guidance",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "47b525adb72058ae78141a80e955c844042cbe5aa671f6a40c135bde819a879a",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Oil giant acquisition of shale producer valued at $20 billion",
+      "body": null,
+      "url": "https://news.example.com/article/8341cb44391537a99f418acbcb597a4c",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/8341cb44391537a99f418acbcb597a4c",
+        "title": "Oil giant acquisition of shale producer valued at $20 billion",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "e5e61de8c7e9efd99f6ac77b284f87c178a40fda1802e9fa3c66a61c8b4c24fc",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Federal Reserve raises interest rate by 25 basis points",
+      "body": null,
+      "url": "https://news.example.com/article/03a7f1a70edc4cc23a808bee8fff33af",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/03a7f1a70edc4cc23a808bee8fff33af",
+        "title": "Federal Reserve raises interest rate by 25 basis points",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "fafffaf4234fe685479b74f57a83f81b71b0080c8321e90426f52e10237e3b41",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Company files for bankruptcy protection after fraud scandal",
+      "body": null,
+      "url": "https://news.example.com/article/8855d368867ae2734524970801f74c94",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/8855d368867ae2734524970801f74c94",
+        "title": "Company files for bankruptcy protection after fraud scandal",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "47d0405e6b1348b7852011cce8869ece7551f0ad626a68f01c5ed58bc3ec4254",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Hedge fund takes activist stake in struggling retailer",
+      "body": null,
+      "url": "https://news.example.com/article/c41447f8170f5f06317b8004ebcc71ba",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/c41447f8170f5f06317b8004ebcc71ba",
+        "title": "Hedge fund takes activist stake in struggling retailer",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "eb80f5c3eefff448f29a5acfe3b3d0e2feec4ce4cc68edf758d644d1aea4efad",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "FDA approves new cancer drug from pharmaceutical company",
+      "body": null,
+      "url": "https://news.example.com/article/a32a476707837ffb5cc25037fe0843ec",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/a32a476707837ffb5cc25037fe0843ec",
+        "title": "FDA approves new cancer drug from pharmaceutical company",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "2ec02c16f3c170345a617963de3c5203cd12f06617c300ca3fc58410fc732c25",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Class action lawsuit filed against social media platform",
+      "body": null,
+      "url": "https://news.example.com/article/3b9bb7bba0707da6175cfe69a3a05e17",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/3b9bb7bba0707da6175cfe69a3a05e17",
+        "title": "Class action lawsuit filed against social media platform",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "5aa7f455f7610df5810e853bd190f02ace56efc9d509faec992ff32a1a35ab9c",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Company announces massive layoff of 10,000 employees",
+      "body": null,
+      "url": "https://news.example.com/article/1b5dba76ec5064c41b544c28b2c7aa7a",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/1b5dba76ec5064c41b544c28b2c7aa7a",
+        "title": "Company announces massive layoff of 10,000 employees",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "e940157cb215356c7612ad670d45ea4330de52407d72c43242178984fe561ab7",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Antitrust regulators block proposed merger of airline companies",
+      "body": null,
+      "url": "https://news.example.com/article/3e112b0afef8e833e530a3c75593aece",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/3e112b0afef8e833e530a3c75593aece",
+        "title": "Antitrust regulators block proposed merger of airline companies",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "5c9b122879ed0b7f893e315afc1c24c64f33e12e953d0bcde59307b29ff5cf76",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Government bond yield surges to 15-year high",
+      "body": null,
+      "url": "https://news.example.com/article/18b38b7e44c81e12b6e8a716381c340b",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/18b38b7e44c81e12b6e8a716381c340b",
+        "title": "Government bond yield surges to 15-year high",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "9c01363edc1ed491af09c3aadf57b099d88c6ab08ba810e2e51f0431d6ba36c4",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Oil company earnings miss expectations by wide margin",
+      "body": null,
+      "url": "https://news.example.com/article/b7ad48dd66984b0a4bb13d670fd5ebe1",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/b7ad48dd66984b0a4bb13d670fd5ebe1",
+        "title": "Oil company earnings miss expectations by wide margin",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "8c7b9e16b0cc3117032db7781c878568673d88571e7b51096c39d7adc9aa69d0",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Mining company restructuring plan includes asset sales",
+      "body": null,
+      "url": "https://news.example.com/article/987fac3de043d1a4af91395f8d5bc199",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/987fac3de043d1a4af91395f8d5bc199",
+        "title": "Mining company restructuring plan includes asset sales",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "a9efba605a431948afc61ee326ad31177ab10e0c4a56c83fe60e95b34ebc52fb",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Shareholders approve dividend increase at annual meeting",
+      "body": null,
+      "url": "https://news.example.com/article/3d8724a35a86a23d2e51e28262e3b7b7",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/3d8724a35a86a23d2e51e28262e3b7b7",
+        "title": "Shareholders approve dividend increase at annual meeting",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "29f904a52a742c78b5fd42c8f91a1e737e258e963cf21ae050686df3b25616a8",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Buyout firm targets struggling department store chain",
+      "body": null,
+      "url": "https://news.example.com/article/eda5113db359fb67bf7ae492e0783cf5",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/eda5113db359fb67bf7ae492e0783cf5",
+        "title": "Buyout firm targets struggling department store chain",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "533fae1d258afe2cf0173138c9952414d035adc30061fc7d08de766ec334e6ad",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "FTX halts customer withdrawals amid liquidity crisis",
+      "body": null,
+      "url": "https://news.example.com/article/ba62c26dab450283bb8558cd05b2a27b",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/ba62c26dab450283bb8558cd05b2a27b",
+        "title": "FTX halts customer withdrawals amid liquidity crisis",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "3b1542846d125d378fa5440262d3b9f53e7b5830cda3e4242630ddde528db555",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Colonial Pipeline shuts down after ransomware attack",
+      "body": null,
+      "url": "https://news.example.com/article/07fa599162e3361b70e045227a8ab2f5",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/07fa599162e3361b70e045227a8ab2f5",
+        "title": "Colonial Pipeline shuts down after ransomware attack",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "ca23755b2ba1bdf349cac63033447b88576a8adc8cc82aeeaee9496a7f9858df",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Tesla CFO resigns unexpectedly citing personal reasons",
+      "body": null,
+      "url": "https://news.example.com/article/c2bae41e570d44eb97c9b57a3ec7ae8d",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/c2bae41e570d44eb97c9b57a3ec7ae8d",
+        "title": "Tesla CFO resigns unexpectedly citing personal reasons",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "04ea01489f6ec0bbd00c8a4d0c7e5e49ac9cfd4d24f677f67d3526e702bbdd82",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Boeing aircraft grounded worldwide after safety concerns",
+      "body": null,
+      "url": "https://news.example.com/article/b677029475cc2201582320b31a15c991",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/b677029475cc2201582320b31a15c991",
+        "title": "Boeing aircraft grounded worldwide after safety concerns",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "023de03ed94413f9c3100c9c28ed309de6603685fd411d308cda2356624b90de",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Moody's cuts company rating to junk status",
+      "body": null,
+      "url": "https://news.example.com/article/728665cf4f0b83568e944e9261cf342b",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/728665cf4f0b83568e944e9261cf342b",
+        "title": "Moody's cuts company rating to junk status",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "1f35c54e043d000fafcc48eba67885f371ff8d0a669721d272c088554c607d2f",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Goldman warns of severe recession risk in next quarter",
+      "body": null,
+      "url": "https://news.example.com/article/58cdb7934a1e57b9e7af3879cb872dd8",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/58cdb7934a1e57b9e7af3879cb872dd8",
+        "title": "Goldman warns of severe recession risk in next quarter",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "dc168e235d919c7841efe5999af10ebf60d2f28e7a2b6070c1b46d51af115b79",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Amazon warehouse workers vote to form first union",
+      "body": null,
+      "url": "https://news.example.com/article/61e4a39e7b138f9bd9474c21b69e033a",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/61e4a39e7b138f9bd9474c21b69e033a",
+        "title": "Amazon warehouse workers vote to form first union",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "a45ab9c24df607b037073a1a0bdee15fc951f8493fbaf9a44336a89dcfa9c9e4",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Silicon Valley Bank collapses in largest failure since 2008",
+      "body": null,
+      "url": "https://news.example.com/article/ec2bc99bbf8a0378696c6ec635836e02",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/ec2bc99bbf8a0378696c6ec635836e02",
+        "title": "Silicon Valley Bank collapses in largest failure since 2008",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "ccdc992ff130ed33a165c793311a9421d33e9b0267da8e73b236e390160ed18d",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Credit Suisse emergency rescue by UBS announced overnight",
+      "body": null,
+      "url": "https://news.example.com/article/66b485cb580b1e6ef3110335bce55821",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/66b485cb580b1e6ef3110335bce55821",
+        "title": "Credit Suisse emergency rescue by UBS announced overnight",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "f2cd0d8f3fd0285eec070cc8044e2d8f9f9bd74c857120cff5bc44fe88cfd466",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "NVIDIA chip export ban to China expands significantly",
+      "body": null,
+      "url": "https://news.example.com/article/ef2f3389e213c03c81a6578271040518",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/ef2f3389e213c03c81a6578271040518",
+        "title": "NVIDIA chip export ban to China expands significantly",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "a4e3361b4bc78099456148da2e65a2831e1c8e3cf920c8e75bf58aaa80538cf6",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Samsung factory explosion disrupts global memory chip supply",
+      "body": null,
+      "url": "https://news.example.com/article/a2a46c5350d518c056cc395af8dd0a4b",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/a2a46c5350d518c056cc395af8dd0a4b",
+        "title": "Samsung factory explosion disrupts global memory chip supply",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "63986b8b6a3307e44d13585eb5d190b598a263d0239d11671781e3f335d4ee2a",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Deutsche Bank faces $14 billion penalty from US regulators",
+      "body": null,
+      "url": "https://news.example.com/article/edbbf554db26e60377ab9cad22c46602",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/edbbf554db26e60377ab9cad22c46602",
+        "title": "Deutsche Bank faces $14 billion penalty from US regulators",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "48e65395aa356ffb2911e61e767f96848fa1acbefbe782b52914d07df7ba4f42",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Toyota recalls 3 million vehicles over safety defect",
+      "body": null,
+      "url": "https://news.example.com/article/e7e5adfa850847112530675b42739ee8",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/e7e5adfa850847112530675b42739ee8",
+        "title": "Toyota recalls 3 million vehicles over safety defect",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "8f3836a91cd681400a38550831b1ce9f5d81cd71ade4c7ed0cf2a0e273c1742c",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Apple supplier Foxconn halts production at major plant",
+      "body": null,
+      "url": "https://news.example.com/article/32c106610eaaa9fec628660a28777840",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/32c106610eaaa9fec628660a28777840",
+        "title": "Apple supplier Foxconn halts production at major plant",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "4b8251dfbc24c02969523aa67e8764d8e05a91a660ca7a4cf3d21547642b773e",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Pfizer COVID vaccine trial data shows unexpected side effects",
+      "body": null,
+      "url": "https://news.example.com/article/04586246f618affb3f94e094e4798600",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/04586246f618affb3f94e094e4798600",
+        "title": "Pfizer COVID vaccine trial data shows unexpected side effects",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "01046a2887c8f093b728adf07ad8bf0511a68bc8dd5aa0984ef74d238b7d7b0b",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Google faces antitrust breakup threat from DOJ",
+      "body": null,
+      "url": "https://news.example.com/article/d5fc44a35cb70ecec98594e9498035e1",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/d5fc44a35cb70ecec98594e9498035e1",
+        "title": "Google faces antitrust breakup threat from DOJ",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "cca05004472f00a3b02aed13748b7c671aa753a10b3c88cefcd4c7629f2357f2",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "JPMorgan suspends lending program for small businesses",
+      "body": null,
+      "url": "https://news.example.com/article/496af2f588c7cec61fc4d4af222b32bb",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/496af2f588c7cec61fc4d4af222b32bb",
+        "title": "JPMorgan suspends lending program for small businesses",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "6b331a02176d3d3ea4fbb18d50fd0e9e2fbc075e3b82f5dc003e5df16631c06e",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Intel delays next-generation chip by 12 months",
+      "body": null,
+      "url": "https://news.example.com/article/9671c328a7cd700ef489d4a31fa1fc89",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/9671c328a7cd700ef489d4a31fa1fc89",
+        "title": "Intel delays next-generation chip by 12 months",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "50e38d1251c9337f80e7b910218f296ec5e6268fb7eb0ba7cd843c910d24c906",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Wells Fargo employees caught opening fake accounts",
+      "body": null,
+      "url": "https://news.example.com/article/77b2e568cc48db593833b3217d497dbd",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/77b2e568cc48db593833b3217d497dbd",
+        "title": "Wells Fargo employees caught opening fake accounts",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "8c07204f631b157ebac3731d0273258e21ab3f1490496a025b32b1cc3c031856",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Oil pipeline leak forces evacuation of coastal community",
+      "body": null,
+      "url": "https://news.example.com/article/15ab9b95683b05c5ebf4f78be009ac7a",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/15ab9b95683b05c5ebf4f78be009ac7a",
+        "title": "Oil pipeline leak forces evacuation of coastal community",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "4bafa95cc9df3e75428c2d44d43a2e9b21e73ab55b2ce30ea948f9c6ab6eead3",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Central bank governor fired after policy disagreement",
+      "body": null,
+      "url": "https://news.example.com/article/a62b36848191955e9417804af7626e06",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/a62b36848191955e9417804af7626e06",
+        "title": "Central bank governor fired after policy disagreement",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "1b18080139299bf95cf6f801dedbc4d7e346ece602e9baac529b4e90bf648cb7",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Shipping container shortage paralyzes global trade routes",
+      "body": null,
+      "url": "https://news.example.com/article/60d1086545fa55a961d6ffc30642387d",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/60d1086545fa55a961d6ffc30642387d",
+        "title": "Shipping container shortage paralyzes global trade routes",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "e405ddae4e5f9f3cec49458b998ac4de24faa5747404f957a3742eeaab1e71b8",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Major airline cancels 2,000 flights during peak travel season",
+      "body": null,
+      "url": "https://news.example.com/article/00bdcb51908d7443fe6afa83569beace",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/00bdcb51908d7443fe6afa83569beace",
+        "title": "Major airline cancels 2,000 flights during peak travel season",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "4366f9e8bd0b0b476c011431a0635363f2bf0b779fce855e1115bec23edb9164",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Country defaults on sovereign debt for first time",
+      "body": null,
+      "url": "https://news.example.com/article/eb92856c8bb6897f065d26d1894a269e",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/eb92856c8bb6897f065d26d1894a269e",
+        "title": "Country defaults on sovereign debt for first time",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "f147e4bb00adf9064aa5aad47d1df35fe1a0455a00e2b53a4e7d358b96ccfeb5",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Insurance company denies claims after catastrophic hurricane",
+      "body": null,
+      "url": "https://news.example.com/article/67e3afe580beef8e8845f908c1788144",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/67e3afe580beef8e8845f908c1788144",
+        "title": "Insurance company denies claims after catastrophic hurricane",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "df081beb1b4584e0948980cc42aef3d56f00ef8148af7c906044200a99fd4be0",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Crypto exchange CEO arrested for money laundering",
+      "body": null,
+      "url": "https://news.example.com/article/8c38a7a3af24dfd709b41ed891de5dac",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/8c38a7a3af24dfd709b41ed891de5dac",
+        "title": "Crypto exchange CEO arrested for money laundering",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "e20049ccf1d62118fd9483e2e9935ff5c5c774045de7f17f78f5dca39fcbb458",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Power grid failure leaves 10 million without electricity",
+      "body": null,
+      "url": "https://news.example.com/article/f6b8d7f8f6d5f99c44bdcf0630e1f41c",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/f6b8d7f8f6d5f99c44bdcf0630e1f41c",
+        "title": "Power grid failure leaves 10 million without electricity",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "93d1eb952a3f0a9bfbec0fc303895929e7ad9399417aef61528a40e7d3aa79c2",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Nuclear plant emergency shutdown triggers energy crisis",
+      "body": null,
+      "url": "https://news.example.com/article/db89db819f172037e6c11bf8ad765305",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/db89db819f172037e6c11bf8ad765305",
+        "title": "Nuclear plant emergency shutdown triggers energy crisis",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "848aa3e11d47c438edcc7a49a5588bd22e57ab58dd185891c5048ec213efc0c1",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Commodity trading firm Trafigura reports record metals losses",
+      "body": null,
+      "url": "https://news.example.com/article/1a62616ed54192426937e63e3b1a31e5",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/1a62616ed54192426937e63e3b1a31e5",
+        "title": "Commodity trading firm Trafigura reports record metals losses",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "d8000de9f52b4d32e201b3191cfa9d5ac3022fde3ef16427532abb23bee7294e",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "OPEC slashes oil output by 2 million barrels per day",
+      "body": null,
+      "url": "https://news.example.com/article/7c83d58aa9ff7f4d3b5b2e12a4e42930",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/7c83d58aa9ff7f4d3b5b2e12a4e42930",
+        "title": "OPEC slashes oil output by 2 million barrels per day",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "ccc4f47b304963e47c7b29d3b8793404b1b5c4bea3ed4c0d25e909aa95a49c52",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Local high school football team wins state championship",
+      "body": null,
+      "url": "https://news.example.com/article/94cf6a4dead8c7b0cfdca7d185c3173c",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/94cf6a4dead8c7b0cfdca7d185c3173c",
+        "title": "Local high school football team wins state championship",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "10a6c0055f4d854e682ae44d9d8762becae57fe070a2c9b0f54b7acb4e08ee4d",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Celebrity couple announces wedding plans for summer",
+      "body": null,
+      "url": "https://news.example.com/article/3ea9fc274fb0b0a4765b172758a00620",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/3ea9fc274fb0b0a4765b172758a00620",
+        "title": "Celebrity couple announces wedding plans for summer",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "6d4ab6f02aa3cb33a3c56cce6417ab5760f6a2f88d1869eed12c8e30070a6b9f",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "New recipe for chocolate cake goes viral on social media",
+      "body": null,
+      "url": "https://news.example.com/article/3eaf195e0bb425d41dc3a4e1d311b9ea",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/3eaf195e0bb425d41dc3a4e1d311b9ea",
+        "title": "New recipe for chocolate cake goes viral on social media",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "d398f00f144e543e292140b6bf3e75762676ef92f88511863a78609cc89b39ff",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Astronomers discover new exoplanet in habitable zone",
+      "body": null,
+      "url": "https://news.example.com/article/b5bf5dab5682ad6dfdffb71f5025eb4d",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/b5bf5dab5682ad6dfdffb71f5025eb4d",
+        "title": "Astronomers discover new exoplanet in habitable zone",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "66a06362839f9fc2ead482ce2623c2aa09664d3f8f7cf7d91e89327e99077568",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "City council approves new park renovation project",
+      "body": null,
+      "url": "https://news.example.com/article/16018f7917dc35e3dee0a003b573db79",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/16018f7917dc35e3dee0a003b573db79",
+        "title": "City council approves new park renovation project",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "144d24e7d36ffb6ad0b2674cd4e6ee2a1c0552c5e9068180263e6d10c6ad300f",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Film festival announces lineup for upcoming season",
+      "body": null,
+      "url": "https://news.example.com/article/6c9d2678cb12a419f164310eefd2e821",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/6c9d2678cb12a419f164310eefd2e821",
+        "title": "Film festival announces lineup for upcoming season",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "6dda09f9d8a7129d48203fa322d4a69453f0b7c1e494f4eb438571fc56b2fbac",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Weather forecast predicts sunny skies for the weekend",
+      "body": null,
+      "url": "https://news.example.com/article/ba12161fb49f1b76d44fadce2a7c9f5e",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/ba12161fb49f1b76d44fadce2a7c9f5e",
+        "title": "Weather forecast predicts sunny skies for the weekend",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "433196d6a9ab4747d2794aafebc250be3b0277013d980ab0c27b4a0f3a4ff06a",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Museum opens new exhibition of ancient Egyptian artifacts",
+      "body": null,
+      "url": "https://news.example.com/article/9e7edd5ec772a11b951b8bed9b9bcc66",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/9e7edd5ec772a11b951b8bed9b9bcc66",
+        "title": "Museum opens new exhibition of ancient Egyptian artifacts",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "2d7473d522a97bbb73544d241870e3aa57c4abd076b0648142ed82e9ede3d3b5",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Popular TV show renewed for another season",
+      "body": null,
+      "url": "https://news.example.com/article/9c83ef5c057ae1c75e2082c8ef43c3eb",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/9c83ef5c057ae1c75e2082c8ef43c3eb",
+        "title": "Popular TV show renewed for another season",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "aa3d63912e579bd5b029ab7e6923ff85f7e8894a668ce67800ba6db91de8fa5a",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Fashion week highlights new trends for spring collection",
+      "body": null,
+      "url": "https://news.example.com/article/24f677d66d4e64985a02c93e6e7b239b",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/24f677d66d4e64985a02c93e6e7b239b",
+        "title": "Fashion week highlights new trends for spring collection",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "c8e55594bff7b1cb03d1938ece86b20b2cc00f6099e57ca64686cadde4f90d0c",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Marathon runner breaks personal record at city event",
+      "body": null,
+      "url": "https://news.example.com/article/e84821d4c11efa4c1ba60c8c2b4ef3ae",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/e84821d4c11efa4c1ba60c8c2b4ef3ae",
+        "title": "Marathon runner breaks personal record at city event",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "76cf8d0ca70401845786a5aab47e96df12cf639ee434f58418e806f2a5d4aae1",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Book club discusses bestselling novel by debut author",
+      "body": null,
+      "url": "https://news.example.com/article/c85ad075d084694ea4dfbb28068d104a",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/c85ad075d084694ea4dfbb28068d104a",
+        "title": "Book club discusses bestselling novel by debut author",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "eeb474236094f6ae7ffe79ccd701f6ca82fcc2bd06c8ad7e2ef3e4874678c7e5",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Music festival announces headliner lineup for summer",
+      "body": null,
+      "url": "https://news.example.com/article/16a521a1d0be271a74ec39f7ef088766",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/16a521a1d0be271a74ec39f7ef088766",
+        "title": "Music festival announces headliner lineup for summer",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "f2651de87ea29325270e09f89c239e7a7c5b9f15e8a8fffbd51aa65ee9ccbea0",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Local bakery wins award for best sourdough bread",
+      "body": null,
+      "url": "https://news.example.com/article/5907c8d831546542eea1de310e094f0f",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/5907c8d831546542eea1de310e094f0f",
+        "title": "Local bakery wins award for best sourdough bread",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "91af47f3c9226305147a775ad1b02bd7b41d0fcadfaeed956e0e24b25fca0879",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Cat video goes viral with 50 million views overnight",
+      "body": null,
+      "url": "https://news.example.com/article/24b18b4f7b989769bd48b59f5669acf2",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/24b18b4f7b989769bd48b59f5669acf2",
+        "title": "Cat video goes viral with 50 million views overnight",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "8ac5c9aca36ac1eedd701bdbf807b3115da4ad675f939fdc1f325bb83313d944",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Travel blog recommends top 10 beaches for vacation",
+      "body": null,
+      "url": "https://news.example.com/article/d2ad7916ca5637b297f5d24cdea53558",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/d2ad7916ca5637b297f5d24cdea53558",
+        "title": "Travel blog recommends top 10 beaches for vacation",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "44e22c09f0c04dfd9b3a67f28b5f447ef44dbfcbfb907dd0639016fd95151ea6",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Cooking competition crowns new champion after intense finale",
+      "body": null,
+      "url": "https://news.example.com/article/9c64a02a73569628689136672de895c8",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/9c64a02a73569628689136672de895c8",
+        "title": "Cooking competition crowns new champion after intense finale",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "0ffea8c20b57c40fb7e6328c5c4e7ddf0af29cc5031e33fc2420370bc53856de",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Community volunteers clean up local river on Saturday",
+      "body": null,
+      "url": "https://news.example.com/article/6e884c6578fbf5e0ccdf110e95374785",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/6e884c6578fbf5e0ccdf110e95374785",
+        "title": "Community volunteers clean up local river on Saturday",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "78ede1e550befc28d90765ac13e14d692775ccab8a61cd5b9bb08576d4c1a4ec",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "New yoga studio opens downtown with free trial classes",
+      "body": null,
+      "url": "https://news.example.com/article/302325f6b70a658b23640dd1deef945a",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/302325f6b70a658b23640dd1deef945a",
+        "title": "New yoga studio opens downtown with free trial classes",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "5f45685359ee22a4fb2402c42826803532505224a1d5f07f1a1bb4b81c642d55",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Gardening tips for growing tomatoes in small spaces",
+      "body": null,
+      "url": "https://news.example.com/article/42c52f6cf796765fed3a5ab244d2b2ae",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/42c52f6cf796765fed3a5ab244d2b2ae",
+        "title": "Gardening tips for growing tomatoes in small spaces",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "d290e3f6cf477f85fba73cd54c7156ab6064cb0d1fb0c3ca6a96ef3e594500f4",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Dog rescue organization finds homes for 100 animals",
+      "body": null,
+      "url": "https://news.example.com/article/8467f80c4a697de2e190427f0e2bd246",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/8467f80c4a697de2e190427f0e2bd246",
+        "title": "Dog rescue organization finds homes for 100 animals",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "04d6c005802f5221363ef4afc188c6d90bb478a59acde48710c59048fd201b21",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Art gallery features work of emerging local artists",
+      "body": null,
+      "url": "https://news.example.com/article/55690183778612a65266890b2487de66",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/55690183778612a65266890b2487de66",
+        "title": "Art gallery features work of emerging local artists",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "4fa4567fb65fe4e841c058266eee7d839b3de0f5d861031a25f30855002b6a24",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Children's hospital hosts annual charity fundraiser gala",
+      "body": null,
+      "url": "https://news.example.com/article/fffe346e2f57c548f3d74ff7a73638c1",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/fffe346e2f57c548f3d74ff7a73638c1",
+        "title": "Children's hospital hosts annual charity fundraiser gala",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "a5431f7270b5325f1420fecb2d1b41e18fdfb31889ec3bc169a64151e38d071f",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Olympic swimmer announces retirement after 20 years",
+      "body": null,
+      "url": "https://news.example.com/article/67610f89a592ee4606c3571f969fdfd8",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/67610f89a592ee4606c3571f969fdfd8",
+        "title": "Olympic swimmer announces retirement after 20 years",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "78a49ad26557cc21c1e84bf0103666c145eac8701da515bd07f0859ae4d5f26a",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Historical documentary wins award at film festival",
+      "body": null,
+      "url": "https://news.example.com/article/a56ec0454d635ebf149edd7d6255a908",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/a56ec0454d635ebf149edd7d6255a908",
+        "title": "Historical documentary wins award at film festival",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "87a5c0f090e7c3535d091c6fc8d948eec8b28ae86e4d32aeb968f649b5f83435",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "New bike lane opens on busy downtown street",
+      "body": null,
+      "url": "https://news.example.com/article/7b9b8a1e6a6c86d610584204cda314ca",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/7b9b8a1e6a6c86d610584204cda314ca",
+        "title": "New bike lane opens on busy downtown street",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "be67c987476dbb0379bd96f637307a72e9170c2a2fd690b3a8e761cefcea72e0",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Science fair showcases student inventions at convention",
+      "body": null,
+      "url": "https://news.example.com/article/8f0d5fc1171925a0ffe831ba0650e7df",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/8f0d5fc1171925a0ffe831ba0650e7df",
+        "title": "Science fair showcases student inventions at convention",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "15af8bed77488b4eebb7099ec38bc1b55e8b5edebc5b33bcba1a9c201e4e5bab",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Community theater presents classic Shakespeare play",
+      "body": null,
+      "url": "https://news.example.com/article/d0e426e11740f0f7fb678649843a6a8f",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/d0e426e11740f0f7fb678649843a6a8f",
+        "title": "Community theater presents classic Shakespeare play",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": false
+  },
+  {
+    "document": {
+      "document_id": "72182a37d9c4170b8d98c6b3841fdf2336130fb89da7394253293e2bd3520581",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Farmer's market adds new vendors for autumn season",
+      "body": null,
+      "url": "https://news.example.com/article/6d3019d20d660a500678491473da6783",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/6d3019d20d660a500678491473da6783",
+        "title": "Farmer's market adds new vendors for autumn season",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "015aed17e52ca5dedfabc3e04faaaa3ca9840c1fb930169a731f7b4fd21b8cb1",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Library hosts free coding workshop for teenagers",
+      "body": null,
+      "url": "https://news.example.com/article/8c178ba2d9d5c609b233b0befca214c2",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/8c178ba2d9d5c609b233b0befca214c2",
+        "title": "Library hosts free coding workshop for teenagers",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "315c95bfe7a6ac776c977655e43f11db6cde44b67b154b6af35151bde0acf4ab",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Apple reportedly in talks with automakers for vehicle project",
+      "body": null,
+      "url": "https://news.example.com/article/395500d41dd1a71505331cdd7f52e66d",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/395500d41dd1a71505331cdd7f52e66d",
+        "title": "Apple reportedly in talks with automakers for vehicle project",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "dd9b90ef0a7fd94838020880c2505ca87d9581b5345162a8c8bc55b004e50577",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Microsoft outage affects cloud services worldwide",
+      "body": null,
+      "url": "https://news.example.com/article/32f4b0e9d6a96f90f42ac5a135086320",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/32f4b0e9d6a96f90f42ac5a135086320",
+        "title": "Microsoft outage affects cloud services worldwide",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "73169bc69128df2ecd755438b2e13dfda3b0166dbb4a606884c08280d05b7f8c",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Tesla Cybertruck deliveries begin at Texas factory",
+      "body": null,
+      "url": "https://news.example.com/article/a3b796f67b8b409bacc6d8f45ab9ebe7",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/a3b796f67b8b409bacc6d8f45ab9ebe7",
+        "title": "Tesla Cybertruck deliveries begin at Texas factory",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "a808cf4e48762b382ed06f61b2dd6ce66b3e69c192bb496d055317fd9ae2c738",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Google launches new AI model competing with OpenAI",
+      "body": null,
+      "url": "https://news.example.com/article/08fa76d7007e5c7bf79c69881d4a2e56",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/08fa76d7007e5c7bf79c69881d4a2e56",
+        "title": "Google launches new AI model competing with OpenAI",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "2c884705a79ab856fa6c540625f0da6fd75843588975e04ea9178cffb7fc7aca",
+      "source": "GDELT",
+      "publisher": "news.example.com",
+      "title": "Amazon Prime Day breaks previous sales records",
+      "body": null,
+      "url": "https://news.example.com/article/177c82b092f5abf71c51146c22e169a7",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "news.example.com",
+      "raw_metadata": {
+        "url": "https://news.example.com/article/177c82b092f5abf71c51146c22e169a7",
+        "title": "Amazon Prime Day breaks previous sales records",
+        "domain": "news.example.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "c57fa82d773873d7e5aa37d5f26a3deba10f7d0b1bf696580596e7613f41ecdc",
+      "source": "GDELT",
+      "publisher": "reuters.com",
+      "title": "New tariffs spark trade tensions between major economies",
+      "body": null,
+      "url": "https://reuters.com/article/12cf7c9a5380fe9e475c1448b1e5ad69",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "reuters.com",
+      "raw_metadata": {
+        "url": "https://reuters.com/article/12cf7c9a5380fe9e475c1448b1e5ad69",
+        "title": "New tariffs spark trade tensions between major economies",
+        "domain": "reuters.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "0c0033edcb15a91cf44ce02a49fb1d22dc85df6005184cabfc94495abf5f8a7e",
+      "source": "GDELT",
+      "publisher": "bloomberg.com",
+      "title": "Regulators probe trading platform for market manipulation",
+      "body": null,
+      "url": "https://bloomberg.com/article/857a05b27514532ffc1638e627751369",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "bloomberg.com",
+      "raw_metadata": {
+        "url": "https://bloomberg.com/article/857a05b27514532ffc1638e627751369",
+        "title": "Regulators probe trading platform for market manipulation",
+        "domain": "bloomberg.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "c6cc37355d288d8fc9c8842ef13add77818041778b59acfa2165a8db04f16380",
+      "source": "GDELT",
+      "publisher": "wsj.com",
+      "title": "Private equity group completes take-private deal worth $8B",
+      "body": null,
+      "url": "https://wsj.com/article/69da2a3bf62cf21cbf5048aea0097d84",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "wsj.com",
+      "raw_metadata": {
+        "url": "https://wsj.com/article/69da2a3bf62cf21cbf5048aea0097d84",
+        "title": "Private equity group completes take-private deal worth $8B",
+        "domain": "wsj.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "9557e5241b85c61f45ad7dd8c218776d8ff6a4579f2098433aaef9c688c65044",
+      "source": "GDELT",
+      "publisher": "ft.com",
+      "title": "Rating agency places country on negative outlook",
+      "body": null,
+      "url": "https://ft.com/article/6e5ddaa987e2c7ed6b20dac0704424dc",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "ft.com",
+      "raw_metadata": {
+        "url": "https://ft.com/article/6e5ddaa987e2c7ed6b20dac0704424dc",
+        "title": "Rating agency places country on negative outlook",
+        "domain": "ft.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  },
+  {
+    "document": {
+      "document_id": "1de3b11f93753c96cecb8dfd12fcc921ba33dd651430d8d0804195a763b41554",
+      "source": "GDELT",
+      "publisher": "cnbc.com",
+      "title": "Trading halted on exchange after technical glitch",
+      "body": null,
+      "url": "https://cnbc.com/article/f911bef92de4d26674077652c13cafe7",
+      "published_at": "2024-06-15 12:00:00+00:00",
+      "language": "english",
+      "country": "US",
+      "domain": "cnbc.com",
+      "raw_metadata": {
+        "url": "https://cnbc.com/article/f911bef92de4d26674077652c13cafe7",
+        "title": "Trading halted on exchange after technical glitch",
+        "domain": "cnbc.com",
+        "seendate": "20240615120000",
+        "language": "English"
+      }
+    },
+    "label": true
+  }
+]

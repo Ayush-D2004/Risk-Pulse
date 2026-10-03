@@ -1,0 +1,2159 @@
+{
+  "start_date_requested": "2016-12-15",
+  "end_date_requested": "2017-04-05",
+  "total_instruments_requested": 103,
+  "successful": [
+    {
+      "canonical_historical_ticker": "COST",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "AMZN",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "TM",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "V",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLRE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "JPM",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "CSCO",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "AZN",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLY",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "CMCSA",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "ADS.DE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "CRM",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "KO",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "PYPL",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "IBM",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "GE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "HD",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "ADBE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "GSK",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "ASC.L",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 77,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XOM",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "BAYN.DE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "SAN",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "EBAY",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "005930.KS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "SBUX",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "CA.PA",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "VOD",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "C",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "ORCL",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "VZ",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "7201.T",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 75,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "^GSPC",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "EZJ.L",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 77,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "KR",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "WFC",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "SONY",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "DIS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "INTC",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "TMUS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "ALV.DE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "EXPE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "HPQ",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "BLK",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLV",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "GRPN",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "005380.KS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "WMT",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "DB",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLI",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "MS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "MCD",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "NXT.L",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 77,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "MA",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "OR.PA",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "NKE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "PEP",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "PFE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "T",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "SAP",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "AXP",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "TRIP",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "BRBY.L",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 77,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "BA",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "UPS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "SIE.DE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "NFLX",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "BP",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLU",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "MSFT",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLP",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLF",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "HMC",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "F",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "NESN.SW",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 78,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "HSBC",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "GS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "HEIA.AS",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "DE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "AAPL",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLK",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "GOOGL",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "TSCO.L",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 77,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "BAC",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "HM-B.ST",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 78,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "XLB",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "BMW.DE",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "VWAGY",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "CVX",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "FDX",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "PG",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 76,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    },
+    {
+      "canonical_historical_ticker": "HO.PA",
+      "source": "yfinance",
+      "requested_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "actual_available_date_range": [
+        "2016-12-15",
+        "2017-04-05"
+      ],
+      "row_count": 79,
+      "timezone_normalized": true,
+      "ohlcv_columns": [
+        "Open",
+        "High",
+        "Low",
+        "Close",
+        "Volume"
+      ],
+      "sufficient_history": true,
+      "no_future_data": true
+    }
+  ],
+  "failed": [],
+  "unavailable": [
+    "K",
+    "RDS-A",
+    "XLC",
+    "YHOO",
+    "FB",
+    "VIAB",
+    "CBS",
+    "PCLN",
+    "FOXA",
+    "RYA.L"
+  ]
+}

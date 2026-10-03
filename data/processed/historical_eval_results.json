@@ -1,0 +1,15 @@
+{
+  "coverage": {
+    "total_rows": 5000,
+    "rows_with_ctx": 4167,
+    "rows_fallback": 833,
+    "eval_population": 4401,
+    "coverage_pct": 94.7
+  },
+  "enrichment": {
+    "scores_changed": 1020,
+    "tier_changed": 20,
+    "tier_inc": 0,
+    "tier_dec": 0
+  }
+}

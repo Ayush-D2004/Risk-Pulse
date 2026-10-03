@@ -1,0 +1,934 @@
+{
+  "registry": [
+    {
+      "source_entity_name": "21CF",
+      "historical_ticker": "FOXA",
+      "exchange": "NASDAQ",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Twenty-First Century Fox traded as FOXA (Class A) in 2017 before the Disney acquisition.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "ASOS",
+      "historical_ticker": "ASC.L",
+      "exchange": "LSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "AT&T",
+      "historical_ticker": "T",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Adobe",
+      "historical_ticker": "ADBE",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Allianz",
+      "historical_ticker": "ALV.DE",
+      "exchange": "Xetra",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Amazon",
+      "historical_ticker": "AMZN",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "American Express",
+      "historical_ticker": "AXP",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Apple",
+      "historical_ticker": "AAPL",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "AstraZeneca",
+      "historical_ticker": "AZN",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Audi",
+      "historical_ticker": null,
+      "exchange": "Xetra",
+      "instrument_type": "common_stock",
+      "resolution_status": "EXPLICITLY_UNRESOLVED_AMBIGUOUS",
+      "is_proxy": false,
+      "rationale": "Ambiguous whether tweets target the listed subsidiary (NSU.DE) or the parent Volkswagen Group (VOW3.DE). Left explicitly unresolved.",
+      "usable_for_jan_mar_2017": false
+    },
+    {
+      "source_entity_name": "BMW",
+      "historical_ticker": "BMW.DE",
+      "exchange": "Xetra",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "BP",
+      "historical_ticker": "BP",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Bank of America",
+      "historical_ticker": "BAC",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Bayer",
+      "historical_ticker": "BAYN.DE",
+      "exchange": "Xetra",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "BlackRock",
+      "historical_ticker": "BLK",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Boeing",
+      "historical_ticker": "BA",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Burberry",
+      "historical_ticker": "BRBY.L",
+      "exchange": "LSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "CBS",
+      "historical_ticker": "CBS",
+      "exchange": "NYSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "CBS Corporation traded as CBS in 2017 prior to merging with Viacom (now PARA).",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Carrefour",
+      "historical_ticker": "CA.PA",
+      "exchange": "Euronext Paris",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Chevron",
+      "historical_ticker": "CVX",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Cisco",
+      "historical_ticker": "CSCO",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Citigroup",
+      "historical_ticker": "C",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "CocaCola",
+      "historical_ticker": "KO",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Comcast",
+      "historical_ticker": "CMCSA",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Costco",
+      "historical_ticker": "COST",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Deutsche Bank",
+      "historical_ticker": "DB",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Disney",
+      "historical_ticker": "DIS",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Expedia",
+      "historical_ticker": "EXPE",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Exxon",
+      "historical_ticker": "XOM",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Facebook",
+      "historical_ticker": "FB",
+      "exchange": "NASDAQ",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Facebook traded as FB in 2017 before renaming to META.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "FedEx",
+      "historical_ticker": "FDX",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Ford",
+      "historical_ticker": "F",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "GSK",
+      "historical_ticker": "GSK",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "General Electric",
+      "historical_ticker": "GE",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Gillette",
+      "historical_ticker": "PG",
+      "exchange": "NYSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "DOCUMENTED_PARENT_PROXY",
+      "is_proxy": true,
+      "rationale": "Gillette is a brand owned by Procter & Gamble (PG). PG is used as an explicit parent-company proxy.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Goldman Sachs",
+      "historical_ticker": "GS",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Google",
+      "historical_ticker": "GOOGL",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Groupon",
+      "historical_ticker": "GRPN",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "H&M",
+      "historical_ticker": "HM-B.ST",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "HP",
+      "historical_ticker": "HPQ",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "HSBC",
+      "historical_ticker": "HSBC",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Heineken",
+      "historical_ticker": "HEIA.AS",
+      "exchange": "Euronext Amsterdam",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Home Depot",
+      "historical_ticker": "HD",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Honda",
+      "historical_ticker": "HMC",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Hyundai",
+      "historical_ticker": "005380.KS",
+      "exchange": "KRX",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "IBM",
+      "historical_ticker": "IBM",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Intel",
+      "historical_ticker": "INTC",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "JPMorgan",
+      "historical_ticker": "JPM",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "John Deere",
+      "historical_ticker": "DE",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Kellogg's",
+      "historical_ticker": "K",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Kroger",
+      "historical_ticker": "KR",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "L'Oreal",
+      "historical_ticker": "OR.PA",
+      "exchange": "Euronext Paris",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Mastercard",
+      "historical_ticker": "MA",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "McDonald's",
+      "historical_ticker": "MCD",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Microsoft",
+      "historical_ticker": "MSFT",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Morgan Stanley",
+      "historical_ticker": "MS",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Nestle",
+      "historical_ticker": "NESN.SW",
+      "exchange": "SIX Swiss",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Netflix",
+      "historical_ticker": "NFLX",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Next",
+      "historical_ticker": "NXT.L",
+      "exchange": "LSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Nike",
+      "historical_ticker": "NKE",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Nissan",
+      "historical_ticker": "7201.T",
+      "exchange": "Tokyo",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Oracle",
+      "historical_ticker": "ORCL",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "PayPal",
+      "historical_ticker": "PYPL",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Pepsi",
+      "historical_ticker": "PEP",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Pfizer",
+      "historical_ticker": "PFE",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Reuters",
+      "historical_ticker": null,
+      "exchange": null,
+      "instrument_type": null,
+      "resolution_status": "DOCUMENTED_NO_EQUITY_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Reuters is a news agency. The parent company is Thomson Reuters (TRI), but we retain no-equity status as instructed.",
+      "usable_for_jan_mar_2017": false
+    },
+    {
+      "source_entity_name": "Ryanair",
+      "historical_ticker": "RYA.L",
+      "exchange": "LSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "SAP",
+      "historical_ticker": "SAP",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Samsung",
+      "historical_ticker": "005930.KS",
+      "exchange": "KRX",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Santander",
+      "historical_ticker": "SAN",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Shell",
+      "historical_ticker": "RDS-A",
+      "exchange": "NYSE",
+      "instrument_type": "adr",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Royal Dutch Shell traded as RDS-A (ADR) in the US during 2017 before unifying its shares to SHEL in 2022.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Siemens",
+      "historical_ticker": "SIE.DE",
+      "exchange": "Xetra",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Sony",
+      "historical_ticker": "SONY",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Starbucks",
+      "historical_ticker": "SBUX",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "TMobile",
+      "historical_ticker": "TMUS",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Tesco",
+      "historical_ticker": "TSCO.L",
+      "exchange": "LSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Thales",
+      "historical_ticker": "HO.PA",
+      "exchange": "Euronext Paris",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Toyota",
+      "historical_ticker": "TM",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "TripAdvisor",
+      "historical_ticker": "TRIP",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "UPS",
+      "historical_ticker": "UPS",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Verizon",
+      "historical_ticker": "VZ",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Viacom",
+      "historical_ticker": "VIAB",
+      "exchange": "NASDAQ",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Viacom traded as VIAB (Class B) in 2017 before merging with CBS (now PARA).",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Visa",
+      "historical_ticker": "V",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Vodafone",
+      "historical_ticker": "VOD",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Volkswagen",
+      "historical_ticker": "VWAGY",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Walmart",
+      "historical_ticker": "WMT",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Wells Fargo",
+      "historical_ticker": "WFC",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "Yahoo",
+      "historical_ticker": "YHOO",
+      "exchange": "NASDAQ",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Yahoo! Inc. traded as YHOO in early 2017 before the Verizon acquisition and Altaba restructuring.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "adidas",
+      "historical_ticker": "ADS.DE",
+      "exchange": "Xetra",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "bookingcom",
+      "historical_ticker": "PCLN",
+      "exchange": "NASDAQ",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "The Priceline Group traded as PCLN in early 2017 before renaming to Booking Holdings (BKNG) in 2018.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "eBay",
+      "historical_ticker": "EBAY",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "easyJet",
+      "historical_ticker": "EZJ.L",
+      "exchange": "LSE",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    },
+    {
+      "source_entity_name": "salesforce.com",
+      "historical_ticker": "CRM",
+      "exchange": "US",
+      "instrument_type": "common_stock",
+      "resolution_status": "USABLE_HISTORICAL_INSTRUMENT",
+      "is_proxy": false,
+      "rationale": "Standard ticker continuously traded and valid for early 2017.",
+      "usable_for_jan_mar_2017": true
+    }
+  ]
+}
