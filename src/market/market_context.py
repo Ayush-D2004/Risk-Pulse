@@ -258,6 +258,8 @@ def _fetch_ohlcv(
 
     Returns a DataFrame with columns: Open, High, Low, Close, Volume.
     Index is a DatetimeIndex in UTC.
+    
+    Checks local parquet cache first before attempting network request.
 
     Raises
     ------
@@ -266,13 +268,32 @@ def _fetch_ohlcv(
     TickerResolutionError
         If the returned DataFrame is empty (ticker not found).
     """
+    import os
+    
+    if not ticker or not ticker.strip():
+        raise TickerResolutionError("ticker must be a non-empty string")
+        
+    cache_path = os.path.join("data", "processed", "market_cache", f"{ticker}.parquet")
+    
+    if os.path.exists(cache_path):
+        df = pd.read_parquet(cache_path)
+        # Filter to requested date range
+        start_ts = pd.Timestamp(start, tz="UTC")
+        end_ts = pd.Timestamp(end, tz="UTC")
+        mask = (df.index >= start_ts) & (df.index <= end_ts + pd.Timedelta(days=1))
+        df = df[mask]
+        
+        if df.empty:
+            raise TickerResolutionError(
+                f"No market data returned for ticker '{ticker}' "
+                f"between {start} and {end} from cache."
+            )
+        return df
+
     if not _YF_AVAILABLE:  # pragma: no cover
         raise MarketDataError(
             "yfinance is not installed. Install it with: pip install yfinance"
         )
-
-    if not ticker or not ticker.strip():
-        raise TickerResolutionError("ticker must be a non-empty string")
 
     # yfinance end is exclusive — add one day
     yf_end = end + timedelta(days=1)
