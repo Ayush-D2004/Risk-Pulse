@@ -104,15 +104,18 @@ class FinBERT:
         model_name: str = MODEL_NAME,
         device: str | None = None,
         max_length: int = 256,
+        use_fp16: bool = True,
     ):
         self.device = resolve_device(device)
         self.max_length = max_length
+        self.use_fp16 = use_fp16 and self.device.startswith("cuda")
 
         print(f"[FinBERT] model={model_name}")
         print(f"[FinBERT] device={self.device}")
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
-        self.model = AutoModelForSequenceClassification.from_pretrained(model_name)
+        dtype = torch.float16 if self.use_fp16 else torch.float32
+        self.model = AutoModelForSequenceClassification.from_pretrained(model_name, torch_dtype=dtype)
         self.model.to(self.device)
         self.model.eval()
 
@@ -146,8 +149,10 @@ class FinBERT:
 
             verify_device_execution(self.model, encoded, self.device)
 
-            logits = self.model(**encoded).logits
-            probs = torch.softmax(logits, dim=-1).cpu().numpy()
+            with torch.autocast(device_type="cuda", enabled=self.use_fp16):
+                logits = self.model(**encoded).logits
+                
+            probs = torch.softmax(logits, dim=-1).cpu().to(torch.float32).numpy()
 
             for p in probs:
                 values = {
@@ -189,6 +194,7 @@ def infer_csv(
     max_rows: int | None = None,
     device: str | None = None,
     max_length: int = 256,
+    use_fp16: bool = True,
     overwrite: bool = False,
     checkpoint_dir: str | Path | None = None,
 ) -> None:
@@ -253,6 +259,7 @@ def infer_csv(
         model_name=MODEL_NAME,
         device=resolved_device,
         max_length=max_length,
+        use_fp16=use_fp16,
     )
 
     # ------------------------------------------------------------------

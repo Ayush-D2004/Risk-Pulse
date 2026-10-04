@@ -641,7 +641,7 @@ def parse_args() -> argparse.Namespace:
         help="Stages to execute (default: all)",
     )
     p.add_argument("--chunk-size", type=int, default=10_000, help="Rows per chunk")
-    p.add_argument("--batch-size", type=int, default=32, help="Model inference batch size")
+    p.add_argument("--batch-size", type=int, default=256, help="Model inference batch size")
     p.add_argument("--max-rows", type=int, default=None, help="Limit rows (dry run)")
     p.add_argument("--device", default=None, help="Device: cpu / cuda / cuda:0")
     p.add_argument("--verify-input-only", action="store_true")
