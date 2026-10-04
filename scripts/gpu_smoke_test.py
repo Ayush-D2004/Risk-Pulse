@@ -2,11 +2,13 @@ import sys
 import torch
 import time
 from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 import pandas as pd
 from src.nlp.finbert_inference import infer_csv
 from src.pipeline.validators import LEAKAGE_COLUMNS
 
 def run_smoke_test():
+    global pd
     print("==================================================")
     print("GPU SMOKE TEST")
     print("==================================================")
