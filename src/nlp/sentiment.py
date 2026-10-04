@@ -12,6 +12,8 @@ from typing import Iterable, List
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
+from src.pipeline.device_utils import resolve_device, verify_device_execution
+
 
 MODEL_NAME = "ProsusAI/finbert"
 
@@ -27,7 +29,7 @@ class SentimentResult:
 
 class FinBERTSentiment:
     def __init__(self, model_name: str = MODEL_NAME, device: str | None = None):
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = resolve_device(device)
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForSequenceClassification.from_pretrained(model_name)
         self.model.to(self.device)
@@ -53,6 +55,7 @@ class FinBERTSentiment:
                 return_tensors="pt",
             )
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
+            verify_device_execution(self.model, inputs, self.device)
             logits = self.model(**inputs).logits
             probs = torch.softmax(logits, dim=-1).cpu().numpy()
 

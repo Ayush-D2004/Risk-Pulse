@@ -27,6 +27,13 @@ from pathlib import Path
 import pandas as pd
 import torch
 from transformers import pipeline
+import sys
+
+_root = Path(__file__).resolve().parent.parent.parent
+if str(_root) not in sys.path:
+    sys.path.insert(0, str(_root))
+
+from src.pipeline.device_utils import resolve_device, verify_device_execution
 
 
 EVENT_LABELS = [
@@ -97,18 +104,26 @@ def load_input(path, max_rows=None):
 
 
 def build_classifier(model_name, device, use_fp16=True):
+    # If device is an int, convert it
+    if isinstance(device, int):
+        device = "cuda:0" if device >= 0 else "cpu"
+
+    resolved_device = resolve_device(device)
+
     torch_dtype = (
         torch.float16
-        if (torch.cuda.is_available() and device != -1 and use_fp16)
+        if (resolved_device.startswith("cuda") and use_fp16)
         else torch.float32
     )
-    print(f"[pipeline] device={device}, torch_dtype={torch_dtype}")
-    return pipeline(
+    print(f"[pipeline] device={resolved_device}, torch_dtype={torch_dtype}")
+    clf = pipeline(
         "zero-shot-classification",
         model=model_name,
-        device=device,
+        device=resolved_device,
         torch_dtype=torch_dtype,
     )
+    verify_device_execution(clf.model, [], resolved_device)
+    return clf
 
 
 def classify_batch(
@@ -152,8 +167,7 @@ def main():
     parser.add_argument("--max-rows", type=int, default=None)
     parser.add_argument(
         "--device",
-        type=int,
-        default=0 if torch.cuda.is_available() else -1,
+        default=None,
     )
     parser.add_argument(
         "--no-fp16",

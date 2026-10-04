@@ -42,6 +42,8 @@ import pandas as pd
 import torch
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
 
+from src.pipeline.device_utils import resolve_device, verify_device_execution
+
 
 MODEL_NAME = "MoritzLaurer/deberta-v3-base-zeroshot-v2.0"
 
@@ -111,7 +113,7 @@ class ZeroShotEventClassifier:
         device: str | None = None,
         max_length: int = 256,
     ):
-        self.device = device or ("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = resolve_device(device)
         self.max_length = max_length
 
         print(f"[EventClassifier] model={model_name}")
@@ -206,6 +208,8 @@ class ZeroShotEventClassifier:
                     key: value.to(self.device)
                     for key, value in encoded.items()
                 }
+
+                verify_device_execution(self.model, encoded, self.device)
 
                 logits = self.model(**encoded).logits
                 scores = logits[:, self.entailment_id]

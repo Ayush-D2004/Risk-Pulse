@@ -15,3 +15,5 @@ event_materiality_v3.py
 *.pkl
 historical_eval_results_rows.parquet
 data/processed/market_cache/
+data/pipeline_output_dryrun/
+docs/

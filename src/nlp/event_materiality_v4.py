@@ -541,7 +541,169 @@ def parse_args():
         default=None,
         help="Limit number of rows processed (for testing)",
     )
+    p.add_argument(
+        "--chunk-size",
+        type=int,
+        default=50_000,
+        help="Rows per processing chunk (default: 50,000 — deterministic, no model, fast).",
+    )
+    p.add_argument(
+        "--checkpoint-dir",
+        default=None,
+        help="Directory for checkpoint manifests (default: <output_dir>/checkpoints/).",
+    )
     return p.parse_args()
+
+
+def classify_chunked(
+    input_path: Path,
+    output_path: Path,
+    chunk_size: int = 50_000,
+    max_rows: int | None = None,
+    checkpoint_dir: Path | None = None,
+) -> None:
+    """
+    Chunked, checkpointed execution of the materiality classifier.
+
+    The classify_text() function is deterministic and purely CPU-bound,
+    so chunk_size can be large (50k+) without GPU memory concerns.
+    """
+    import time
+    try:
+        from src.pipeline.checkpoint import (
+            CheckpointManager, build_chunk_id, sha256_of_file,
+        )
+        from src.pipeline.manifest import RunManifest, get_code_version
+        _has_pipeline = True
+    except ImportError:
+        _has_pipeline = False
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    if checkpoint_dir is None:
+        checkpoint_dir = output_path.parent / "checkpoints"
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+    stage_name = "materiality_v4"
+    first_write = not output_path.exists() or output_path.stat().st_size == 0
+    total_written = 0
+    chunks_skipped = 0
+
+    if _has_pipeline:
+        mgr = CheckpointManager(checkpoint_dir / f"{stage_name}_manifest.json")
+        input_sha256 = sha256_of_file(input_path)
+        run_manifest = RunManifest(
+            stage_name=stage_name,
+            input_path=input_path,
+            output_dir=output_path.parent,
+            chunk_size=chunk_size,
+            batch_size=1,
+            device="cpu",
+            model_identifiers={"materiality": "v4_deterministic"},
+            config_version="v1",
+        )
+        checkpoint = mgr.load_or_create(
+            run_id=run_manifest.run_id,
+            stage_name=stage_name,
+            input_path=str(input_path),
+            input_sha256=input_sha256,
+            input_row_count=0,
+            output_dir=str(output_path.parent),
+            code_version=get_code_version(),
+            config_version="v1",
+            model_identifiers={"materiality": "v4_deterministic"},
+            device="cpu",
+            batch_size=1,
+            chunk_size=chunk_size,
+        )
+        completed_ids = set(checkpoint.completed_chunk_ids())
+    else:
+        mgr = None
+        checkpoint = None
+        completed_ids = set()
+        run_manifest = None
+
+    required = {"TWEET", "FINANCIAL_RELEVANCE", "EVENT_TYPE", "EVENT_CONFIDENCE"}
+    run_start = time.time()
+    total_rows = 0
+    ci = 0
+
+    reader = pd.read_csv(
+        input_path,
+        chunksize=chunk_size,
+        on_bad_lines="skip",
+        low_memory=False,
+    )
+
+    for ci, chunk in enumerate(reader):
+        n = len(chunk)
+        if max_rows is not None and total_rows >= max_rows:
+            break
+        if max_rows is not None and total_rows + n > max_rows:
+            chunk = chunk.head(max_rows - total_rows).copy()
+            n = len(chunk)
+
+        chunk_id = build_chunk_id(stage_name, ci) if _has_pipeline else f"{stage_name}_chunk_{ci:06d}"
+
+        if chunk_id in completed_ids:
+            print(f"[materiality] Skipping completed chunk {chunk_id}")
+            chunks_skipped += 1
+            total_rows += n
+            continue
+
+        missing = required - set(chunk.columns)
+        if missing:
+            raise ValueError(f"Missing required columns: {sorted(missing)}")
+
+        chunk_start = time.time()
+        if mgr:
+            record = mgr.mark_in_progress(checkpoint, chunk_id, total_rows, total_rows + n)
+
+        results = [
+            classify_text(
+                text=row["TWEET"],
+                original_type=row["EVENT_TYPE"],
+                relevance=row["FINANCIAL_RELEVANCE"],
+                confidence=float(row["EVENT_CONFIDENCE"]),
+            )
+            for _, row in chunk.iterrows()
+        ]
+
+        chunk["EVENT_MATERIALITY"]        = [r[0] for r in results]
+        chunk["FINAL_EVENT_TYPE"]         = [r[1] for r in results]
+        chunk["EVENT_MATERIALITY_REASON"] = [r[2] for r in results]
+
+        chunk.to_csv(
+            output_path,
+            mode="a",
+            header=first_write,
+            index=False,
+            encoding="utf-8-sig",
+        )
+        first_write = False
+
+        duration = time.time() - chunk_start
+        if mgr:
+            mgr.mark_complete(
+                checkpoint, record,
+                output_row_count=n,
+                output_path=str(output_path),
+                duration_seconds=duration,
+            )
+
+        total_written += n
+        total_rows += n
+        rps = n / max(duration, 0.001)
+        print(f"[materiality] chunk={chunk_id} rows={n:,} speed={rps:.0f} rows/s total={total_written:,}")
+
+    # Finalize
+    run_duration = time.time() - run_start
+    if run_manifest:
+        run_manifest.finalize(total_rows, total_written, run_duration)
+        run_manifest.save(checkpoint_dir / f"{stage_name}_run_manifest.json")
+
+    print(f"\n[materiality] Done: {total_written:,} rows written to {output_path}")
+    if checkpoint:
+        print(checkpoint.summary())
 
 
 def main():
@@ -552,53 +714,35 @@ def main():
     output_path = OUTPUT_DIR / output_filename
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    df = pd.read_csv(args.input, on_bad_lines="skip")
+    checkpoint_dir = (
+        Path(args.checkpoint_dir)
+        if args.checkpoint_dir
+        else output_path.parent / "checkpoints"
+    )
 
-    if args.max_rows is not None:
-        df = df.head(args.max_rows).copy()
+    classify_chunked(
+        input_path=Path(args.input),
+        output_path=output_path,
+        chunk_size=args.chunk_size,
+        max_rows=args.max_rows,
+        checkpoint_dir=checkpoint_dir,
+    )
 
-    required = {"TWEET", "FINANCIAL_RELEVANCE", "EVENT_TYPE", "EVENT_CONFIDENCE"}
-    missing = required - set(df.columns)
-    if missing:
-        raise ValueError(f"Missing required columns: {sorted(missing)}")
-
-    print(f"Rows loaded: {len(df):,}")
-
-    results = [
-        classify_text(
-            text=row["TWEET"],
-            original_type=row["EVENT_TYPE"],
-            relevance=row["FINANCIAL_RELEVANCE"],
-            confidence=float(row["EVENT_CONFIDENCE"]),
-        )
-        for _, row in df.iterrows()
-    ]
-
-    df["EVENT_MATERIALITY"]        = [r[0] for r in results]
-    df["FINAL_EVENT_TYPE"]         = [r[1] for r in results]
-    df["EVENT_MATERIALITY_REASON"] = [r[2] for r in results]
-
-    # Write dataset — utf-8-sig so Excel opens it cleanly without BOM issues.
-    df.to_csv(output_path, index=False, encoding="utf-8-sig")
-
-    print("\nMateriality:")
-    print(df["EVENT_MATERIALITY"].value_counts(dropna=False).to_string())
-
-    print("\nFinal event type:")
-    print(df["FINAL_EVENT_TYPE"].value_counts(dropna=False).to_string())
-
-    print("\nMaterial events by final type:")
-    material = df[df["EVENT_MATERIALITY"] == "MATERIAL_EVENT"]
-    if len(material):
-        print(material["FINAL_EVENT_TYPE"].value_counts().to_string())
-    else:
-        print("None")
-
-    print("\nMaterial events by reason (top 20):")
-    if len(material):
-        print(material["EVENT_MATERIALITY_REASON"].value_counts().head(20).to_string())
-    else:
-        print("None")
+    # Summary statistics (load the output for reporting)
+    try:
+        df = pd.read_csv(output_path, on_bad_lines="skip")
+        print("\nMateriality:")
+        print(df["EVENT_MATERIALITY"].value_counts(dropna=False).to_string())
+        print("\nFinal event type:")
+        print(df["FINAL_EVENT_TYPE"].value_counts(dropna=False).to_string())
+        material = df[df["EVENT_MATERIALITY"] == "MATERIAL_EVENT"]
+        print("\nMaterial events by final type:")
+        if len(material):
+            print(material["FINAL_EVENT_TYPE"].value_counts().to_string())
+        else:
+            print("None")
+    except Exception as exc:
+        print(f"[WARN] Could not load output for summary: {exc}")
 
     print(f"\nSaved: {output_path}")
 
