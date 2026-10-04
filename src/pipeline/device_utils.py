@@ -1,5 +1,7 @@
 import torch
 
+_LOGGED_MODELS = set()
+
 def resolve_device(requested_device: str | None = None) -> str:
     """
     Strict device selection for GPU execution hygiene.
@@ -71,16 +73,19 @@ def verify_device_execution(model, tensors: list[torch.Tensor] | dict[str, torch
                 f"but expected {expected_device.type}."
             )
 
-    # 3. Log real device stats
-    cuda_available = torch.cuda.is_available()
-    gpu_name = torch.cuda.get_device_name(expected_device) if expected_device.type == "cuda" else "N/A"
-    
-    print(f"--- GPU Execution Verification ---")
-    print(f"Requested/Resolved device: {expected_device_str}")
-    print(f"CUDA available: {cuda_available}")
-    print(f"GPU name: {gpu_name}")
-    print(f"Model device: {model_device}")
-    
-    if len(tensor_list) > 0:
-         print(f"Inference device: {tensor_list[0].device}")
-    print(f"----------------------------------")
+    # 3. Log real device stats (only once per model instance to avoid spamming)
+    model_id = id(model)
+    if model_id not in _LOGGED_MODELS:
+        cuda_available = torch.cuda.is_available()
+        gpu_name = torch.cuda.get_device_name(expected_device) if expected_device.type == "cuda" else "N/A"
+        
+        print(f"--- GPU Execution Verification ---")
+        print(f"Requested/Resolved device: {expected_device_str}")
+        print(f"CUDA available: {cuda_available}")
+        print(f"GPU name: {gpu_name}")
+        print(f"Model device: {model_device}")
+        
+        if len(tensor_list) > 0:
+             print(f"Inference device: {tensor_list[0].device}")
+        print(f"----------------------------------")
+        _LOGGED_MODELS.add(model_id)

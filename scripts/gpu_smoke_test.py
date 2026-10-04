@@ -2,7 +2,9 @@ import sys
 import torch
 import time
 from pathlib import Path
+import pandas as pd
 from src.nlp.finbert_inference import infer_csv
+from src.pipeline.validators import LEAKAGE_COLUMNS
 
 def run_smoke_test():
     print("==================================================")
@@ -14,8 +16,17 @@ def run_smoke_test():
         return
 
     input_csv = Path("data/processed/reduced_dataset-release.csv")
+    smoke_input_csv = Path("data/pipeline_output_smoke/smoke_input.csv")
     output_csv = Path("data/pipeline_output_smoke/finbert_smoke_output.csv")
     checkpoint_dir = Path("data/pipeline_output_smoke/checkpoints")
+    
+    smoke_input_csv.parent.mkdir(parents=True, exist_ok=True)
+    
+    # 1. Prepare a safe input without leakage columns (mimicking STAGE_VALIDATE)
+    print("Preparing safe input (stripping leakage columns)...")
+    df = pd.read_csv(input_csv, nrows=100)
+    safe_cols = [c for c in df.columns if c not in LEAKAGE_COLUMNS]
+    df[safe_cols].to_csv(smoke_input_csv, index=False)
     
     # Clean up any previous smoke output to test a fresh run
     if output_csv.exists():
@@ -25,7 +36,7 @@ def run_smoke_test():
     
     try:
         infer_csv(
-            input_csv=input_csv,
+            input_csv=smoke_input_csv,
             output_csv=output_csv,
             batch_size=16,
             chunk_size=50,

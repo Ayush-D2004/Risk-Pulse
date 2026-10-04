@@ -85,10 +85,11 @@ from src.pipeline.validators import (
 # ---------------------------------------------------------------------------
 STAGE_VALIDATE = "validate"
 STAGE_FINBERT = "finbert"
+STAGE_EVENT = "event"
 STAGE_MATERIALITY = "materiality"
 STAGE_IMPACT = "impact"
 
-ALL_STAGES = [STAGE_VALIDATE, STAGE_FINBERT, STAGE_MATERIALITY, STAGE_IMPACT]
+ALL_STAGES = [STAGE_VALIDATE, STAGE_FINBERT, STAGE_EVENT, STAGE_MATERIALITY, STAGE_IMPACT]
 
 
 # ---------------------------------------------------------------------------
@@ -704,6 +705,21 @@ def main() -> None:
         )
     else:
         finbert_path = output_dir / "finbert_predictions.csv"
+
+    if STAGE_EVENT in args.stages:
+        if validated_path is None or not validated_path.exists():
+            print("WARNING: validated.csv not found; using raw input for Event Classifier")
+            validated_path = input_path
+        print("\n--- STAGE: event ---")
+        event_path = run_event_stage(
+            validated_path, output_dir,
+            batch_size=args.batch_size,
+            chunk_size=args.chunk_size,
+            max_rows=args.max_rows,
+            device=args.device,
+        )
+    else:
+        event_path = output_dir / "event_predictions.csv"
 
     if STAGE_MATERIALITY in args.stages:
         event_path = output_dir / "event_predictions.csv"
