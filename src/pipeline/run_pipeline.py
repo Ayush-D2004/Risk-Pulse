@@ -88,8 +88,10 @@ STAGE_FINBERT = "finbert"
 STAGE_EVENT = "event"
 STAGE_MATERIALITY = "materiality"
 STAGE_IMPACT = "impact"
+STAGE_GUARD = "guard"
+STAGE_CANONICALIZE = "canonicalize"
 
-ALL_STAGES = [STAGE_VALIDATE, STAGE_FINBERT, STAGE_EVENT, STAGE_MATERIALITY, STAGE_IMPACT]
+ALL_STAGES = [STAGE_VALIDATE, STAGE_FINBERT, STAGE_EVENT, STAGE_MATERIALITY, STAGE_IMPACT, STAGE_GUARD, STAGE_CANONICALIZE]
 
 
 # ---------------------------------------------------------------------------
@@ -590,6 +592,240 @@ def run_impact_stage(
 
 
 # ---------------------------------------------------------------------------
+# Guard stage
+# ---------------------------------------------------------------------------
+
+def run_guard_stage(
+    input_path: Path,
+    output_dir: Path,
+    chunk_size: int = 50_000,
+    max_rows: Optional[int] = None,
+) -> Path:
+    stage_name = STAGE_GUARD
+    output_path = output_dir / "guard_scored.csv"
+    checkpoint_dir = output_dir / "checkpoints"
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+
+    from src.nlp.entity_normalizer import EntityNormalizer
+    from src.risk.credit_event_guard import check_credit_event_guard
+
+    normalizer = EntityNormalizer()
+    mgr = CheckpointManager(checkpoint_dir / f"{stage_name}_manifest.json")
+    input_sha256 = sha256_of_file(input_path)
+
+    manifest = mgr.load_or_create(
+        run_id=uuid.uuid4().hex,
+        stage_name=stage_name,
+        input_path=str(input_path),
+        input_sha256=input_sha256,
+        input_row_count=0,
+        output_dir=str(output_dir),
+        code_version=get_code_version(),
+        config_version="v1",
+        model_identifiers={"guard": "v1_deterministic"},
+        device="cpu",
+        batch_size=1,
+        chunk_size=chunk_size,
+    )
+    completed_ids = set(manifest.completed_chunk_ids())
+
+    first_write = not output_path.exists() or output_path.stat().st_size == 0
+    total_rows = 0
+    total_written = 0
+    skipped = 0
+    run_start = time.time()
+
+    reader = pd.read_csv(
+        input_path,
+        chunksize=chunk_size,
+        on_bad_lines="skip",
+        low_memory=False,
+    )
+
+    for ci, chunk in enumerate(reader):
+        n = len(chunk)
+        if max_rows is not None and total_rows >= max_rows:
+            break
+        if max_rows is not None and total_rows + n > max_rows:
+            chunk = chunk.head(max_rows - total_rows).copy()
+            n = len(chunk)
+
+        chunk_id = build_chunk_id(stage_name, ci)
+        if chunk_id in completed_ids:
+            print(f"[{stage_name}] Skip completed {chunk_id}")
+            skipped += 1
+            total_rows += n
+            continue
+
+        record = mgr.mark_in_progress(manifest, chunk_id, total_rows, total_rows + n)
+        t0 = time.time()
+
+        guard_pass = []
+        guard_reason = []
+        canonical_entities = []
+        entity_statuses = []
+
+        for _, row in chunk.iterrows():
+            cand = str(row.get("STOCK", ""))
+            text = str(row.get("TWEET", ""))
+            event_type = str(row.get("EVENT_TYPE", ""))
+
+            norm_res = normalizer.normalize(cand)
+            canonical_entities.append(norm_res["canonical_entity"])
+            entity_statuses.append(norm_res["entity_status"])
+
+            if event_type == "Credit Event":
+                passed, reason = check_credit_event_guard(
+                    text=text,
+                    candidate_entity=norm_res["candidate_entity"],
+                    canonical_entity=norm_res["canonical_entity"],
+                    entity_status=norm_res["entity_status"]
+                )
+                guard_pass.append(passed)
+                guard_reason.append(reason)
+            else:
+                guard_pass.append(True)
+                guard_reason.append("NOT_APPLICABLE")
+
+        chunk["canonical_entity"] = canonical_entities
+        chunk["entity_status"] = entity_statuses
+        chunk["credit_guard_pass"] = guard_pass
+        chunk["credit_guard_reason"] = guard_reason
+
+        chunk.to_csv(output_path, mode="a", header=first_write, index=False)
+        first_write = False
+
+        dur = time.time() - t0
+        mgr.mark_complete(manifest, record, n, str(output_path), dur)
+        total_rows += n
+        total_written += n
+        print(f"[{stage_name}] chunk={chunk_id} rows={n:,}")
+
+    print(f"\n[{stage_name}] Done: {total_written:,} rows, {skipped} skipped, {time.time()-run_start:.1f}s")
+    return output_path
+
+
+# ---------------------------------------------------------------------------
+# Canonicalize stage
+# ---------------------------------------------------------------------------
+
+def run_canonicalize_stage(
+    input_path: Path,
+    output_dir: Path
+) -> Path:
+    stage_name = STAGE_CANONICALIZE
+    output_path = output_dir / "canonical_events.csv"
+    
+    from src.risk.event_clusterer import EventClusterer
+    from src.risk.risk_signal import RiskSignal, Evidence
+    from src.risk.canonical_event import CanonicalEvent
+    from datetime import datetime, timezone
+    import uuid
+    import hashlib
+    
+    print(f"[{stage_name}] Loading guard output from {input_path}")
+    df = pd.read_csv(input_path, low_memory=False)
+    
+    # 1. Input observation count
+    total_obs = len(df)
+    
+    # 2. Number of filtering buckets
+    no_event = len(df[df["EVENT_MATERIALITY"] == "NO_EVENT"])
+    non_material = len(df[df["EVENT_MATERIALITY"] == "NON_MATERIAL_FINANCIAL_CONTENT"])
+    material_obs = len(df[df["EVENT_MATERIALITY"] == "MATERIAL_EVENT"])
+    
+    def is_valid_material(r):
+        if r.get("EVENT_MATERIALITY") != "MATERIAL_EVENT":
+            return False
+        if r.get("EVENT_TYPE") == "Credit Event" and not r.get("credit_guard_pass"):
+            return False
+        return True
+    
+    valid_mask = df.apply(is_valid_material, axis=1)
+    material_df = df[valid_mask].copy()
+    
+    entering_clustering = len(material_df)
+    
+    # 4. Canonical event materialization
+    clusterer = EventClusterer()
+    
+    for idx, row in material_df.iterrows():
+        text = str(row.get("TWEET", ""))
+        ts_str = str(row.get("DATE", ""))
+        try:
+            ts = pd.to_datetime(ts_str)
+            if ts.tzinfo is None:
+                ts = ts.replace(tzinfo=timezone.utc)
+        except Exception:
+            ts = datetime.now(timezone.utc)
+            
+        source_val = str(row.get("AUTHOR", "news"))
+            
+        s = RiskSignal(
+            entity=str(row.get("STOCK", "")),
+            source=source_val,
+            sentiment_score=float(row.get("FINBERT_SCORE", 0.0)),
+            event_type=str(row.get("EVENT_TYPE", "Other / Unclear")),
+            event_confidence=float(row.get("EVENT_CONFIDENCE", 0.0)),
+            materiality="MATERIAL_EVENT",
+            timestamp=ts,
+            evidence=Evidence(text=text)
+        )
+        
+        s._row_id = str(row.get("row_id", idx))
+        s._tweet_hash = hashlib.md5(text.encode('utf-8')).hexdigest()
+        s._impact_score = float(row.get("IMPACT_SCORE", 0.0))
+        s._impact_tier = str(row.get("IMPACT_TIER", ""))
+        s._canonical_entity = str(row.get("canonical_entity", ""))
+        s._entity_status = str(row.get("entity_status", ""))
+        s._credit_guard_reason = str(row.get("credit_guard_reason", ""))
+        
+        clusterer.process_signal(s)
+        
+    canonical_events = []
+    
+    for cluster in clusterer.clusters:
+        cid = cluster.cluster_id
+        signals = [cand.signal for cand in cluster.candidates]
+        
+        obs_count = len(signals)
+        max_impact = max((getattr(sig, "_impact_score", 0.0) for sig in signals), default=0.0)
+        rep_signal = max(signals, key=lambda x: getattr(x, "_impact_score", 0.0))
+        avg_sentiment = sum(sig.sentiment_score for sig in signals) / obs_count
+        max_conf = max(sig.event_confidence for sig in signals)
+        
+        event = CanonicalEvent(
+            event_id=uuid.uuid4().hex,
+            cluster_id=cid,
+            canonical_entity=getattr(rep_signal, "_canonical_entity", rep_signal.entity),
+            entity_status=getattr(rep_signal, "_entity_status", "valid"),
+            event_type=rep_signal.event_type,
+            timestamp=rep_signal.timestamp,
+            sentiment_score=avg_sentiment,
+            event_confidence=max_conf,
+            materiality="MATERIAL_EVENT",
+            impact_score=max_impact,
+            impact_tier=getattr(rep_signal, "_impact_tier", "LOW"),
+            novelty=getattr(rep_signal, "novelty", 1.0),
+            observation_count=obs_count,
+            source_types=list(set(sig.source for sig in signals)),
+            representative_source_credibility=1.0,
+            representative_text=rep_signal.evidence.text,
+            representative_url=None,
+            source_row_ids=[getattr(sig, "_row_id", "") for sig in signals],
+            source_tweet_hashes=[getattr(sig, "_tweet_hash", "") for sig in signals],
+            credit_guard_reason=getattr(rep_signal, "_credit_guard_reason", "") if rep_signal.event_type == "Credit Event" else None
+        )
+        canonical_events.append(event)
+        
+    out_df = pd.DataFrame([e.model_dump() for e in canonical_events])
+    out_df.to_csv(output_path, index=False)
+    print(f"[{stage_name}] Generated {len(canonical_events)} canonical events.")
+    
+    return output_path
+
+
+# ---------------------------------------------------------------------------
 # Performance reporter
 # ---------------------------------------------------------------------------
 
@@ -749,6 +985,32 @@ def main() -> None:
                 mat_in, fin_in, output_dir,
                 chunk_size=args.chunk_size * 5,
                 max_rows=args.max_rows,
+            )
+    else:
+        impact_path = output_dir / "impact_scored.csv"
+
+    if STAGE_GUARD in args.stages:
+        imp_in = impact_path or output_dir / "impact_scored.csv"
+        if not imp_in.exists():
+            print("WARNING: Missing impact output; skipping guard stage.")
+        else:
+            print("\n--- STAGE: guard ---")
+            guard_path = run_guard_stage(
+                imp_in, output_dir,
+                chunk_size=args.chunk_size * 5,
+                max_rows=args.max_rows,
+            )
+    else:
+        guard_path = output_dir / "guard_scored.csv"
+
+    if STAGE_CANONICALIZE in args.stages:
+        guard_in = guard_path or output_dir / "guard_scored.csv"
+        if not guard_in.exists():
+            print("WARNING: Missing guard output; skipping canonicalize stage.")
+        else:
+            print("\n--- STAGE: canonicalize ---")
+            canonical_path = run_canonicalize_stage(
+                guard_in, output_dir
             )
 
     total_time = time.time() - run_start

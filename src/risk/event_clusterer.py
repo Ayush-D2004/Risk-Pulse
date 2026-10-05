@@ -7,6 +7,28 @@ import faiss
 from sentence_transformers import SentenceTransformer
 
 from .risk_signal import RiskSignal
+from src.nlp.entity_normalizer import EntityNormalizer
+
+COMPATIBLE_EVENT_TYPES = {
+    "Credit Event": {"Credit Event", "Market / Liquidity", "Corporate / Earnings"},
+    "Geopolitical": {"Geopolitical", "Macroeconomic", "Regulatory / Legal", "Commodity / Supply Chain"},
+    "Macroeconomic": {"Macroeconomic", "Geopolitical", "Regulatory / Legal", "Corporate / Earnings", "Commodity / Supply Chain", "Market / Liquidity"},
+    "Merger & Acquisition": {"Merger & Acquisition", "Corporate / Earnings"},
+    "Regulatory / Legal": {"Regulatory / Legal", "Geopolitical", "Macroeconomic", "Corporate / Earnings"},
+    "Corporate / Earnings": {"Corporate / Earnings", "Macroeconomic", "Merger & Acquisition", "Regulatory / Legal", "Product / Technology", "Credit Event"},
+    "Product / Technology": {"Product / Technology", "Corporate / Earnings"},
+    "Commodity / Supply Chain": {"Commodity / Supply Chain", "Macroeconomic", "Geopolitical"},
+    "Market / Liquidity": {"Market / Liquidity", "Macroeconomic", "Credit Event"},
+    "Other / Unclear": {"Other / Unclear"},
+    "NO_EVENT": {"NO_EVENT"},
+}
+
+def is_event_type_compatible(t1: str, t2: str) -> bool:
+    if t1 == t2:
+        return True
+    s1 = COMPATIBLE_EVENT_TYPES.get(t1, {t1})
+    s2 = COMPATIBLE_EVENT_TYPES.get(t2, {t2})
+    return (t2 in s1) or (t1 in s2)
 
 class EventCandidate(BaseModel):
     """
@@ -86,10 +108,12 @@ class EventClusterer:
         self,
         model_name: str = "BAAI/bge-small-en-v1.5",
         similarity_threshold: float = 0.85,
-        time_window_hours: float = 72.0
+        time_window_hours: float = 72.0,
+        normalizer: Optional[EntityNormalizer] = None
     ):
         self.similarity_threshold = similarity_threshold
         self.time_window_hours = time_window_hours
+        self.normalizer = normalizer or EntityNormalizer()
         
         # Load embedding model
         self.encoder = SentenceTransformer(model_name)
@@ -130,6 +154,18 @@ class EventClusterer:
         Processes a new RiskSignal, assigns it to a cluster or creates a new one,
         and sets its novelty score.
         """
+        # Normalize the entity
+        norm_res = self.normalizer.normalize(signal.entity)
+        new_entity = norm_res["canonical_entity"]
+        
+        if norm_res["entity_status"] == "unresolved_source":
+            new_entity = f"SOURCE_{norm_res['candidate_entity']}"
+        elif not new_entity:
+            cand = norm_res["candidate_entity"]
+            new_entity = f"UNRESOLVED_{cand}" if cand else "UNRESOLVED_UNKNOWN"
+            
+        signal.entity = new_entity
+
         candidate = EventCandidate.from_signal(signal)
         candidate.embedding = self.generate_embedding(candidate)
         
@@ -186,7 +222,7 @@ class EventClusterer:
             # Stage 2: Filters (Entity, Type, Temporal)
             if cluster.entity != candidate.signal.entity:
                 continue
-            if cluster.event_type != candidate.signal.event_type:
+            if not is_event_type_compatible(cluster.event_type, candidate.signal.event_type):
                 continue
                 
             # Temporal check (e.g. within 72 hours of cluster's last update)
