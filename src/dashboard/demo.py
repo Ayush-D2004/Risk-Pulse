@@ -58,7 +58,7 @@ def _signal(
 
 def demo_signals() -> List[RiskSignal]:
     """Fixed RiskSignal set. Identical on every call."""
-    return [
+    signals = [
         _signal(
             EVENT_TESLA_CREDIT_10,
             EventType.CREDIT_EVENT.value,
@@ -88,6 +88,24 @@ def demo_signals() -> List[RiskSignal]:
             0.0,
         ),
     ]
+
+    # Load real pipeline event
+    import os
+    try:
+        from src.integration.selector import select_real_event
+        from src.integration.adapter import CanonicalEventAdapter
+        
+        csv_path = os.path.join("data", "pipeline_output", "canonical_events.csv")
+        if os.path.exists(csv_path):
+            raw_event = select_real_event(csv_path)
+            real_signal = CanonicalEventAdapter.from_row(raw_event)
+            # Mark it clearly for the dashboard
+            real_signal.source = "REAL PIPELINE EVENT"
+            signals.append(real_signal)
+    except Exception as e:
+        print(f"Failed to load real event for dashboard demo: {e}")
+
+    return signals
 
 
 @dataclass(frozen=True)
