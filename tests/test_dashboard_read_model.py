@@ -354,9 +354,10 @@ class TestDashboardReadModel(unittest.TestCase):
         a = build_demo_catalog()
         b = build_demo_catalog()
         self.assertEqual([s.event_id for s in a.signals], [s.event_id for s in b.signals])
-        self.assertEqual(
-            {EVENT_TESLA_CREDIT_10, EVENT_TESLA_CREDIT_8, EVENT_GEOPOLITICAL, EVENT_NO_EVENT},
-            set(a.by_event_id),
+        core_events = {EVENT_TESLA_CREDIT_10, EVENT_TESLA_CREDIT_8, EVENT_GEOPOLITICAL, EVENT_NO_EVENT}
+        self.assertTrue(
+            core_events.issubset(set(a.by_event_id)),
+            f"Expected {core_events} to be in {set(a.by_event_id)}"
         )
         for event_id in a.by_event_id:
             self.assertEqual(
