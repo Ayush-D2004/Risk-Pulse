@@ -54,19 +54,19 @@ _OBLIGORS = [
      "Technology", "APAC"),
 
     # ---- Energy (DELIBERATELY CONCENTRATED) ----
-    ("PetroGlobal Synthetic Corp", "PTGL", ["PetroGlobal"],
+    ("PetroGlobal [Synthetic]", "PTGL", ["PetroGlobal"],
      "Energy", "US"),
     ("Rosneft Oil Company [Synthetic]", "ROSN.ME", ["Rosneft", "Russian oil giant", "Rosneft Oil Company"],
      "Energy", "EMEA"),
-    ("SaudiChem Synthetic Industries", "SCHM", ["SaudiChem"],
+    ("SaudiChem [Synthetic] Industries", "SCHM", ["SaudiChem"],
      "Energy", "MENA"),
-    ("ShellEnergy Synthetic PLC", "SHLE", ["ShellEnergy"],
+    ("ShellEnergy [Synthetic] PLC", "SHLE", ["ShellEnergy"],
      "Energy", "EU"),
 
     # ---- Financials ----
-    ("GlobalBank Synthetic AG", "GBKS", ["GlobalBank"],
+    ("GlobalBank [Synthetic]", "GBKS", ["GlobalBank"],
      "Financials", "EU"),
-    ("AsiaCredit Synthetic Ltd", "ACRD", ["AsiaCredit"],
+    ("AsiaCredit [Synthetic] Ltd", "ACRD", ["AsiaCredit"],
      "Financials", "APAC"),
 
     # ---- Industrials ----
@@ -76,15 +76,15 @@ _OBLIGORS = [
     # ---- Consumer ----
     ("Amazon.com Inc [Synthetic]", "AMZN", ["Amazon", "Amazon.com"],
      "Consumer", "US"),
-    ("RetailCo Synthetic SA", "RTCO", ["RetailCo"],
+    ("RetailCo [Synthetic] SA", "RTCO", ["RetailCo"],
      "Consumer", "LATAM"),
 
     # ---- Healthcare ----
-    ("MedDevice Synthetic GmbH", "MDVS", ["MedDevice"],
+    ("MedDevice [Synthetic] GmbH", "MDVS", ["MedDevice"],
      "Healthcare", "EU"),
 
     # ---- Sovereign / Quasi-sovereign (for macro/geopolitical events) ----
-    ("CountryX Sovereign [Synthetic]", None, ["CountryX"],
+    ("Germany Sovereign [Synthetic]", None, ["Germany"],
      "Sovereign", "EMEA"),
 ]
 

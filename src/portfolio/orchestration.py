@@ -55,13 +55,12 @@ class StressScenarioEngine:
         if result.error:
             return f"Validation Error: {result.error}"
 
-        if not result.stress_applied:
-            return f"No stress applied for event type: {result.event_type}."
+        shock_scope = result.shock_scenario.shock_scope if result.shock_scenario else 'NONE'
 
         lines = [
             f"{result.event_type} affecting {result.affected_entity}.",
             f"Impact score: {result.impact_score:.1f} ({result.impact_tier}).",
-            f"Shock scope: {result.shock_scenario.shock_scope}.",
+            f"Shock scope: {shock_scope}.",
             f"Affected EAD: {self._format_money(result.affected_ead)} ({result.affected_ead_pct * 100:.2f}% of portfolio).",
             f"Incremental expected loss: {self._format_money(result.incremental_expected_loss)}.",
             f"MTM impact: {self._format_money(result.total_mtm_impact)}."

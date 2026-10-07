@@ -25,9 +25,16 @@ catalog = build_demo_catalog()
 def get_portfolio_overview():
     return catalog.service.portfolio_overview()
 
+from src.dashboard.service import project_event_overview
+
 @app.get("/api/events")
 def get_events():
-    return [{"event_id": s.event_id, "type": s.event_type, "impact": s.impact_score} for s in catalog.signals]
+    events = []
+    for s in catalog.signals:
+        result = catalog.by_event_id.get(s.event_id)
+        if result:
+            events.append(project_event_overview(result, s))
+    return events
 
 @app.get("/api/scenarios/{event_id}", response_model=EventStressOverviewResponse)
 def get_scenario_overview(event_id: str):

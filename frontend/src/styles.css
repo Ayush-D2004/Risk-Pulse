@@ -101,7 +101,7 @@ kbd { font: 500 9px var(--mono); color: #626a76; border: 1px solid rgba(255,255,
 .filter-button { border: 1px solid var(--line-strong); background: rgba(255,255,255,.025); display: inline-flex; align-items: center; gap: 7px; padding: 9px 12px; color: var(--soft); font-size: 11px; }
 .filter-button:hover { border-color: rgba(255,92,92,.35); color: var(--text); }
 .command-signal { width: 240px; padding-top: 14px; color: #69727f; font: 500 8px var(--mono); letter-spacing: .12em; }
-.signal-line { width: 100%; height: 42px; display: block; overflow: visible; }
+.signal-line { width: 100%; height: 42px; display: block; overflow: hidden; }
 .signal-line path { fill: none; stroke: var(--coral); stroke-width: 1.4; vector-effect: non-scaling-stroke; }
 .signal-line__ghost { stroke: rgba(255,92,92,.16) !important; stroke-width: .8 !important; }
 .signal-line--mint path { stroke: var(--mint); }

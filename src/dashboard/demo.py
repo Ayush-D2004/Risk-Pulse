@@ -60,6 +60,27 @@ def demo_signals() -> List[RiskSignal]:
     """Fixed RiskSignal set. Identical on every call."""
     signals = [
         _signal(
+            "DEMO-REGULATORY-APPLE",
+            EventType.REGULATORY_LEGAL.value,
+            7.5,
+            "Apple",
+            -0.95,
+        ),
+        _signal(
+            "DEMO-MA-AMAZON",
+            EventType.MERGER_ACQUISITION.value,
+            8.2,
+            "Amazon",
+            0.60,
+        ),
+        _signal(
+            "DEMO-COMMODITY-PETRO",
+            EventType.COMMODITY_SUPPLY_CHAIN.value,
+            6.8,
+            "PetroGlobal",
+            -0.45,
+        ),
+        _signal(
             "TEST-MARKET-DAMPENING",
             EventType.CREDIT_EVENT.value,
             6.5,  # Dampened from 9.5 due to market modifier
@@ -70,14 +91,7 @@ def demo_signals() -> List[RiskSignal]:
             "TEST-NOVELTY-HIGH",
             EventType.GEOPOLITICAL.value,
             9.0,  # High impact due to novelty = 1.0
-            "Macro",
-            -0.80,
-        ),
-        _signal(
-            "TEST-NOVELTY-LOW",
-            EventType.GEOPOLITICAL.value,
-            2.5,  # Dampened due to novelty = 0.1 (clustered event)
-            "Macro",
+            "Germany",
             -0.80,
         ),
         _signal(

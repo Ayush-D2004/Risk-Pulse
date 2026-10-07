@@ -22,3 +22,4 @@ final_event_level_validation.parquet
 final_validation_stats.json
 CODEBASE_ANALYSIS.md
 pipeline_output_test
+quickstart.md

@@ -65,13 +65,25 @@ class StressEngine:
 
         elif scope == ShockScope.SECTOR:
             # We need affected_sector from the scenario. If missing, assume no match.
-            if scenario.affected_sector:
-                for exp in self._exposure_model.by_sector(scenario.affected_sector):
+            target_sector = scenario.affected_sector
+            if not target_sector:
+                match_result = self._exposure_model.match_entity(scenario.affected_entity)
+                if match_result.matched:
+                    target_sector = match_result.exposures[0].sector
+
+            if target_sector:
+                for exp in self._exposure_model.by_sector(target_sector):
                     affected_ids.add(exp.exposure_id)
 
         elif scope == ShockScope.GEOGRAPHY:
-            if scenario.affected_geography:
-                for exp in self._exposure_model.by_geography(scenario.affected_geography):
+            target_geography = scenario.affected_geography
+            if not target_geography:
+                match_result = self._exposure_model.match_entity(scenario.affected_entity)
+                if match_result.matched:
+                    target_geography = match_result.exposures[0].geography
+
+            if target_geography:
+                for exp in self._exposure_model.by_geography(target_geography):
                     affected_ids.add(exp.exposure_id)
 
         elif scope in (ShockScope.BROAD_MARKET, ShockScope.SYSTEMIC):
