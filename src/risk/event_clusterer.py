@@ -123,7 +123,7 @@ class EventClusterer:
         self.clusters: List[EventCluster] = []
         
         # FAISS index (Inner Product for cosine similarity since embeddings are normalized)
-        self.index = faiss.IndexFlatIP(self.embedding_dim)
+        self.index = faiss.IndexIDMap(faiss.IndexFlatIP(self.embedding_dim))
         
         # Map faiss ID to cluster index in self.clusters
         self.id_to_cluster_idx: Dict[int, int] = {}
@@ -241,27 +241,17 @@ class EventClusterer:
         return best_cluster, best_score
 
     def _add_to_faiss(self, centroid: np.ndarray, cluster_idx: int):
-        # We need an IndexIDMap to maintain our own IDs, or we can just append
-        # and rely on the fact that faiss assigned ID == current ntotal
         faiss_id = self._next_faiss_id
         self._next_faiss_id += 1
         
         self.id_to_cluster_idx[faiss_id] = cluster_idx
-        self.index.add(np.expand_dims(centroid, axis=0))
+        self.index.add_with_ids(np.expand_dims(centroid, axis=0), np.array([faiss_id], dtype=np.int64))
 
     def _update_faiss_index(self, cluster: EventCluster):
-        # Updating vectors in IndexFlatIP isn't directly supported.
-        # However, for a small number of clusters, we can just rebuild the index,
-        # or we can remove and add. 
-        # Alternatively, we just use a small IndexIDMap to track them.
-        # Given this is a prototype/batch clusterer, rebuilding is okay,
-        # or we just leave the centroid as it was originally for search simplicity
-        # (if we expect centroid to not drift too much).
-        # Let's rebuild the index for correctness, since it's an in-memory batch.
         self._rebuild_faiss_index()
         
     def _rebuild_faiss_index(self):
-        self.index = faiss.IndexFlatIP(self.embedding_dim)
+        self.index = faiss.IndexIDMap(faiss.IndexFlatIP(self.embedding_dim))
         self.id_to_cluster_idx.clear()
         self._next_faiss_id = 0
         

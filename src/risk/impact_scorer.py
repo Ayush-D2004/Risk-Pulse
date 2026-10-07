@@ -161,33 +161,40 @@ class ImpactScorer:
         """
         Calculate market reaction modifier based on observed market variables.
         Returns 1.0 (neutral) if no market context is provided.
-        Bounded between 0.85 and 1.30.
+        Bounded between 0.70 and 1.30.
         """
         if market_context is None:
             return 1.0
 
         modifier = 1.0
 
-        # Abnormal return shock (|CAR| > 1.5% increases impact)
+        # Abnormal return shock
         if market_context.abnormal_return is not None:
             car_mag = abs(market_context.abnormal_return)
             if car_mag > 0.015:
                 # Add up to +15% boost for significant price dislocation
                 car_boost = min(0.15, (car_mag - 0.015) * 3.0)
                 modifier += car_boost
+            elif car_mag < 0.005:
+                # Dampen for muted market reactions
+                modifier -= 0.10
 
-        # Elevated volume ratio (> 1.5x normal baseline increases impact)
+        # Elevated volume ratio
         if market_context.volume_ratio is not None:
             if market_context.volume_ratio > 1.5:
                 vol_boost = min(0.10, (market_context.volume_ratio - 1.5) * 0.05)
                 modifier += vol_boost
+            elif market_context.volume_ratio < 1.0:
+                modifier -= 0.05
 
         # Realized or implied volatility
         if market_context.volatility is not None:
             if market_context.volatility > 2.0:
                 modifier += 0.05
+            elif market_context.volatility < 1.0:
+                modifier -= 0.05
 
-        return round(min(1.30, max(0.85, modifier)), 4)
+        return round(min(1.30, max(0.70, modifier)), 4)
 
     def compute_confidence_modifier(self, event_confidence: float) -> float:
         """

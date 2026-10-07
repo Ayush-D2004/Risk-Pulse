@@ -368,8 +368,8 @@ class TestPortfolioSummary(unittest.TestCase):
         self.assertGreaterEqual(len(self.summary.concentration_flags), 1)
         # Check for both sector and obligor concentration
         flag_text = " ".join(self.summary.concentration_flags)
-        self.assertIn("SECTOR_CONCENTRATION", flag_text)
-        self.assertIn("OBLIGOR_CONCENTRATION", flag_text)
+        self.assertIn("SECTOR CONCENTRATION", flag_text)
+        self.assertIn("OBLIGOR CONCENTRATION", flag_text)
 
     def test_top_obligors_ordered(self):
         """Top obligors must be ordered by EAD descending."""

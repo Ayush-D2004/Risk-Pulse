@@ -60,32 +60,32 @@ def demo_signals() -> List[RiskSignal]:
     """Fixed RiskSignal set. Identical on every call."""
     signals = [
         _signal(
-            EVENT_TESLA_CREDIT_10,
+            "TEST-MARKET-DAMPENING",
             EventType.CREDIT_EVENT.value,
-            10.0,
+            6.5,  # Dampened from 9.5 due to market modifier
             "Tesla",
-            -0.75,
+            -0.85,
         ),
         _signal(
-            EVENT_TESLA_CREDIT_8,
-            EventType.CREDIT_EVENT.value,
-            8.0,
-            "Tesla",
-            -0.55,
-        ),
-        _signal(
-            EVENT_GEOPOLITICAL,
+            "TEST-NOVELTY-HIGH",
             EventType.GEOPOLITICAL.value,
-            8.5,
-            "CountryX",
-            -0.40,
+            9.0,  # High impact due to novelty = 1.0
+            "Macro",
+            -0.80,
         ),
         _signal(
-            EVENT_NO_EVENT,
-            EventType.NO_EVENT.value,
-            1.0,
-            "Tesla",
-            0.0,
+            "TEST-NOVELTY-LOW",
+            EventType.GEOPOLITICAL.value,
+            2.5,  # Dampened due to novelty = 0.1 (clustered event)
+            "Macro",
+            -0.80,
+        ),
+        _signal(
+            "TEST-GUARDRAIL-BLOCKED",
+            EventType.CREDIT_EVENT.value,
+            1.5,  # Impact slashed because financial guardrail blocked it
+            "MidCapCorp",
+            -0.90,
         ),
     ]
 

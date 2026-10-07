@@ -86,12 +86,13 @@ from src.pipeline.validators import (
 STAGE_VALIDATE = "validate"
 STAGE_FINBERT = "finbert"
 STAGE_EVENT = "event"
+STAGE_CLUSTER = "cluster"
 STAGE_MATERIALITY = "materiality"
 STAGE_IMPACT = "impact"
 STAGE_GUARD = "guard"
 STAGE_CANONICALIZE = "canonicalize"
 
-ALL_STAGES = [STAGE_VALIDATE, STAGE_FINBERT, STAGE_EVENT, STAGE_MATERIALITY, STAGE_IMPACT, STAGE_GUARD, STAGE_CANONICALIZE]
+ALL_STAGES = [STAGE_VALIDATE, STAGE_FINBERT, STAGE_EVENT, STAGE_CLUSTER, STAGE_MATERIALITY, STAGE_IMPACT, STAGE_GUARD, STAGE_CANONICALIZE]
 
 
 # ---------------------------------------------------------------------------
@@ -426,6 +427,87 @@ def run_event_stage(
 
 
 # ---------------------------------------------------------------------------
+# Clustering stage
+# ---------------------------------------------------------------------------
+
+def run_cluster_stage(
+    input_path: Path,
+    output_dir: Path,
+    chunk_size: int = 10_000,
+    max_rows: Optional[int] = None,
+) -> Path:
+    """
+    Stage 3.5: Cluster events and compute novelty.
+    """
+    stage_name = STAGE_CLUSTER
+    output_path = output_dir / "event_clustered.csv"
+    
+    from src.risk.event_clusterer import EventClusterer
+    from src.risk.risk_signal import RiskSignal, Evidence
+    
+    checkpoint_dir = output_dir / "checkpoints"
+    checkpoint_dir.mkdir(parents=True, exist_ok=True)
+    mgr = CheckpointManager(checkpoint_dir / f"{stage_name}_manifest.json")
+    input_sha256 = sha256_of_file(input_path)
+    
+    df = pd.read_csv(input_path, on_bad_lines="skip", low_memory=False)
+    if max_rows is not None:
+        df = df.head(max_rows)
+        
+    clusterer = EventClusterer()
+    novelties = []
+    
+    for idx, row in df.iterrows():
+        text = str(row.get("TWEET", ""))
+        ts_str = str(row.get("DATE", ""))
+        try:
+            ts = pd.to_datetime(ts_str)
+            if ts.tzinfo is None:
+                from datetime import timezone
+                ts = ts.replace(tzinfo=timezone.utc)
+        except Exception:
+            from datetime import timezone, datetime
+            ts = datetime.now(timezone.utc)
+            
+        source_val = str(row.get("AUTHOR", "news"))
+            
+        s = RiskSignal(
+            entity=str(row.get("STOCK", "")),
+            source=source_val,
+            sentiment_score=float(row.get("FINBERT_SCORE", 0.0)),
+            event_type=str(row.get("EVENT_TYPE", "Other / Unclear")),
+            event_confidence=float(row.get("EVENT_CONFIDENCE", 0.0)),
+            materiality="UNKNOWN",
+            timestamp=ts,
+            evidence=Evidence(text=text)
+        )
+        s._row_id = str(row.get("row_id", idx))
+        
+        s = clusterer.process_signal(s)
+        novelties.append(s.novelty)
+        
+    df["NOVELTY"] = novelties
+    df.to_csv(output_path, index=False)
+    print(f"[{stage_name}] Clustered {len(df)} events.")
+    
+    mgr.load_or_create(
+        run_id=uuid.uuid4().hex,
+        stage_name=stage_name,
+        input_path=str(input_path),
+        input_sha256=input_sha256,
+        input_row_count=len(df),
+        output_dir=str(output_dir),
+        code_version=get_code_version(),
+        config_version="v1",
+        model_identifiers={},
+        device="cpu",
+        batch_size=1,
+        chunk_size=len(df),
+    )
+    
+    return output_path
+
+# ---------------------------------------------------------------------------
 # Materiality stage (delegates to event_materiality_v4)
 # ---------------------------------------------------------------------------
 
@@ -552,6 +634,7 @@ def run_impact_stage(
             materiality = str(row.get("EVENT_MATERIALITY", "NO_EVENT"))
             confidence = float(row.get("EVENT_CONFIDENCE", 0.0))
             sentiment = float(row.get("FINBERT_SCORE", 0.0))
+            novelty = float(row.get("NOVELTY", 1.0))
 
             score, reason, tier = scorer.score_dataframe_row(
                 event_type=event_type,
@@ -559,7 +642,7 @@ def run_impact_stage(
                 event_confidence=confidence,
                 sentiment_score=sentiment,
                 source_credibility=1.0,
-                novelty=1.0,
+                novelty=novelty,
             )
             impact_scores.append(score)
             impact_reasons.append(reason)
@@ -957,17 +1040,31 @@ def main() -> None:
     else:
         event_path = output_dir / "event_predictions.csv"
 
-    if STAGE_MATERIALITY in args.stages:
+    if STAGE_CLUSTER in args.stages:
         event_path = output_dir / "event_predictions.csv"
         if not event_path.exists():
+            print("WARNING: event_predictions.csv not found; skipping cluster.")
+        else:
+            print("\n--- STAGE: cluster ---")
+            clustered_path = run_cluster_stage(
+                event_path, output_dir,
+                chunk_size=args.chunk_size,
+                max_rows=args.max_rows,
+            )
+    else:
+        clustered_path = output_dir / "event_clustered.csv"
+
+    if STAGE_MATERIALITY in args.stages:
+        cluster_in = clustered_path or output_dir / "event_clustered.csv"
+        if not cluster_in.exists():
             print(
-                "WARNING: event_predictions.csv not found; "
-                "materiality stage requires event classifier output. Skipping."
+                "WARNING: event_clustered.csv not found; "
+                "materiality stage requires clustered output. Skipping."
             )
         else:
             print("\n--- STAGE: materiality ---")
             materiality_path = run_materiality_stage(
-                event_path, output_dir,
+                cluster_in, output_dir,
                 chunk_size=args.chunk_size * 5,  # materiality is CPU-only, larger chunks OK
                 max_rows=args.max_rows,
             )

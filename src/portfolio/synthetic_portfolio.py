@@ -237,11 +237,11 @@ def summarize_portfolio(portfolio: Portfolio) -> PortfolioSummary:
         for sector, ead in by_sector.items():
             pct = float(ead / total * 100)
             if pct > 30:
-                flags.append(f"SECTOR_CONCENTRATION: {sector} = {pct:.1f}% of total EAD")
+                flags.append(f"SECTOR CONCENTRATION: {sector} = {pct:.1f}% of total EAD")
         for name, ead in by_obligor.items():
             pct = float(ead / total * 100)
             if pct > 15:
-                flags.append(f"OBLIGOR_CONCENTRATION: {name} = {pct:.1f}% of total EAD")
+                flags.append(f"OBLIGOR CONCENTRATION: {name} = {pct:.1f}% of total EAD")
 
     return PortfolioSummary(
         total_ead=total,

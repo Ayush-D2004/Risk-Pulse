@@ -17,3 +17,8 @@ historical_eval_results_rows.parquet
 data/processed/market_cache/
 data/pipeline_output_dryrun/
 docs/
+data/pipeline_output
+final_event_level_validation.parquet
+final_validation_stats.json
+CODEBASE_ANALYSIS.md
+pipeline_output_test
