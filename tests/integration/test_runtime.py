@@ -15,14 +15,19 @@ def client():
 
 def test_create_and_get_run(client):
     doc = {
-        "text": "Tesla files for bankruptcy following a severe liquidity crisis.",
+        "channel": "NEWS",
         "headline": "Tesla goes bankrupt",
+        "body": "Tesla files for bankruptcy following a severe liquidity crisis.",
         "url": "http://example.com/tesla-bankrupt",
-        "target_entity": "Tesla",
-        "source": "news"
+        "author": "example.com"
     }
     
-    response = client.post("/api/intelligence/runs?mode=ANALYST_SIMULATION", json=[doc])
+    payload = {
+        "mode": "ANALYST_SIMULATION",
+        "observations": [doc]
+    }
+    
+    response = client.post("/api/intelligence/simulate", json=payload)
     assert response.status_code == 200
     data = response.json()
     assert "run_id" in data
@@ -33,26 +38,28 @@ def test_create_and_get_run(client):
     assert get_res.status_code == 200
     get_data = get_res.json()
     assert get_data["run_id"] == run_id
-    assert get_data["request"]["observations"][0]["text"] == doc["text"]
+    assert "Tesla files for bankruptcy" in get_data["request"]["observations"][0]["text"]
 
 @pytest.mark.asyncio
 async def test_full_pipeline_execution():
     # Test the orchestrator directly to avoid waiting on the HTTP client which isn't fully async
     from src.dashboard.api import runtime_orchestrator, runtime_store
-    from src.integration.observation_adapter import NewsDocument, adapt_to_run_request
-    from src.integration.runtime_models import PipelineRun
+    from src.integration.runtime_models import PipelineRun, PipelineRunRequest, ObservationInput, ObservationSource, RunMode
     import uuid
     
     if not runtime_orchestrator:
         pytest.skip("RuntimeOrchestrator not initialized. Ensure tests load catalog properly.")
         
-    doc = NewsDocument(
+    obs = ObservationInput(
         text="Tesla secures $10B in funding for new Gigafactory.",
         headline="Tesla Funding",
-        target_entity="Tesla",
-        source="news"
+        entity="Tesla",
+        source=ObservationSource.ANALYST_SIMULATION
     )
-    req = adapt_to_run_request([doc])
+    req = PipelineRunRequest(
+        mode=RunMode.ANALYST_SIMULATION,
+        observations=[obs]
+    )
     run = PipelineRun(run_id=uuid.uuid4().hex, request=req)
     runtime_store.add_run(run)
     
@@ -70,10 +77,14 @@ async def test_full_pipeline_execution():
     
 def test_sse_streaming(client):
     doc = {
-        "text": "Breaking news: Federal Reserve hikes interest rates.",
-        "target_entity": "Federal Reserve"
+        "channel": "NEWS",
+        "body": "Breaking news: Federal Reserve hikes interest rates."
     }
-    post_res = client.post("/api/intelligence/runs?mode=ANALYST_SIMULATION", json=[doc])
+    payload = {
+        "mode": "ANALYST_SIMULATION",
+        "observations": [doc]
+    }
+    post_res = client.post("/api/intelligence/simulate", json=payload)
     run_id = post_res.json()["run_id"]
     
     # We can fetch the stream using stream=True and iter_lines

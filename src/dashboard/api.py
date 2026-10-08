@@ -14,10 +14,11 @@ from src.dashboard.models import (
     ScenarioComparisonResponse,
 )
 
-from src.integration.runtime_models import PipelineRun, RunStatus, RunMode
+from src.integration.runtime_models import PipelineRun, RunStatus, RunMode, AnalystChannel, ObservationSource, ObservationInput, PipelineRunRequest
 from src.integration.runtime_store import RuntimeStore
 from src.integration.runtime import RuntimeOrchestrator
-from src.integration.observation_adapter import NewsDocument, adapt_to_run_request
+from src.integration.gdelt_service import GDELTIntegrationService
+from pydantic import BaseModel
 
 app = FastAPI(title="RiskPulse Dashboard API")
 
@@ -35,15 +36,20 @@ catalog = build_demo_catalog()
 # Runtime Orchestration dependencies
 runtime_store = RuntimeStore()
 runtime_orchestrator = None
+gdelt_service = None
 
 @app.on_event("startup")
 def startup_event():
-    global runtime_orchestrator
+    global runtime_orchestrator, gdelt_service
     try:
         runtime_orchestrator = RuntimeOrchestrator(
             store=runtime_store,
             portfolio=catalog.service._portfolio,
             device="cpu"
+        )
+        gdelt_service = GDELTIntegrationService(
+            orchestrator=runtime_orchestrator,
+            store=runtime_store
         )
     except Exception as e:
         print(f"Failed to initialize RuntimeOrchestrator: {e}")
@@ -90,23 +96,86 @@ def get_scenario_comparison(event_a: str, event_b: str):
 
 # --- Runtime Intelligence Endpoints ---
 
-@app.post("/api/intelligence/runs")
-async def create_run(docs: List[NewsDocument] = Body(...), mode: RunMode = RunMode.ANALYST_SIMULATION):
+from datetime import datetime
+from typing import Dict, Any, Optional, List
+
+class AnalystObservation(BaseModel):
+    source: ObservationSource = ObservationSource.ANALYST_SIMULATION
+    channel: AnalystChannel
+    author: Optional[str] = None
+    headline: Optional[str] = None
+    body: Optional[str] = None
+    timestamp: Optional[datetime] = None
+    url: Optional[str] = None
+    metadata: Optional[Dict[str, Any]] = None
+
+class AnalystSimulationRequest(BaseModel):
+    mode: RunMode = RunMode.ANALYST_SIMULATION
+    observations: List[AnalystObservation]
+
+@app.post("/api/intelligence/simulate")
+async def simulate_runs(req: AnalystSimulationRequest):
     if not runtime_orchestrator:
         raise HTTPException(status_code=503, detail="Orchestrator not initialized")
         
-    req = adapt_to_run_request(docs, mode=mode)
-    run_id = uuid.uuid4().hex
+    if not req.observations:
+        raise HTTPException(status_code=400, detail="Observations cannot be empty")
+        
+    obs_inputs = []
+    for obs in req.observations:
+        text_parts = []
+        if obs.headline:
+            text_parts.append(obs.headline.strip())
+        if obs.body:
+            text_parts.append(obs.body.strip())
+            
+        text = " ".join(text_parts)
+        if not text.strip():
+            raise HTTPException(status_code=400, detail="Observation must have text (headline or body)")
+            
+        obs_inputs.append(ObservationInput(
+            text=text,
+            headline=obs.headline,
+            url=obs.url,
+            author=obs.author,
+            entity=None,
+            source=ObservationSource.ANALYST_SIMULATION,
+            timestamp=obs.timestamp,
+            channel=obs.channel,
+            metadata=obs.metadata
+        ))
+        
+    run_req = PipelineRunRequest(
+        mode=RunMode.ANALYST_SIMULATION,
+        observations=obs_inputs
+    )
     
+    run_id = uuid.uuid4().hex
     run = PipelineRun(
         run_id=run_id,
-        request=req,
+        request=run_req,
     )
     
     runtime_store.add_run(run)
     asyncio.create_task(runtime_orchestrator.process_run(run))
     
     return {"run_id": run_id, "status": run.status}
+
+class GDELTSearchRequest(BaseModel):
+    query: str
+    max_records: int = 50
+
+@app.post("/api/intelligence/gdelt/search")
+async def search_gdelt(req: GDELTSearchRequest):
+    if not gdelt_service:
+        raise HTTPException(status_code=503, detail="GDELT service not initialized")
+        
+    result = gdelt_service.submit_search(query=req.query, max_records=req.max_records)
+    
+    if "error" in result:
+        raise HTTPException(status_code=400, detail=result["error"])
+        
+    return result
 
 @app.get("/api/intelligence/runs")
 def list_runs():

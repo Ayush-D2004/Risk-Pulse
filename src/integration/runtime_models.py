@@ -21,6 +21,10 @@ class ObservationSource(str, Enum):
     ANALYST_SIMULATION = "ANALYST_SIMULATION"
     OTHER = "OTHER"
 
+class AnalystChannel(str, Enum):
+    TWITTER_X_STYLE = "TWITTER_X_STYLE"
+    NEWS = "NEWS"
+
 class StageStatus(str, Enum):
     PENDING = "PENDING"
     RUNNING = "RUNNING"
@@ -44,6 +48,8 @@ class ObservationInput(BaseModel):
     entity: Optional[str] = None
     source: ObservationSource = ObservationSource.OTHER
     timestamp: Optional[datetime] = None
+    channel: Optional[AnalystChannel] = None
+    metadata: Optional[Dict[str, Any]] = None
 
 class PipelineRunRequest(BaseModel):
     mode: RunMode = RunMode.ANALYST_SIMULATION
