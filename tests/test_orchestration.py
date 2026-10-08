@@ -61,18 +61,15 @@ class TestStressScenarioEngine(unittest.TestCase):
 
     def test_geopolitical_event_geographic_aggregation(self):
         """Geopolitical event -> geographic aggregation."""
-        # Geopolitical default scope is GEOGRAPHY. Mapper doesn't know the specific geo from just entity.
-        # But wait, without geo hint, the mapper currently produces affected_geography=None for Geopolitical.
-        # So no exposures match unless we inject it or unless the mapper resolves it.
-        # Wait, the prompt said: "If the model currently only has affected_entity... don't let Antigravity infer... That should be an explicit structured input".
-        # Let's see if 0 exposures are affected.
+        # Geopolitical default scope is GEOGRAPHY. 
+        # The stress engine resolves the geography from the entity's exposure.
+        # Apple is in the US geography, so it will stress all US exposures.
         sig = self._make_signal("EVT-2", EventType.GEOPOLITICAL.value, 8.5, "Apple")
         res = self.engine.run_signal(sig)
         
-        # In current design, GEOGRAPHY scope with affected_geography=None means NO exposures match.
-        self.assertFalse(res.stress_applied)
-        self.assertEqual(res.affected_exposure_count, 0)
-        self.assertEqual(len(res.by_geography), 0)
+        self.assertTrue(res.stress_applied)
+        self.assertGreater(res.affected_exposure_count, 0)
+        self.assertGreater(len(res.by_geography), 0)
 
     def test_corporate_earnings_entity_stress(self):
         """Corporate/Earnings event -> entity stress."""

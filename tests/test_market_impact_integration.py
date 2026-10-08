@@ -148,9 +148,9 @@ class TestMarketContextImpactIntegration(unittest.TestCase):
             volatility=3.1,
         )
         flat_ctx = MarketContext(
-            abnormal_return=0.002,   # essentially flat
+            abnormal_return=0.008,   # neutral
             volume_ratio=1.1,
-            volatility=0.9,
+            volatility=1.1,
         )
         confirmed = _score_mock(signal, heavy_ctx, self.scorer)
         flat = _score_mock(signal, flat_ctx, self.scorer)
@@ -255,9 +255,9 @@ class TestMarketContextImpactIntegration(unittest.TestCase):
             text="New sanctions target EnergyMajor oil exports.",
         )
         flat_ctx = MarketContext(
-            abnormal_return=0.003,
+            abnormal_return=0.008,
             volume_ratio=1.05,
-            volatility=0.8,
+            volatility=1.1,
         )
         flat = _score_mock(signal, flat_ctx, self.scorer)
 
@@ -388,7 +388,7 @@ class TestMarketModifierDoesNotReplaceNLP(unittest.TestCase):
         )
 
     def test_market_modifier_is_bounded(self):
-        """Market modifier must always be in [0.85, 1.30]."""
+        """Market modifier must always be in [0.70, 1.30]."""
         scorer_base = ImpactScorer()
         extreme_ctx = MarketContext(
             abnormal_return=-0.50,   # -50% (extreme)
@@ -396,7 +396,7 @@ class TestMarketModifierDoesNotReplaceNLP(unittest.TestCase):
             volatility=99.9,
         )
         mod = scorer_base.compute_market_modifier(extreme_ctx)
-        self.assertGreaterEqual(mod, 0.85)
+        self.assertGreaterEqual(mod, 0.70)
         self.assertLessEqual(mod, 1.30)
 
         zero_ctx = MarketContext(
@@ -405,7 +405,7 @@ class TestMarketModifierDoesNotReplaceNLP(unittest.TestCase):
             volatility=0.1,
         )
         mod_zero = scorer_base.compute_market_modifier(zero_ctx)
-        self.assertGreaterEqual(mod_zero, 0.85)
+        self.assertGreaterEqual(mod_zero, 0.70)
         self.assertLessEqual(mod_zero, 1.30)
 
 

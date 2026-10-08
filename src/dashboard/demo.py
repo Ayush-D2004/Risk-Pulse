@@ -60,6 +60,34 @@ def demo_signals() -> List[RiskSignal]:
     """Fixed RiskSignal set. Identical on every call."""
     signals = [
         _signal(
+            EVENT_TESLA_CREDIT_10,
+            EventType.CREDIT_EVENT.value,
+            10.0,
+            "Tesla",
+            -0.95,
+        ),
+        _signal(
+            EVENT_TESLA_CREDIT_8,
+            EventType.CREDIT_EVENT.value,
+            8.0,
+            "Tesla",
+            -0.85,
+        ),
+        _signal(
+            EVENT_GEOPOLITICAL,
+            EventType.GEOPOLITICAL.value,
+            7.5,
+            "China",
+            -0.80,
+        ),
+        _signal(
+            EVENT_NO_EVENT,
+            EventType.NO_EVENT.value,
+            1.0,
+            "Apple",
+            0.0,
+        ),
+        _signal(
             "DEMO-REGULATORY-APPLE",
             EventType.REGULATORY_LEGAL.value,
             7.5,

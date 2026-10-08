@@ -155,7 +155,7 @@ class TestExactEntityMatch(unittest.TestCase):
 
     def test_match_by_alias_risk_signal_entities(self):
         """Entities used in existing RiskSignal tests must match portfolio exposures."""
-        risk_signal_entities = ["Amazon", "Boeing", "Tesla", "Apple", "Rosneft", "CountryX"]
+        risk_signal_entities = ["Amazon", "Boeing", "Tesla", "Apple", "Rosneft", "Germany"]
         for entity in risk_signal_entities:
             result = self.model.match_entity(entity)
             self.assertTrue(
