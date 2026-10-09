@@ -41,6 +41,7 @@ class RuntimeOrchestrator:
         
     async def process_run(self, run: PipelineRun):
         run.status = RunStatus.RUNNING
+        self.store.update_run(run)
         
         try:
             await asyncio.to_thread(self._execute_pipeline, run)
@@ -50,6 +51,7 @@ class RuntimeOrchestrator:
             run.error = str(e)
             
         run.completed_at = datetime.now(timezone.utc)
+        self.store.update_run(run)
 
     def _execute_pipeline(self, run: PipelineRun):
         req = run.request

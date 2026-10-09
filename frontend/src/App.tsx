@@ -94,10 +94,10 @@ export default function App() {
   const workspace = (() => {
     switch (activeWorkspace) {
       case 'portfolio': return <PortfolioWorkspace portfolio={portfolioQuery.data} loading={portfolioQuery.loading} error={portfolioQuery.error} retry={portfolioQuery.reload} />
-      case 'events': return <EventsWorkspace events={eventsQuery.data ?? []} loading={eventsQuery.loading} error={eventsQuery.error} retry={eventsQuery.reload} selectedId={selectedEventId} onSelect={selectEvent} />
+      case 'events': return <EventsWorkspace events={eventsQuery.data ?? []} loading={eventsQuery.loading} error={eventsQuery.error} retry={eventsQuery.reload} selectedId={selectedEventId} onSelect={selectEvent} lastRefresh={eventsQuery.updatedAt} />
       case 'investigation': return <InvestigationWorkspace event={selectedEvent} overview={overviewQuery.data} overviewLoading={overviewQuery.loading} overviewError={overviewQuery.error} overviewRetry={overviewQuery.reload} attribution={attributionQuery.data} attributionLoading={attributionQuery.loading} attributionError={attributionQuery.error} attributionRetry={attributionQuery.reload} onNavigate={navigate} />
-      case 'intelligence': return <IntelligenceWorkspace simulationState={simulationState} setSimulationState={setSimulationState} gdeltState={gdeltState} setGdeltState={setGdeltState} />
-      default: return <CommandCenter portfolio={portfolioQuery.data} portfolioLoading={portfolioQuery.loading} portfolioError={portfolioQuery.error} portfolioRetry={portfolioQuery.reload} events={eventsQuery.data ?? []} eventsLoading={eventsQuery.loading} eventsError={eventsQuery.error} eventsRetry={eventsQuery.reload} onSelectEvent={selectEvent} onNavigate={navigate} />
+      case 'intelligence': return <IntelligenceWorkspace simulationState={simulationState} setSimulationState={setSimulationState} gdeltState={gdeltState} setGdeltState={setGdeltState} onPromoteSuccess={() => { eventsQuery.reload(); portfolioQuery.reload(); }} />
+      default: return <CommandCenter portfolio={portfolioQuery.data} portfolioLoading={portfolioQuery.loading} portfolioError={portfolioQuery.error} portfolioRetry={portfolioQuery.reload} events={eventsQuery.data ?? []} eventsLoading={eventsQuery.loading} eventsError={eventsQuery.error} eventsRetry={eventsQuery.reload} onSelectEvent={selectEvent} onNavigate={navigate} lastRefresh={eventsQuery.updatedAt || portfolioQuery.updatedAt} />
     }
   })()
 

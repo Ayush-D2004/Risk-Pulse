@@ -1,3 +1,4 @@
+
 from fastapi.testclient import TestClient
 from src.dashboard.api import app, runtime_orchestrator, runtime_store, promotion_registry
 from src.integration.runtime_models import PipelineRun, PipelineRunRequest, RunMode, RunStatus, ObservationInput, ObservationSource, AnalystChannel
@@ -8,7 +9,12 @@ client = TestClient(app)
 
 @pytest.fixture(autouse=True)
 def reset_stores():
-    runtime_store._runs.clear()
+    conn = runtime_store.db._get_conn()
+    with conn:
+        conn.execute("DELETE FROM pipeline_runs")
+        conn.execute("DELETE FROM promoted_runs")
+        conn.execute("DELETE FROM promoted_events")
+    # Also reset the read models
     promotion_registry.promoted_runs.clear()
     promotion_registry.signals.clear()
     promotion_registry.results.clear()
@@ -76,6 +82,7 @@ def test_missing_final_result():
 def test_signal_stress_mismatch():
     run = create_mock_run()
     run.final_result["stress_results"] = []
+    runtime_store.update_run(run)
     response = client.post(f"/api/intelligence/runs/{run.run_id}/promote")
     assert response.status_code == 400
     assert "Mismatched" in response.text
@@ -107,6 +114,7 @@ def test_collision_demo_fixture():
     # Force collision with known demo event
     run.final_result["signals"][0]["event_id"] = "DEMO-TESLA-CREDIT-10"
     run.final_result["stress_results"][0]["event_id"] = "DEMO-TESLA-CREDIT-10"
+    runtime_store.update_run(run)
     response = client.post(f"/api/intelligence/runs/{run.run_id}/promote")
     assert response.status_code == 400
     assert "Collision" in response.text
@@ -119,6 +127,7 @@ def test_collision_another_promoted_run():
     # Same event ID
     run2.final_result["signals"][0]["event_id"] = run1.run_id
     run2.final_result["stress_results"][0]["event_id"] = run1.run_id
+    runtime_store.update_run(run2)
     response = client.post(f"/api/intelligence/runs/{run2.run_id}/promote")
     assert response.status_code == 400
     assert "Collision" in response.text
@@ -155,6 +164,7 @@ def test_atomic_failure():
         "stressed_exposures": []
     })
     
+    runtime_store.update_run(run)
     response = client.post(f"/api/intelligence/runs/{run.run_id}/promote")
     assert response.status_code == 400
     # Ensure it wasn't partially inserted

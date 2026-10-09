@@ -5,6 +5,7 @@ type QueryState<T> = {
   loading: boolean
   error: Error | null
   reload: () => void
+  updatedAt: Date | null
 }
 
 export function useApiQuery<T>(queryKey: string, request: (signal: AbortSignal) => Promise<T>, enabled = true): QueryState<T> {
@@ -12,6 +13,7 @@ export function useApiQuery<T>(queryKey: string, request: (signal: AbortSignal) 
   const [error, setError] = useState<Error | null>(null)
   const [loading, setLoading] = useState(enabled)
   const [revision, setRevision] = useState(0)
+  const [updatedAt, setUpdatedAt] = useState<Date | null>(null)
   const latestKey = useRef(queryKey)
 
   const reload = useCallback(() => setRevision((value) => value + 1), [])
@@ -27,7 +29,10 @@ export function useApiQuery<T>(queryKey: string, request: (signal: AbortSignal) 
     setError(null)
     request(controller.signal)
       .then((result) => {
-        if (latestKey.current === queryKey) setData(result)
+        if (latestKey.current === queryKey) {
+          setData(result)
+          setUpdatedAt(new Date())
+        }
       })
       .catch((reason: unknown) => {
         if (controller.signal.aborted) return
@@ -39,5 +44,5 @@ export function useApiQuery<T>(queryKey: string, request: (signal: AbortSignal) 
     return () => controller.abort()
   }, [enabled, queryKey, request, revision])
 
-  return { data, loading, error, reload }
+  return { data, loading, error, reload, updatedAt }
 }

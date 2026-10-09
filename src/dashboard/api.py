@@ -19,6 +19,8 @@ from src.integration.runtime_store import RuntimeStore
 from src.integration.runtime import RuntimeOrchestrator
 from src.integration.gdelt_service import GDELTIntegrationService
 from src.dashboard.promotion import PromotionRegistry, PromotedRunResponse
+from src.ingestion.worker import GDELTWorker, GDELTWorkerConfig
+from src.db import db_instance
 from pydantic import BaseModel
 
 app = FastAPI(title="RiskPulse Dashboard API")
@@ -38,11 +40,12 @@ catalog = build_demo_catalog()
 runtime_store = RuntimeStore()
 runtime_orchestrator = None
 gdelt_service = None
+gdelt_worker = None
 promotion_registry = PromotionRegistry()
 
 @app.on_event("startup")
 def startup_event():
-    global runtime_orchestrator, gdelt_service
+    global runtime_orchestrator, gdelt_service, gdelt_worker
     try:
         runtime_orchestrator = RuntimeOrchestrator(
             store=runtime_store,
@@ -53,8 +56,32 @@ def startup_event():
             orchestrator=runtime_orchestrator,
             store=runtime_store
         )
+        # Initialize worker (disabled by default)
+        config = GDELTWorkerConfig(enabled=False)
+        gdelt_worker = GDELTWorker(gdelt_service, config)
+        gdelt_worker.start()
     except Exception as e:
-        print(f"Failed to initialize RuntimeOrchestrator: {e}")
+        print(f"Failed to initialize RuntimeOrchestrator or Worker: {e}")
+
+@app.on_event("shutdown")
+def shutdown_event():
+    if gdelt_worker:
+        gdelt_worker.stop()
+
+@app.get("/api/intelligence/worker/status")
+def get_worker_status():
+    conn = db_instance._get_conn()
+    row = conn.execute("SELECT * FROM gdelt_worker_status WHERE id = 1").fetchone()
+    return {
+        "enabled": gdelt_worker.config.enabled if gdelt_worker else False,
+        "last_attempt_at": row["last_attempt_at"] if row else None,
+        "last_success_at": row["last_success_at"] if row else None,
+        "last_result_category": row["last_result_category"] if row else None,
+        "fetched_count": row["fetched_count"] if row else 0,
+        "deduped_count": row["deduped_count"] if row else 0,
+        "submitted_count": row["submitted_count"] if row else 0,
+        "active_run_id": row["active_run_id"] if row else None,
+    }
 
 @app.get("/api/portfolio", response_model=PortfolioOverviewResponse)
 def get_portfolio_overview():
@@ -243,16 +270,19 @@ async def stream_run(run_id: str, request: Request):
         raise HTTPException(status_code=404, detail="Run not found")
         
     async def event_generator():
-        last_yielded_stages = 0
         while True:
             if await request.is_disconnected():
                 break
                 
+            current_run = runtime_store.get_run(run_id)
+            if not current_run:
+                break
+                
             # Yield full current state
-            data = run.model_dump(mode="json")
+            data = current_run.model_dump(mode="json")
             yield f"data: {json.dumps(data)}\n\n"
             
-            if run.status in (RunStatus.COMPLETED, RunStatus.FAILED):
+            if current_run.status in (RunStatus.COMPLETED, RunStatus.FAILED):
                 break
                 
             await asyncio.sleep(0.5)

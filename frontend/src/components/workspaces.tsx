@@ -26,7 +26,7 @@ function DataGate({ loading, error, empty, retry, children }: { loading: boolean
   return <>{children}</>
 }
 
-export function CommandCenter({ portfolio, portfolioLoading, portfolioError, portfolioRetry, events, eventsLoading, eventsError, eventsRetry, onSelectEvent, onNavigate }: {
+export function CommandCenter({ portfolio, portfolioLoading, portfolioError, portfolioRetry, events, eventsLoading, eventsError, eventsRetry, onSelectEvent, onNavigate, lastRefresh }: {
   portfolio: { data: PortfolioOverviewData; generated_at?: string; schema_version?: string } | null
   portfolioLoading: boolean
   portfolioError: Error | null
@@ -37,9 +37,25 @@ export function CommandCenter({ portfolio, portfolioLoading, portfolioError, por
   eventsRetry: () => void
   onSelectEvent: (eventId: string) => void
   onNavigate: (workspace: Workspace) => void
+  lastRefresh?: Date | null
 }) {
   return <div className="workspace-stack">
-    <WorkspaceTitle eyebrow="COMMAND CENTER / 01" title="Portfolio at a glance." detail="A compact read on what is exposed, what is moving, and where the next research case starts." action={<div className="command-signal"><SignalLine /><span>RISK SIGNAL</span></div>} />
+    <WorkspaceTitle 
+      eyebrow="COMMAND CENTER / 01" 
+      title="Portfolio at a glance." 
+      detail="A compact read on what is exposed, what is moving, and where the next research case starts." 
+      action={
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {lastRefresh && (
+            <div style={{ fontSize: '11px', color: 'var(--muted)', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.2 }}>
+              <span style={{ fontWeight: 600 }}>LAST REFRESH</span>
+              <span>{lastRefresh.toLocaleTimeString()}</span>
+            </div>
+          )}
+          <div className="command-signal"><SignalLine /><span>RISK SIGNAL</span></div>
+        </div>
+      } 
+    />
     <DataGate loading={portfolioLoading} error={portfolioError} empty={!portfolio?.data} retry={portfolioRetry}>
       {portfolio && <div className="hero-readout"><div><div className="hero-readout__label">Total Exposure at Default</div><div className="hero-readout__value">{formatMoney(portfolio.data.total_ead)}</div><div className="hero-readout__meta">{portfolio.data.exposure_count} exposures · {portfolio.data.obligor_count} obligors</div></div><div className="hero-readout__signal"><SignalLine /><div className="hero-readout__ticks"><span>EXPOSURE FIELD</span><span>CONCENTRATION / READ-ONLY</span></div></div></div>}
     </DataGate>
@@ -50,8 +66,30 @@ export function CommandCenter({ portfolio, portfolioLoading, portfolioError, por
   </div>
 }
 
-export function EventsWorkspace({ events, loading, error, retry, selectedId, onSelect }: { events: EventSummary[]; loading: boolean; error: Error | null; retry: () => void; selectedId: string | null; onSelect: (id: string) => void }) {
-  return <div className="workspace-stack"><WorkspaceTitle eyebrow="EVENT INTELLIGENCE / 03" title="Risk, in sequence." detail="A research feed for material signals. Open a case to trace its stress path through the book." action={<button className="filter-button"><Filter size={14} /> Filter view</button>} /><SectionFrame eyebrow="LIVE EVENT REGISTER" title="Risk event feed" meta={<SourceStamp schema="EVENTS" />}><DataGate loading={loading} error={error} empty={!events.length} retry={retry}>{<div className="event-feed">{events.map((event, index) => <motion.button initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }} className={`event-row ${selectedId === event.event_id ? 'event-row--selected' : ''}`} key={event.event_id} onClick={() => onSelect(event.event_id)}><div className="event-row__index">{String(index + 1).padStart(2, '0')}</div><div className={`event-row__score event-row__score--${impactTone(event.impact_tier)}`}><span>{formatScore(event.impact_score)}</span><small>IMPACT</small></div><div className="event-row__main"><div className="event-row__headline"><strong>{event.entity}</strong><span>{prettyLabel(event.event_type)}</span><StatusChip label={event.impact_tier} />{event.provenance && <span style={{ marginLeft: '8px', fontSize: '10px', padding: '2px 4px', background: '#F3F4F6', color: '#6B7280', borderRadius: '4px' }}>{event.provenance}</span>}</div><div className="event-row__detail">{event.deterministic_rationale || 'Deterministic rationale not returned by the API.'}</div></div><div className="event-row__facts"><span>{prettyLabel(sentimentLabel(event.sentiment))} SENTIMENT</span><span>{event.shock_scope ? prettyLabel(event.shock_scope) : 'SCOPE NOT RETURNED'}</span></div><ChevronRight className="event-row__arrow" size={16} /></motion.button>)}</div>}</DataGate></SectionFrame></div>
+export function EventsWorkspace({ events, loading, error, retry, selectedId, onSelect, lastRefresh }: { events: EventSummary[]; loading: boolean; error: Error | null; retry: () => void; selectedId: string | null; onSelect: (id: string) => void; lastRefresh?: Date | null }) {
+  return <div className="workspace-stack">
+    <WorkspaceTitle 
+      eyebrow="EVENT INTELLIGENCE / 03" 
+      title="Risk, in sequence." 
+      detail="A research feed for material signals. Open a case to trace its stress path through the book." 
+      action={
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {lastRefresh && (
+            <div style={{ fontSize: '11px', color: 'var(--muted)', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', lineHeight: 1.2 }}>
+              <span style={{ fontWeight: 600 }}>LAST REFRESH</span>
+              <span>{lastRefresh.toLocaleTimeString()}</span>
+            </div>
+          )}
+          <button className="filter-button"><Filter size={14} /> Filter view</button>
+        </div>
+      } 
+    />
+    <SectionFrame eyebrow="LIVE EVENT REGISTER" title="Risk event feed" meta={<SourceStamp schema="EVENTS" />}>
+      <DataGate loading={loading} error={error} empty={!events.length} retry={retry}>
+        {<div className="event-feed">{events.map((event, index) => <motion.button initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }} className={`event-row ${selectedId === event.event_id ? 'event-row--selected' : ''}`} key={event.event_id} onClick={() => onSelect(event.event_id)}><div className="event-row__index">{String(index + 1).padStart(2, '0')}</div><div className={`event-row__score event-row__score--${impactTone(event.impact_tier)}`}><span>{formatScore(event.impact_score)}</span><small>IMPACT</small></div><div className="event-row__main"><div className="event-row__headline"><strong>{event.entity}</strong><span>{prettyLabel(event.event_type)}</span><StatusChip label={event.impact_tier} />{event.provenance && <span style={{ marginLeft: '8px', fontSize: '10px', padding: '2px 4px', background: '#F3F4F6', color: '#6B7280', borderRadius: '4px' }}>{event.provenance}</span>}</div><div className="event-row__detail">{event.deterministic_rationale || 'Deterministic rationale not returned by the API.'}</div></div><div className="event-row__facts"><span>{prettyLabel(sentimentLabel(event.sentiment))} SENTIMENT</span><span>{event.shock_scope ? prettyLabel(event.shock_scope) : 'SCOPE NOT RETURNED'}</span></div><ChevronRight className="event-row__arrow" size={16} /></motion.button>)}</div>}
+      </DataGate>
+    </SectionFrame>
+  </div>
 }
 
 export function PortfolioWorkspace({ portfolio, loading, error, retry }: { portfolio: { data: PortfolioOverviewData; generated_at?: string; schema_version?: string } | null; loading: boolean; error: Error | null; retry: () => void }) {
@@ -118,7 +156,30 @@ function SimulationResultView({ result }: { result: any }) {
   )
 }
 
-function SimulationRunView({ runId, run, loading, connectionState, streamError, retry }: { runId: string, run: any, loading: boolean, connectionState: string, streamError: Error | null, retry: () => void }) {
+function SimulationRunView({ runId, run, loading, connectionState, streamError, retry, onPromoteSuccess }: { runId: string, run: any, loading: boolean, connectionState: string, streamError: Error | null, retry: () => void, onPromoteSuccess?: () => void }) {
+  const [promoting, setPromoting] = useState(false)
+  const [promotedData, setPromotedData] = useState<{ count: number, eventIds: string[] } | null>(null)
+  const [promoteError, setPromoteError] = useState<Error | null>(null)
+
+  const handlePromote = async () => {
+    if (!runId) return
+    setPromoting(true)
+    setPromoteError(null)
+    try {
+      const res = await promotePipelineRun(runId)
+      if (res.status === 'SUCCESS' || res.status === 'ALREADY_PROMOTED') {
+        setPromotedData({ count: res.count, eventIds: res.promoted_event_ids })
+        if (onPromoteSuccess) onPromoteSuccess()
+      }
+    } catch (e) {
+      setPromoteError(e instanceof Error ? e : new Error('Promotion failed'))
+    } finally {
+      setPromoting(false)
+    }
+  }
+
+  const isEligible = run?.status === 'COMPLETED' && run.final_result && Array.isArray(run.final_result.signals) && run.final_result.signals.length > 0 && Array.isArray(run.final_result.stress_results) && run.final_result.stress_results.length > 0
+
   if (streamError) return <ErrorState title="Stream error" detail={streamError.message} onRetry={retry} />
   if (loading && !run) return <LoadingState />
   if (!run) return <EmptyState title="Run not found" detail="The execution may have expired." />
@@ -128,7 +189,30 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
 
   return (
     <div className="workspace-stack">
-      <SectionFrame eyebrow="PIPELINE EXECUTION" title={`Run ${runId.slice(0, 8)}`} meta={<StatusChip label={run.status} tone={run.status === 'FAILED' ? 'danger' : run.status === 'COMPLETED' ? 'mint' : 'default'} />}>
+      <SectionFrame 
+        eyebrow="PIPELINE EXECUTION" 
+        title={`Run ${runId.slice(0, 8)}`} 
+        meta={
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+            {isEligible && (
+              promotedData ? (
+                <span style={{ fontSize: '12px', color: 'var(--mint)', fontWeight: 'bold' }}><Check size={14} style={{ display: 'inline', verticalAlign: 'text-bottom' }} /> PROMOTED ({promotedData.count})</span>
+              ) : (
+                <button 
+                  className="button button--secondary" 
+                  onClick={handlePromote} 
+                  disabled={promoting}
+                  style={{ padding: '4px 10px', fontSize: '11px', height: 'auto', border: '1px solid var(--line-strong)' }}
+                >
+                  {promoting ? 'PROMOTING...' : 'PROMOTE TO COMMAND CENTER'}
+                </button>
+              )
+            )}
+            <StatusChip label={run.status} tone={run.status === 'FAILED' ? 'danger' : run.status === 'COMPLETED' ? 'mint' : 'default'} />
+          </div>
+        }
+      >
+        {promoteError && <div style={{ marginBottom: '16px' }}><ErrorState title="Promotion Failed" detail={promoteError.message} /></div>}
         <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
           <div style={{ flex: '1 1 320px' }}>
             <div className="section-eyebrow" style={{ marginBottom: '16px' }}>EXECUTION TIMELINE</div>
@@ -157,9 +241,9 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
           <div style={{ flex: '1 1 300px' }}>
             <div className="section-eyebrow" style={{ marginBottom: '16px' }}>CONTEXT</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-              <MetricBlock label="MODE" value={run.request?.mode || 'ANALYST_SIMULATION'} />
+              <MetricBlock label="MODE" value={run.request?.mode || 'UNKNOWN'} />
               <MetricBlock label="OBSERVATIONS" value={run.request?.observations?.length || 0} />
-              <MetricBlock label="PROVENANCE" value="SYNTHETIC_FIXTURE" tone="amber" />
+              <MetricBlock label="PROVENANCE" value={run.request?.mode || 'UNKNOWN'} tone={run.request?.mode === 'LIVE_GDELT' ? 'mint' : 'amber'} />
             </div>
           </div>
         </div>
@@ -170,7 +254,7 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
   )
 }
 
-export function SimulationWorkspace({ state, setState, hideTitle }: { state: SimulationWorkspaceState, setState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>>, hideTitle?: boolean }) {
+export function SimulationWorkspace({ state, setState, hideTitle, onPromoteSuccess }: { state: SimulationWorkspaceState, setState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>>, hideTitle?: boolean, onPromoteSuccess?: () => void }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { run, loading, connectionState, error: streamError, retry } = usePipelineStream(state.activeRunId)
 
@@ -368,7 +452,7 @@ export function SimulationWorkspace({ state, setState, hideTitle }: { state: Sim
       </AnimatePresence>
 
       {state.activeRunId ? (
-        <SimulationRunView runId={state.activeRunId} run={run} loading={loading} connectionState={connectionState} streamError={streamError} retry={retry} />
+        <SimulationRunView runId={state.activeRunId} run={run} loading={loading} connectionState={connectionState} streamError={streamError} retry={retry} onPromoteSuccess={onPromoteSuccess} />
       ) : (
         <EmptyState 
           title="No active simulation" 
@@ -389,8 +473,32 @@ export interface GdeltWorkspaceState {
   resultCount: number | null
 }
 
-export function GdeltWorkspace({ state, setState, hideTitle }: { state: GdeltWorkspaceState, setState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>>, hideTitle?: boolean }) {
+export function GdeltWorkspace({ state, setState, hideTitle, onPromoteSuccess }: { state: GdeltWorkspaceState, setState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>>, hideTitle?: boolean, onPromoteSuccess?: () => void }) {
   const { run, loading, connectionState, error: streamError, retry } = usePipelineStream(state.activeRunId)
+
+  const [promoting, setPromoting] = useState(false)
+  const [promotedData, setPromotedData] = useState<{ count: number, eventIds: string[] } | null>(null)
+  const [promoteError, setPromoteError] = useState<Error | null>(null)
+
+  const handlePromote = async () => {
+    if (!state.activeRunId) return
+    setPromoting(true)
+    setPromoteError(null)
+    try {
+      const res = await promotePipelineRun(state.activeRunId)
+      if (res.status === 'SUCCESS' || res.status === 'ALREADY_PROMOTED') {
+        setPromotedData({ count: res.count, eventIds: res.promoted_event_ids })
+        if (onPromoteSuccess) onPromoteSuccess()
+      }
+    } catch (e) {
+      setPromoteError(e instanceof Error ? e : new Error('Promotion failed'))
+    } finally {
+      setPromoting(false)
+    }
+  }
+
+  const isEligible = run?.status === 'COMPLETED' && run.final_result && Array.isArray((run.final_result as any).signals) && (run.final_result as any).signals.length > 0 && Array.isArray((run.final_result as any).stress_results) && (run.final_result as any).stress_results.length > 0
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -475,12 +583,30 @@ export function GdeltWorkspace({ state, setState, hideTitle }: { state: GdeltWor
           emptyStateTitle="No active run"
           emptyStateDetail="Submit a query to fetch and process live news records."
           emptyStateIcon={<Search size={18} />}
-          headerRight={state.resultCount !== null ? (
-            <div style={{ textAlign: 'right' }}>
-              <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#6B7280' }}>DOCUMENTS</div>
-              <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{state.resultCount}</div>
+          headerRight={
+            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
+              {state.resultCount !== null && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#6B7280' }}>DOCUMENTS</div>
+                  <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{state.resultCount}</div>
+                </div>
+              )}
+              {isEligible && (
+                promotedData ? (
+                  <span style={{ fontSize: '12px', color: '#10B981', fontWeight: 'bold' }}><Check size={14} style={{ display: 'inline', verticalAlign: 'text-bottom' }} /> PROMOTED ({promotedData.count})</span>
+                ) : (
+                  <button 
+                    className="text-button" 
+                    onClick={handlePromote} 
+                    disabled={promoting}
+                    style={{ padding: '6px 12px', background: '#E5E7EB', borderRadius: '4px', color: '#374151', fontWeight: 'bold', fontSize: '11px', border: 'none', cursor: promoting ? 'not-allowed' : 'pointer' }}
+                  >
+                    {promoting ? 'PROMOTING...' : 'PROMOTE TO COMMAND CENTER'}
+                  </button>
+                )
+              )}
             </div>
-          ) : undefined}
+          }
         />
       </div>
     </div>
@@ -491,7 +617,7 @@ export function SidebarBrand() {
   return <div className="sidebar-brand"><AppMark /><div className="sidebar-brand__meta"></div></div>
 }
 
-function PipelineRunViewerWrapper({ activeRunId }: { activeRunId: string }) {
+function PipelineRunViewerWrapper({ activeRunId, onPromoteSuccess }: { activeRunId: string, onPromoteSuccess?: () => void }) {
   const { run, loading, connectionState, error, retry } = usePipelineStream(activeRunId)
   
   const [promoting, setPromoting] = useState(false)
@@ -506,6 +632,7 @@ function PipelineRunViewerWrapper({ activeRunId }: { activeRunId: string }) {
       const res = await promotePipelineRun(activeRunId)
       if (res.status === 'SUCCESS' || res.status === 'ALREADY_PROMOTED') {
         setPromotedData({ count: res.count, eventIds: res.promoted_event_ids })
+        if (onPromoteSuccess) onPromoteSuccess()
       }
     } catch (e) {
       setPromoteError(e instanceof Error ? e : new Error('Promotion failed'))
@@ -715,10 +842,12 @@ export function ProvenanceWorkspace() {
 
 export function IntelligenceWorkspace({ 
   simulationState, setSimulationState, 
-  gdeltState, setGdeltState 
+  gdeltState, setGdeltState,
+  onPromoteSuccess
 }: { 
   simulationState: SimulationWorkspaceState, setSimulationState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>>,
-  gdeltState: GdeltWorkspaceState, setGdeltState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>>
+  gdeltState: GdeltWorkspaceState, setGdeltState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>>,
+  onPromoteSuccess?: () => void
 }) {
   const [activeTab, setActiveTab] = useState<'sandbox' | 'gdelt'>('sandbox')
 
@@ -747,9 +876,9 @@ export function IntelligenceWorkspace({
       />
       <div style={{ marginTop: '8px' }}>
         {activeTab === 'sandbox' ? (
-          <SimulationWorkspace state={simulationState} setState={setSimulationState} hideTitle />
+          <SimulationWorkspace state={simulationState} setState={setSimulationState} hideTitle onPromoteSuccess={onPromoteSuccess} />
         ) : (
-          <GdeltWorkspace state={gdeltState} setState={setGdeltState} hideTitle />
+          <GdeltWorkspace state={gdeltState} setState={setGdeltState} hideTitle onPromoteSuccess={onPromoteSuccess} />
         )}
       </div>
     </div>
