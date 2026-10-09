@@ -66,7 +66,7 @@ _OBLIGORS = [
     # ---- Financials ----
     ("GlobalBank [Synthetic]", "GBKS", ["GlobalBank"],
      "Financials", "EU"),
-    ("AsiaCredit [Synthetic] Ltd", "ACRD", ["AsiaCredit"],
+    ("AsiaCredit [Synthetic] Ltd", "ACRD", ["AsiaCredit", "China", "China Credit", "Asian Credit"],
      "Financials", "APAC"),
 
     # ---- Industrials ----

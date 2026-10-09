@@ -50,21 +50,30 @@ class StressScenarioEngine:
             return f"${v / 1_000:,.3f}K".replace("$-", "-$")
         return f"${v:,.2f}".replace("$-", "-$")
 
-    def _build_explanation(self, result: StressScenarioResult) -> str:
+    def _build_explanation(self, result: StressScenarioResult, signal: Optional[RiskSignal] = None) -> str:
         """Deterministically assemble a human-readable explanation."""
         if result.error:
             return f"Validation Error: {result.error}"
 
         shock_scope = result.shock_scenario.shock_scope if result.shock_scenario else 'NONE'
 
-        lines = [
+        lines = []
+        if signal and signal.evidence and signal.evidence.text:
+            cleaned_text = signal.evidence.text.strip()
+            if cleaned_text and cleaned_text not in ("Deterministic dashboard demo fixture", "Test", "Mock text"):
+                lines.append(cleaned_text)
+
+        lines.extend([
             f"{result.event_type} affecting {result.affected_entity}.",
             f"Impact score: {result.impact_score:.1f} ({result.impact_tier}).",
             f"Shock scope: {shock_scope}.",
             f"Affected EAD: {self._format_money(result.affected_ead)} ({result.affected_ead_pct * 100:.2f}% of portfolio).",
             f"Incremental expected loss: {self._format_money(result.incremental_expected_loss)}.",
             f"MTM impact: {self._format_money(result.total_mtm_impact)}."
-        ]
+        ])
+        if shock_scope == "ENTITY" and result.affected_exposure_count == 0:
+            lines.append(f"Unheld Counterparty: {result.affected_entity} is not currently held in the wholesale credit portfolio. Direct single-name credit loss is $0.00.")
+
         return " ".join(lines)
 
     def _aggregate(
@@ -222,7 +231,7 @@ class StressScenarioEngine:
         )
         
         # Generate and inject explanation
-        expl = self._build_explanation(result_pre)
+        expl = self._build_explanation(result_pre, signal=signal)
         
         # Reconstruct with rationale
         d = result_pre.model_dump()

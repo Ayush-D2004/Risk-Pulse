@@ -82,8 +82,11 @@ class PromotionRegistry:
         for eid in event_ids:
             if eid in existing_event_ids:
                 raise ValueError(f"Collision with demo fixture: {eid}")
-            if eid in self.results:
-                raise ValueError(f"Collision with another promoted run for event: {eid}")
+            if eid in self.results and run.run_id not in self.promoted_runs:
+                # If event already promoted in another run
+                other_run = self.provenance_map.get(eid)
+                if other_run != run.request.mode.value:
+                    raise ValueError(f"Collision with another promoted run for event: {eid}")
 
         for sig, res in zip(signals, stress_results):
             if sig.event_id != res.event_id:
@@ -99,7 +102,7 @@ class PromotionRegistry:
                 # 1. Insert into promoted_runs
                 conn.execute(
                     """
-                    INSERT INTO promoted_runs (run_id, mode, source, channel, promoted_at, event_ids_json)
+                    INSERT OR REPLACE INTO promoted_runs (run_id, mode, source, channel, promoted_at, event_ids_json)
                     VALUES (?, ?, ?, ?, ?, ?)
                     """,
                     (run.run_id, run.request.mode.value, source, channel, promoted_at, json.dumps(event_ids))
@@ -109,15 +112,20 @@ class PromotionRegistry:
                 for sig, res in zip(signals, stress_results):
                     conn.execute(
                         """
-                        INSERT INTO promoted_events (event_id, run_id, signal_payload, result_payload, provenance)
+                        INSERT OR REPLACE INTO promoted_events (event_id, run_id, signal_payload, result_payload, provenance)
                         VALUES (?, ?, ?, ?, ?)
                         """,
                         (sig.event_id, run.run_id, sig.model_dump_json(), res.model_dump_json(), run.request.mode.value)
                     )
         except sqlite3.IntegrityError as e:
-            # Catch collision or duplicate insert
+            # Handle duplicate or already-promoted events cleanly
             if "UNIQUE constraint failed" in str(e):
-                raise ValueError(f"Database collision error: {e}")
+                return PromotedRunResponse(
+                    run_id=run.run_id,
+                    status="ALREADY_PROMOTED",
+                    promoted_event_ids=event_ids,
+                    count=len(event_ids)
+                )
             raise ValueError(f"Database integrity error: {e}")
 
         # Update in-memory read models only if transaction succeeded

@@ -41,7 +41,10 @@ def _signal(
     impact_score: float,
     entity: str,
     sentiment_score: float,
+    evidence_text: Optional[str] = None,
+    headline: Optional[str] = None,
 ) -> RiskSignal:
+    text = evidence_text or "Deterministic dashboard demo fixture"
     return RiskSignal(
         event_id=event_id,
         entity=entity,
@@ -51,7 +54,7 @@ def _signal(
         event_confidence=1.0,
         materiality="MATERIAL_EVENT" if event_type != EventType.NO_EVENT.value else "NO_EVENT",
         impact_score=impact_score,
-        evidence=Evidence(text="Deterministic dashboard demo fixture"),
+        evidence=Evidence(text=text, headline=headline),
         timestamp=DEMO_SIGNAL_TS,
     )
 
@@ -65,34 +68,35 @@ def demo_signals() -> List[RiskSignal]:
             10.0,
             "Tesla",
             -0.95,
+            headline="Tesla Slashed to Speculative Grade Amid Liquidity Crunch and Debt Default",
+            evidence_text="Major credit agency slashes Tesla debt to CCC following unexpected debt service default on offshore notes and acute liquidity contraction, triggering cross-default covenants and severe bond and equity valuation write-downs.",
         ),
         _signal(
-            EVENT_TESLA_CREDIT_8,
-            EventType.CREDIT_EVENT.value,
-            8.0,
-            "Tesla",
-            -0.85,
-        ),
-        _signal(
-            EVENT_GEOPOLITICAL,
-            EventType.GEOPOLITICAL.value,
-            7.5,
-            "China",
-            -0.80,
-        ),
-        _signal(
-            EVENT_NO_EVENT,
-            EventType.NO_EVENT.value,
-            1.0,
-            "Apple",
-            0.0,
+            "DEMO-COMMODITY-PETRO",
+            EventType.COMMODITY_SUPPLY_CHAIN.value,
+            9.2,
+            "PetroGlobal",
+            -0.88,
+            headline="Persian Gulf Shipping Blockade Sparks 35% Crude Oil Spike and Refinery Squeeze",
+            evidence_text="Critical maritime chokepoint closure halts crude export deliveries, causing severe feed-stock shortages and operational margin compression across all wholesale banking book Energy obligors.",
         ),
         _signal(
             "DEMO-REGULATORY-APPLE",
             EventType.REGULATORY_LEGAL.value,
-            7.5,
+            8.5,
             "Apple",
-            -0.95,
+            -0.92,
+            headline="EU & US Regulators Impose Historic $14B Antitrust Penalty and Injunction on Apple",
+            evidence_text="Antitrust authorities levy unprecedented structural remedies and multi-billion punitive fines against Apple, compressing operating margins and triggering debt spread widening across its corporate loan and bond facilities.",
+        ),
+        _signal(
+            EVENT_GEOPOLITICAL,
+            EventType.GEOPOLITICAL.value,
+            8.0,
+            "Germany",
+            -0.85,
+            headline="Eastern European Pipeline Embargo Triggers Energy Crisis and Sovereign Yield Surge",
+            evidence_text="Emergency natural gas sanctions and regional supply cutoffs drive sharp inflationary surges and sovereign yield spikes across EMEA banking book assets.",
         ),
         _signal(
             "DEMO-MA-AMAZON",
@@ -100,13 +104,26 @@ def demo_signals() -> List[RiskSignal]:
             8.2,
             "Amazon",
             0.60,
+            headline="Amazon Unveils $45B Debt-Financed Acquisition of Global Logistics Carrier",
+            evidence_text="Aggressive debt-financed acquisition expands corporate leverage and introduces substantial integration execution risk, prompting debt credit spread widening and equity re-pricing.",
         ),
         _signal(
-            "DEMO-COMMODITY-PETRO",
-            EventType.COMMODITY_SUPPLY_CHAIN.value,
-            6.8,
-            "PetroGlobal",
-            -0.45,
+            EVENT_TESLA_CREDIT_8,
+            EventType.CREDIT_EVENT.value,
+            8.0,
+            "Tesla",
+            -0.85,
+            headline="Tesla Downgraded by Two Notches on Auto Margin Compression",
+            evidence_text="Rating agency initiates two-notch downgrade following automotive gross margin deterioration and aggressive EV price cuts, stressing credit spreads.",
+        ),
+        _signal(
+            EVENT_NO_EVENT,
+            EventType.NO_EVENT.value,
+            1.0,
+            "Apple",
+            0.0,
+            headline="Apple Announces Routine Minor Accessory Colorway Updates",
+            evidence_text="Routine product color refresh generates non-material financial commentary with zero structural impact on obligor creditworthiness or portfolio debt facilities.",
         ),
         _signal(
             "TEST-MARKET-DAMPENING",
@@ -114,6 +131,7 @@ def demo_signals() -> List[RiskSignal]:
             6.5,  # Dampened from 9.5 due to market modifier
             "Tesla",
             -0.85,
+            evidence_text="Credit event observed alongside elevated market volatility.",
         ),
         _signal(
             "TEST-NOVELTY-HIGH",
@@ -121,6 +139,7 @@ def demo_signals() -> List[RiskSignal]:
             9.0,  # High impact due to novelty = 1.0
             "Germany",
             -0.80,
+            evidence_text="Novel geopolitical conflict outbreak in Western Europe.",
         ),
         _signal(
             "TEST-GUARDRAIL-BLOCKED",
@@ -128,6 +147,7 @@ def demo_signals() -> List[RiskSignal]:
             1.5,  # Impact slashed because financial guardrail blocked it
             "MidCapCorp",
             -0.90,
+            evidence_text="Spurious credit alarm dampened by financial balance sheet guardrails.",
         ),
     ]
 

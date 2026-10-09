@@ -91,7 +91,7 @@ class RuntimeOrchestrator:
         self.store.update_run(run)
         
         signals = []
-        for obs in valid_obs:
+        for i, obs in enumerate(valid_obs):
             text = obs.text
             raw_entity = obs.entity or "UNKNOWN"
             
@@ -132,8 +132,9 @@ class RuntimeOrchestrator:
                     confidence=event_conf
                 )
             
+            event_id = f"{run.run_id}_{i+1}" if len(valid_obs) > 1 else run.run_id
             sig = RiskSignal(
-                event_id=run.run_id,
+                event_id=event_id,
                 entity=canonical_entity,
                 source=obs.source.value,
                 sentiment_score=sentiment_score,

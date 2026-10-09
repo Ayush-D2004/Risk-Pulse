@@ -134,10 +134,11 @@ function formatDateTime(timestamp: string, timezone: string) {
   }
 }
 
-function MarketChart({ ticker, timestamp, timezone }: { ticker: string, timestamp: string, timezone: string }) {
+function MarketChart({ companyName, ticker, timestamp, timezone }: { companyName?: string, ticker: string, timestamp: string, timezone: string }) {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<Error | null>(null)
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
 
   useEffect(() => {
     const controller = new AbortController()
@@ -156,55 +157,103 @@ function MarketChart({ ticker, timestamp, timezone }: { ticker: string, timestam
     return () => controller.abort()
   }, [ticker, timestamp, timezone])
 
-  if (loading) return <div style={{ padding: '24px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px' }}>Loading market data...</div>
-  if (error) return <div style={{ padding: '24px', color: 'var(--danger)', fontSize: '13px' }}>Error loading market data: {error.message}</div>
-  if (!data || data.status !== 'success') return <div style={{ padding: '24px', color: 'var(--amber)', fontSize: '13px' }}>Market data unavailable for this window.</div>
+  if (loading) return <div style={{ padding: '24px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px' }}>Loading market data from Yahoo Finance...</div>
+  if (error) return <div style={{ padding: '24px', color: 'var(--coral, #ef4444)', fontSize: '13px' }}>Error loading market data: {error.message}</div>
+  if (!data || data.status !== 'success') return <div style={{ padding: '24px', color: 'var(--amber, #f59e0b)', fontSize: '13px' }}>Market data unavailable for this window.</div>
 
   const points: { timestamp: string, close: number }[] = data.points
   if (!points || points.length === 0) return null
 
-  const minPrice = Math.min(...points.map(p => p.close))
-  const maxPrice = Math.max(...points.map(p => p.close))
-  const range = maxPrice - minPrice || 1
-  
-  // Chart dimensions
-  const w = 600
-  const h = 160
-  
+  // Calculate pricing bounds
+  const prices = points.map(p => p.close)
+  const minPrice = Math.min(...prices)
+  const maxPrice = Math.max(...prices)
+  const priceDelta = maxPrice - minPrice || 1
+  const priceMargin = priceDelta * 0.08
+  const chartMin = minPrice - priceMargin
+  const chartMax = maxPrice + priceMargin
+  const chartRange = chartMax - chartMin || 1
+
+  // Chart dimensions & layout (spacious, responsive height)
+  const w = 720
+  const h = 270
+  const pad = { top: 28, right: 35, bottom: 35, left: 70 }
+  const plotW = w - pad.left - pad.right
+  const plotH = h - pad.top - pad.bottom
+
   const minTime = new Date(points[0].timestamp).getTime()
   const maxTime = new Date(points[points.length - 1].timestamp).getTime()
   const timeRange = maxTime - minTime || 1
-  const eventTimeMs = new Date(data.event_timestamp).getTime()
-  
-  // X coordinates
-  const eventX = ((eventTimeMs - minTime) / timeRange) * w
-  const eventIsOutOfBounds = eventX < 0 || eventX > w
 
-  // We map the points strictly by their observation timestamp to prevent interpolation errors
-  const pathData = points.map((p, i) => {
+  // Map data points into coordinates
+  const mappedPoints = points.map((p, i) => {
     const pTime = new Date(p.timestamp).getTime()
-    const x = ((pTime - minTime) / timeRange) * w
-    const y = h - ((p.close - minPrice) / range) * h
-    return `${i === 0 ? 'M' : 'L'} ${x} ${y}`
-  }).join(' ')
+    const x = points.length === 1 
+      ? pad.left + plotW / 2 
+      : pad.left + ((pTime - minTime) / timeRange) * plotW
+    const y = pad.top + plotH - ((p.close - chartMin) / chartRange) * plotH
+    return { ...p, x, y, index: i }
+  })
 
+  // SVG Paths
+  const linePath = mappedPoints.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ')
+  const areaPath = mappedPoints.length > 0 
+    ? `${linePath} L ${mappedPoints[mappedPoints.length - 1].x.toFixed(1)} ${(pad.top + plotH).toFixed(1)} L ${mappedPoints[0].x.toFixed(1)} ${(pad.top + plotH).toFixed(1)} Z`
+    : ''
+
+  // Visual trend styling
   const isPositive = data.metrics.change_pct >= 0
   const pctStr = data.metrics.change_pct.toFixed(2)
   const isPostPositive = data.metrics.post_event_change_pct >= 0
-  
+  const strokeColor = isPositive ? '#10b981' : '#f43f5e'
+  const gradId = `chartGrad-${ticker}-${Math.abs(minTime)}`
+
+  // Event marker position
+  const eventTimeMs = new Date(data.event_timestamp).getTime()
+  const eventX = pad.left + ((eventTimeMs - minTime) / timeRange) * plotW
+  const eventIsOutOfBounds = eventX < pad.left || eventX > pad.left + plotW
   const formattedEventDate = formatDateTime(data.event_timestamp, timezone)
-  
+
   const preLabel = data.metrics.event_obs_time ? `Pre-event (${new Date(data.metrics.event_obs_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})` : "First"
   const prePrice = data.metrics.event_price ?? data.metrics.first_price
   const hasPostEvent = data.metrics.post_event_time != null
 
+  // Active hover tracking
+  const activePt = hoveredIdx !== null && mappedPoints[hoveredIdx] ? mappedPoints[hoveredIdx] : null
+
+  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    const svgRect = e.currentTarget.getBoundingClientRect()
+    if (!svgRect.width) return
+    const mouseX = ((e.clientX - svgRect.left) / svgRect.width) * w
+    let closestIdx = 0
+    let minDistance = Infinity
+    mappedPoints.forEach((pt, idx) => {
+      const dist = Math.abs(pt.x - mouseX)
+      if (dist < minDistance) {
+        minDistance = dist
+        closestIdx = idx
+      }
+    })
+    setHoveredIdx(closestIdx)
+  }
+
+  // Floating tooltip dimensions
+  const tooltipW = 160
+  const tooltipH = 50
+  let tipX = activePt ? activePt.x + 12 : 0
+  if (activePt && tipX + tooltipW > w - 10) tipX = activePt.x - tooltipW - 12
+  let tipY = activePt ? Math.max(pad.top, Math.min(activePt.y - 25, pad.top + plotH - tooltipH)) : 0
+  const diffFromStart = activePt ? ((activePt.close - points[0].close) / points[0].close) * 100 : 0
+
+  const displayTitle = companyName ? `${companyName} (${ticker})` : ticker
+
   return (
     <SectionFrame 
       eyebrow="OBSERVED MARKET RESPONSE" 
-      title={ticker}
+      title={displayTitle}
       meta={
         <div style={{ color: 'var(--muted)', fontSize: '13px' }}>
-          ±4h window • {timezone}
+          Historical Close ({points.length} points) • {timezone}
         </div>
       }
     >
@@ -233,29 +282,79 @@ function MarketChart({ ticker, timestamp, timezone }: { ticker: string, timestam
         <MetricBlock label="Min/Max" value={`$${data.metrics.low_price.toFixed(2)} / $${data.metrics.high_price.toFixed(2)}`} />
       </div>
       
-      <div style={{ padding: '16px', border: '1px solid var(--line-strong)', borderRadius: '8px', background: 'var(--surface)' }}>
+      <div style={{ padding: '16px', border: '1px solid #dce2e8', borderRadius: '8px', background: '#ffffff', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)' }}>
         <div style={{ position: 'relative', width: '100%', height: `${h}px` }}>
           {eventIsOutOfBounds && (
-             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, textAlign: 'center', fontSize: '11px', color: 'var(--amber)', background: 'rgba(255, 200, 0, 0.1)', padding: '4px' }}>
+             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, textAlign: 'center', fontSize: '11px', color: '#b45309', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid #fde68a', borderRadius: '4px', padding: '4px', zIndex: 2 }}>
                The event time ({formattedEventDate}) is outside the available trading session points.
              </div>
           )}
-          <svg viewBox={`0 -10 ${w} ${h + 20}`} style={{ width: '100%', height: '100%', overflow: 'visible' }} preserveAspectRatio="none">
-            <line x1="0" y1="0" x2={w} y2="0" stroke="var(--line-strong)" strokeWidth="1" strokeDasharray="4 4" />
-            <line x1="0" y1={h} x2={w} y2={h} stroke="var(--line-strong)" strokeWidth="1" strokeDasharray="4 4" />
-            
-            {/* Vertical event line */}
+          <svg 
+            viewBox={`0 0 ${w} ${h}`} 
+            style={{ width: '100%', height: '100%', overflow: 'visible', cursor: 'crosshair' }} 
+            preserveAspectRatio="none"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={() => setHoveredIdx(null)}
+          >
+            <defs>
+              <linearGradient id={gradId} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={strokeColor} stopOpacity="0.14" />
+                <stop offset="100%" stopColor={strokeColor} stopOpacity="0.0" />
+              </linearGradient>
+            </defs>
+
+            {/* Background Grid Lines & Y-Axis Labels */}
+            <line x1={pad.left} y1={pad.top} x2={pad.left + plotW} y2={pad.top} stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3 3" />
+            <text x={pad.left - 8} y={pad.top + 3} textAnchor="end" fill="#0f172a" fontSize="11" fontWeight="600" fontFamily="monospace">${maxPrice.toFixed(2)}</text>
+
+            <line x1={pad.left} y1={pad.top + plotH / 2} x2={pad.left + plotW} y2={pad.top + plotH / 2} stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3 3" />
+            <text x={pad.left - 8} y={pad.top + plotH / 2 + 3} textAnchor="end" fill="#0f172a" fontSize="11" fontWeight="600" fontFamily="monospace">${((maxPrice + minPrice) / 2).toFixed(2)}</text>
+
+            <line x1={pad.left} y1={pad.top + plotH} x2={pad.left + plotW} y2={pad.top + plotH} stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3 3" />
+            <text x={pad.left - 8} y={pad.top + plotH + 3} textAnchor="end" fill="#0f172a" fontSize="11" fontWeight="600" fontFamily="monospace">${minPrice.toFixed(2)}</text>
+
+            {/* Gradient Area Fill */}
+            {areaPath && (
+              <path d={areaPath} fill={`url(#${gradId})`} />
+            )}
+
+            {/* Vertical event marker line */}
             {!eventIsOutOfBounds && (
               <>
-                <line x1={eventX} y1="0" x2={eventX} y2={h} stroke="var(--coral)" strokeWidth="1" strokeDasharray="4 4" />
-                <text x={eventX + 4} y="10" fontSize="10" fill="var(--coral)" fontFamily="monospace">Event Time</text>
+                <line x1={eventX} y1={pad.top} x2={eventX} y2={pad.top + plotH} stroke="#dc2626" strokeWidth="1.5" strokeDasharray="4 3" />
+                <rect x={eventX - 28} y={pad.top - 18} width="56" height="15" rx="3" fill="#dc2626" />
+                <text x={eventX} y={pad.top - 7} fontSize="9" fill="#ffffff" fontWeight="bold" fontFamily="monospace" textAnchor="middle">EVENT</text>
               </>
             )}
-            
-            <path d={pathData} fill="none" stroke={isPositive ? 'var(--mint)' : 'var(--danger)'} strokeWidth="2" strokeLinejoin="round" />
+
+            {/* Price Movement Line */}
+            <path d={linePath} fill="none" stroke={strokeColor} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
+
+            {/* Data Point Dots */}
+            {mappedPoints.length <= 40 && mappedPoints.map((pt) => (
+              <circle key={pt.index} cx={pt.x} cy={pt.y} r="3.5" fill={strokeColor} stroke="#ffffff" strokeWidth="1.5" />
+            ))}
+
+            {/* Active Hover Crosshair & Details */}
+            {activePt && (
+              <>
+                <line x1={activePt.x} y1={pad.top} x2={activePt.x} y2={pad.top + plotH} stroke="#64748b" strokeWidth="1" strokeDasharray="3 3" opacity="0.6" />
+                <circle cx={activePt.x} cy={activePt.y} r="6" fill={strokeColor} stroke="#ffffff" strokeWidth="2.5" />
+                
+                {/* Floating Tooltip Card */}
+                <g transform={`translate(${tipX}, ${tipY})`}>
+                  <rect width={tooltipW} height={tooltipH} rx="6" fill="#ffffff" stroke="#cbd5e1" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.10))" />
+                  <text x="10" y="18" fill="#475569" fontSize="10" fontFamily="monospace">{formatDateTime(activePt.timestamp, timezone)}</text>
+                  <text x="10" y="38" fill="#0f172a" fontSize="13" fontWeight="bold" fontFamily="monospace">${activePt.close.toFixed(2)}</text>
+                  <text x={tooltipW - 10} y="38" textAnchor="end" fill={diffFromStart >= 0 ? '#16a34a' : '#dc2626'} fontSize="11" fontWeight="bold" fontFamily="monospace">
+                    {diffFromStart >= 0 ? '+' : ''}{diffFromStart.toFixed(2)}%
+                  </text>
+                </g>
+              </>
+            )}
           </svg>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '11px', color: 'var(--muted)', fontFamily: 'monospace' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', paddingLeft: `${pad.left}px`, fontSize: '11px', color: '#1e293b', fontWeight: '500', fontFamily: 'monospace' }}>
           <span>{formatDateTime(points[0].timestamp, timezone)}</span>
           <span>{formatDateTime(points[points.length-1].timestamp, timezone)}</span>
         </div>
@@ -291,6 +390,7 @@ function SimulationResultView({ result, run }: { result: any, run: any }) {
 
       {hasMarketData && (
         <MarketChart 
+          companyName={meta.company_name || signal.entity}
           ticker={meta.ticker} 
           timestamp={meta.event_datetime} 
           timezone={meta.timezone} 
@@ -306,9 +406,60 @@ function SimulationResultView({ result, run }: { result: any, run: any }) {
           <AlertNote>The stress engine encountered an error: {stress.error}</AlertNote>
         </SectionFrame>
       ) : !stress.stress_applied ? (
-        <SectionFrame eyebrow="PORTFOLIO STRESS ASSESSMENT" title="No Portfolio Stress Triggered" meta={<StatusChip label="NO_STRESS" tone="amber" />}>
-          <AlertNote>{stress.rationale || "No applicable shock mapping for this event."}</AlertNote>
-        </SectionFrame>
+        stress.affected_exposure_count === 0 && (stress.shock_scenario?.shock_scope === 'ENTITY' || !stress.shock_scenario) ? (
+          <SectionFrame 
+            eyebrow="PORTFOLIO STRESS ASSESSMENT" 
+            title="Unheld Counterparty · Zero Direct Exposure" 
+            meta={<StatusChip label="UNHELD_ENTITY" tone="amber" />}
+          >
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div className="metric-grid metric-grid--four">
+                <MetricBlock label="COUNTERPARTY" value={signal.entity} />
+                <MetricBlock label="SHOCK TRANSMISSION" value={prettyLabel(stress.shock_scenario?.shock_scope || 'ENTITY')} />
+                <MetricBlock label="BOOK EXPOSURE (EAD)" value="$0.00" tone="amber" note="0.00% of portfolio" />
+                <MetricBlock label="DIRECT CREDIT LOSS" value="$0.00" tone="mint" note="No active debt or equity held" />
+              </div>
+
+              <div style={{ padding: '16px', background: 'var(--surface)', border: '1px solid var(--line-strong)', borderRadius: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                  <span style={{ fontSize: '18px' }}>ℹ️</span>
+                  <div style={{ fontSize: '13px', lineHeight: '1.6', color: 'var(--text)' }}>
+                    <strong>Institutional Credit Portfolio Context:</strong>
+                    <p style={{ margin: '6px 0 0', color: 'var(--muted)' }}>
+                      The wholesale credit book holds <strong>$860M total EAD across 15 active corporate obligors</strong> (Technology, Energy, Industrials, Financials, Consumer, Healthcare, Sovereign). 
+                      While the AI evaluated a severe shock ({prettyLabel(signal.impact_tier)}, Impact {signal.impact_score?.toFixed(1) || '0.0'}) on <em>{signal.entity}</em>, 
+                      this company is not currently an obligor in the bank's wholesale loan or bond book. Direct single-name credit loss is mathematically <strong>$0.00</strong>.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ padding: '14px 16px', background: 'var(--bg-panel-2, #191e25)', borderRadius: '8px', border: '1px dashed var(--line-strong)' }}>
+                <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--muted)', letterSpacing: '0.08em', marginBottom: '8px' }}>
+                  ACTIVE WHOLESALE BOOK COUNTERPARTIES (AVAILABLE FOR SINGLE-NAME CREDIT STRESS)
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', fontSize: '12px' }}>
+                  <span style={{ padding: '4px 8px', borderRadius: '4px', background: 'var(--surface)', border: '1px solid var(--line)' }}>
+                    <strong>Technology:</strong> Apple (AAPL, $80M) · Microsoft (MSFT, $40M) · Tesla (TSLA, $35M) · Samsung ($20M)
+                  </span>
+                  <span style={{ padding: '4px 8px', borderRadius: '4px', background: 'var(--surface)', border: '1px solid var(--line)' }}>
+                    <strong>Industrials:</strong> Boeing (BA, $65M)
+                  </span>
+                  <span style={{ padding: '4px 8px', borderRadius: '4px', background: 'var(--surface)', border: '1px solid var(--line)' }}>
+                    <strong>Energy:</strong> PetroGlobal ($260M) · Shell ($80M) · SaudiChem ($45M) · Rosneft ($35M)
+                  </span>
+                  <span style={{ padding: '4px 8px', borderRadius: '4px', background: 'var(--surface)', border: '1px solid var(--line)' }}>
+                    <strong>Consumer:</strong> Amazon (AMZN, $90M) · RetailCo ($25M)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </SectionFrame>
+        ) : (
+          <SectionFrame eyebrow="PORTFOLIO STRESS ASSESSMENT" title="No Portfolio Stress Triggered" meta={<StatusChip label="NO_STRESS" tone="amber" />}>
+            <AlertNote>{stress.rationale || "No applicable shock mapping for this event."}</AlertNote>
+          </SectionFrame>
+        )
       ) : (
         <SectionFrame eyebrow="PORTFOLIO STRESS ASSESSMENT" title="Stress Applied">
           <div className="metric-grid metric-grid--four">
@@ -354,11 +505,17 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
   const isTerminal = run.status === 'COMPLETED' || run.status === 'FAILED'
   const hasResults = isTerminal && run.final_result
 
+  const companyName = 
+    run?.request?.observations?.[0]?.metadata?.company_name ||
+    run?.final_result?.signals?.[0]?.entity ||
+    run?.request?.observations?.[0]?.metadata?.ticker ||
+    `Simulation (${runId.slice(0, 8)})`
+
   return (
     <div className="workspace-stack">
       <SectionFrame 
-        eyebrow="PIPELINE EXECUTION" 
-        title={`Run ${runId.slice(0, 8)}`} 
+        eyebrow={`PIPELINE EXECUTION · RUN ${runId.slice(0, 8)}`} 
+        title={companyName} 
         meta={
           <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
             {isEligible && (
@@ -366,11 +523,29 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
                 <span style={{ fontSize: '12px', color: 'var(--mint)', fontWeight: 'bold' }}><Check size={14} style={{ display: 'inline', verticalAlign: 'text-bottom' }} /> PROMOTED ({promotedData.count})</span>
               ) : (
                 <button 
-                  className="button button--secondary" 
+                  type="button"
                   onClick={handlePromote} 
                   disabled={promoting}
-                  style={{ padding: '4px 10px', fontSize: '11px', height: 'auto', border: '1px solid var(--line-strong)' }}
+                  style={{ 
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: '#0f172a', 
+                    color: '#ffffff', 
+                    fontWeight: 700, 
+                    fontSize: '11px', 
+                    letterSpacing: '0.04em',
+                    padding: '6px 14px', 
+                    borderRadius: '6px', 
+                    border: '1px solid #334155',
+                    cursor: promoting ? 'not-allowed' : 'pointer',
+                    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                    transition: 'all 0.15s ease'
+                  }}
+                  onMouseOver={(e) => { e.currentTarget.style.background = '#1e293b' }}
+                  onMouseOut={(e) => { e.currentTarget.style.background = '#0f172a' }}
                 >
+                  <Sparkles size={13} style={{ color: '#38bdf8' }} />
                   {promoting ? 'PROMOTING...' : 'PROMOTE TO COMMAND CENTER'}
                 </button>
               )
@@ -518,6 +693,124 @@ export function SimulationWorkspace({ state, setState, hideTitle, onPromoteSucce
               <div className="modal-body">
                 <div style={{ marginBottom: '24px' }}>
                   <AlertNote>The pipeline expects unstructured text (News, Social Media). Provide a diverse set of inputs to simulate corroboration across channels.</AlertNote>
+                </div>
+                
+                <div style={{ marginBottom: '24px' }}>
+                  <div className="section-eyebrow" style={{ marginBottom: '10px' }}>PRESET BENCHMARK SCENARIOS</div>
+                  <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setState(prev => ({
+                          ...prev,
+                          companyName: 'Apple Inc.',
+                          ticker: 'AAPL',
+                          eventDate: '2026-10-06',
+                          eventTime: '11:30',
+                          timezone: 'America/New_York',
+                          observations: [
+                            {
+                              channel: 'NEWS',
+                              headline: 'EU & US Antitrust Authorities Impose $14B Penalty on Apple Inc.',
+                              body: 'European and US regulators levied unprecedented structural penalties and multi-billion dollar antitrust fines on Apple, mandating immediate App Store unbundling.'
+                            },
+                            {
+                              channel: 'TWITTER_X_STYLE',
+                              headline: '',
+                              body: 'BREAKING: Historic $14B antitrust penalty handed down against Apple. Operating margins in severe jeopardy. $AAPL'
+                            }
+                          ]
+                        }))
+                      }}
+                      style={{ padding: '6px 12px', background: 'var(--surface)', border: '1px solid var(--line-strong)', borderRadius: '6px', fontSize: '12px', cursor: 'pointer', color: 'var(--text)' }}
+                    >
+                      ⚡ Apple: $14B Regulatory Fine ($80M EAD)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setState(prev => ({
+                          ...prev,
+                          companyName: 'Tesla Inc',
+                          ticker: 'TSLA',
+                          eventDate: '2026-10-06',
+                          eventTime: '11:30',
+                          timezone: 'America/New_York',
+                          observations: [
+                            {
+                              channel: 'NEWS',
+                              headline: 'Credit Agency Downgrades Tesla Debt to CCC Junk After Offshore Default',
+                              body: 'Rating agencies slashed Tesla long-term debt to speculative grade following an unexpected missed payment on international notes, triggering cross-default covenants.'
+                            },
+                            {
+                              channel: 'TWITTER_X_STYLE',
+                              headline: '',
+                              body: 'Tesla debt officially downgraded to CCC junk status after missed bond coupons. Debt covenants breaking! $TSLA'
+                            }
+                          ]
+                        }))
+                      }}
+                      style={{ padding: '6px 12px', background: 'var(--surface)', border: '1px solid var(--line-strong)', borderRadius: '6px', fontSize: '12px', cursor: 'pointer', color: 'var(--text)' }}
+                    >
+                      ⚡ Tesla: Debt Default & Downgrade ($35M EAD)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setState(prev => ({
+                          ...prev,
+                          companyName: 'PetroGlobal',
+                          ticker: 'SHEL',
+                          eventDate: '2026-10-06',
+                          eventTime: '11:30',
+                          timezone: 'America/New_York',
+                          observations: [
+                            {
+                              channel: 'NEWS',
+                              headline: 'Persian Gulf Shipping Blockade Disrupts Global Energy and Oil Deliveries',
+                              body: 'Strait of Hormuz transit closure halts crude tanker traffic, causing severe refinery feed-stock shortages and operating losses across global energy providers.'
+                            },
+                            {
+                              channel: 'TWITTER_X_STYLE',
+                              headline: '',
+                              body: 'Oil tankers halted in Persian Gulf! Massive supply chain disruption spreading across wholesale energy obligors. #EnergyShock'
+                            }
+                          ]
+                        }))
+                      }}
+                      style={{ padding: '6px 12px', background: 'var(--surface)', border: '1px solid var(--line-strong)', borderRadius: '6px', fontSize: '12px', cursor: 'pointer', color: 'var(--text)' }}
+                    >
+                      ⚡ PetroGlobal: Energy Supply Shock ($420M EAD)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setState(prev => ({
+                          ...prev,
+                          companyName: 'Boeing Co',
+                          ticker: 'BA',
+                          eventDate: '2024-01-08',
+                          eventTime: '09:30',
+                          timezone: 'America/New_York',
+                          observations: [
+                            {
+                              channel: 'NEWS',
+                              headline: 'FAA Orders Emergency Grounding of Boeing 737 MAX 9 Fleet; Credit Agencies Warn of Liabilities and Debt Downgrade',
+                              body: 'Federal Aviation Administration officials issued an emergency grounding order for Boeing 737 MAX 9 jetliners after a mid-air blowout. Aviation credit analysts warn of billions in delivery delays, cash flow penalties, and negative rating downgrade reviews for Boeing debt facilities.'
+                            },
+                            {
+                              channel: 'TWITTER_X_STYLE',
+                              headline: '',
+                              body: 'BREAKING: FAA grounds Boeing 737 MAX fleet. Massive production freeze and credit rating downgrade warnings across Wall Street. $BA'
+                            }
+                          ]
+                        }))
+                      }}
+                      style={{ padding: '6px 12px', background: 'var(--surface)', border: '1px solid var(--line-strong)', borderRadius: '6px', fontSize: '12px', cursor: 'pointer', color: 'var(--text)' }}
+                    >
+                      ⚡ Boeing: 737 MAX Grounding ($65M EAD)
+                    </button>
+                  </div>
                 </div>
                 
                 <div style={{ marginBottom: '32px', padding: '24px', borderRadius: '12px', border: '1px solid var(--line-strong)', background: 'var(--bg)' }}>
