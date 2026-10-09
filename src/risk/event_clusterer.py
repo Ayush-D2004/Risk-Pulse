@@ -3,8 +3,16 @@ from datetime import datetime, timezone
 import numpy as np
 from typing import List, Dict, Optional, Tuple, Any
 from pydantic import BaseModel, Field, ConfigDict
-import faiss
-from sentence_transformers import SentenceTransformer
+try:
+    import faiss
+    HAS_FAISS = True
+except ImportError:
+    HAS_FAISS = False
+try:
+    from sentence_transformers import SentenceTransformer
+    HAS_SENTENCE_TRANSFORMERS = True
+except ImportError:
+    HAS_SENTENCE_TRANSFORMERS = False
 
 from .risk_signal import RiskSignal
 from src.nlp.entity_normalizer import EntityNormalizer
@@ -116,21 +124,29 @@ class EventClusterer:
         self.normalizer = normalizer or EntityNormalizer()
         
         # Load embedding model
-        self.encoder = SentenceTransformer(model_name)
-        self.embedding_dim = self.encoder.get_sentence_embedding_dimension()
+        if HAS_SENTENCE_TRANSFORMERS:
+            self.encoder = SentenceTransformer(model_name)
+            self.embedding_dim = self.encoder.get_sentence_embedding_dimension()
+        else:
+            self.encoder = None
+            self.embedding_dim = 384
         
         # In-memory cluster storage
         self.clusters: List[EventCluster] = []
         
-        # FAISS index (Inner Product for cosine similarity since embeddings are normalized)
-        self.index = faiss.IndexIDMap(faiss.IndexFlatIP(self.embedding_dim))
-        
-        # Map faiss ID to cluster index in self.clusters
         self.id_to_cluster_idx: Dict[int, int] = {}
         self._next_faiss_id = 0
+        if HAS_FAISS:
+            self.index = faiss.IndexIDMap(faiss.IndexFlatIP(self.embedding_dim))
+        else:
+            self.index = None
 
     def generate_embedding(self, candidate: EventCandidate) -> np.ndarray:
         """Generate normalized embedding for the candidate."""
+        if not HAS_SENTENCE_TRANSFORMERS or self.encoder is None:
+            np.random.seed(hash(candidate.signal.entity + candidate.signal.event_type) % (2**32))
+            emb = np.random.randn(self.embedding_dim)
+            return (emb / np.linalg.norm(emb)).astype(np.float32)
         emb = self.encoder.encode(candidate.text_for_embedding, normalize_embeddings=True)
         return emb
 
@@ -200,57 +216,89 @@ class EventClusterer:
         Stage 1 & 2 & 3: Find the best matching cluster based on FAISS similarity,
         entity/type matching, and temporal window.
         """
-        if self.index.ntotal == 0:
-            return None, 0.0
+        if HAS_FAISS:
+            if self.index is None or self.index.ntotal == 0:
+                return None, 0.0
 
-        # Search top k clusters (k=50 for candidate pool)
-        k = min(50, self.index.ntotal)
-        emb_query = np.expand_dims(candidate.embedding, axis=0)
-        
-        distances, indices = self.index.search(emb_query, k)
-        
-        best_cluster = None
-        best_score = -1.0
-        
-        for score, faiss_id in zip(distances[0], indices[0]):
-            if faiss_id == -1:
-                continue
-                
-            cluster_idx = self.id_to_cluster_idx[faiss_id]
-            cluster = self.clusters[cluster_idx]
+            k = min(50, self.index.ntotal)
+            emb_query = np.expand_dims(candidate.embedding, axis=0)
             
-            # Stage 2: Filters (Entity, Type, Temporal)
-            if cluster.entity != candidate.signal.entity:
-                continue
-            if not is_event_type_compatible(cluster.event_type, candidate.signal.event_type):
-                continue
-                
-            # Temporal check (e.g. within 72 hours of cluster's last update)
-            time_diff = abs((candidate.signal.timestamp - cluster.updated_at).total_seconds())
-            if time_diff > self.time_window_hours * 3600:
-                continue
-                
-            # Stage 3: Composite Score
-            # For now, just use cosine similarity (which FAISS IP gives for normalized vectors)
-            composite_score = score
+            distances, indices = self.index.search(emb_query, k)
             
-            if composite_score > best_score:
-                best_score = composite_score
-                best_cluster = cluster
+            best_cluster = None
+            best_score = -1.0
+            
+            for score, faiss_id in zip(distances[0], indices[0]):
+                if faiss_id == -1:
+                    continue
+                    
+                cluster_idx = self.id_to_cluster_idx[faiss_id]
+                cluster = self.clusters[cluster_idx]
                 
-        return best_cluster, best_score
+                # Stage 2: Filters (Entity, Type, Temporal)
+                if cluster.entity != candidate.signal.entity:
+                    continue
+                if not is_event_type_compatible(cluster.event_type, candidate.signal.event_type):
+                    continue
+                    
+                # Temporal check (e.g. within 72 hours of cluster's last update)
+                time_diff = abs((candidate.signal.timestamp - cluster.updated_at).total_seconds())
+                if time_diff > self.time_window_hours * 3600:
+                    continue
+                    
+                # Stage 3: Composite Score
+                composite_score = float(score)
+                
+                if composite_score > best_score:
+                    best_score = composite_score
+                    best_cluster = cluster
+                    
+            return best_cluster, best_score
+        else:
+            if not self.clusters:
+                return None, 0.0
+                
+            best_cluster = None
+            best_score = -1.0
+            
+            for cluster in self.clusters:
+                if cluster.centroid is None:
+                    continue
+                    
+                score = np.dot(cluster.centroid, candidate.embedding)
+                
+                if cluster.entity != candidate.signal.entity:
+                    continue
+                if not is_event_type_compatible(cluster.event_type, candidate.signal.event_type):
+                    continue
+                    
+                time_diff = abs((candidate.signal.timestamp - cluster.updated_at).total_seconds())
+                if time_diff > self.time_window_hours * 3600:
+                    continue
+                    
+                composite_score = float(score)
+                if composite_score > best_score:
+                    best_score = composite_score
+                    best_cluster = cluster
+                    
+            return best_cluster, best_score
 
     def _add_to_faiss(self, centroid: np.ndarray, cluster_idx: int):
+        if not HAS_FAISS:
+            return
         faiss_id = self._next_faiss_id
         self._next_faiss_id += 1
         
         self.id_to_cluster_idx[faiss_id] = cluster_idx
-        self.index.add_with_ids(np.expand_dims(centroid, axis=0), np.array([faiss_id], dtype=np.int64))
+        if self.index is not None:
+            self.index.add_with_ids(np.expand_dims(centroid, axis=0), np.array([faiss_id], dtype=np.int64))
 
     def _update_faiss_index(self, cluster: EventCluster):
         self._rebuild_faiss_index()
         
     def _rebuild_faiss_index(self):
+        if not HAS_FAISS:
+            return
         self.index = faiss.IndexIDMap(faiss.IndexFlatIP(self.embedding_dim))
         self.id_to_cluster_idx.clear()
         self._next_faiss_id = 0

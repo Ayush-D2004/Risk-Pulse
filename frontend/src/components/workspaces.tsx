@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Activity, ArrowDownRight, ArrowRight, BarChart3, BookOpen, Check, ChevronRight, Database, Filter, Focus, GitCompareArrows, Globe, Layers3, Network, Plus, Search, Siren, Sparkles, Target, Trash2, TrendingDown, Workflow } from 'lucide-react'
+import { Activity, ArrowDownRight, ArrowRight, BarChart3, BookOpen, Check, ChevronRight, Database, Filter, Focus, GitCompareArrows, Globe, Layers3, Network, Plus, Search, Siren, Sparkles, Target, Trash2, TrendingDown, Workflow, X } from 'lucide-react'
 import { useCallback, useState, type ReactNode } from 'react'
 import type { AnalystObservation, EventStressOverviewData, EventSummary, PortfolioOverviewData, RiskAttributionData, ScenarioComparisonData, Workspace, PipelineRun, ObservationInput } from '../types/api'
 import { useApiQuery } from '../hooks/useApi'
@@ -82,7 +82,96 @@ export interface SimulationWorkspaceState {
   activeRunId: string | null
 }
 
+function SimulationResultView({ result }: { result: any }) {
+  const signal = result.signals?.[0]
+  const stress = result.stress_results?.[0]
+
+  if (!signal) return <EmptyState title="No Risk Signal Produced" detail="The pipeline did not generate a canonical risk signal." />
+
+  return (
+    <>
+      <div className="investigation-hero">
+        <div className="investigation-hero__narrative">
+          <div className="section-eyebrow">PIPELINE RESULT</div>
+          <h2 style={{ fontSize: '24px', margin: '8px 0 16px' }}>{signal.entity} · {prettyLabel(signal.event_type)}</h2>
+          <div className="narrative-meta">
+            <span><b>MATERIALITY</b>{prettyLabel(signal.materiality)}</span>
+            <span><b>SENTIMENT</b>{signal.sentiment_score?.toFixed(2) || '0.00'}</span>
+          </div>
+        </div>
+        <RiskGauge score={signal.impact_score} tier={signal.impact_tier || 'UNKNOWN'} />
+      </div>
+
+      {stress ? (
+        <div className="metric-grid metric-grid--four">
+          <MetricBlock label="AFFECTED EAD" value={formatMoney(stress.affected_ead)} tone="amber" />
+          <MetricBlock label="INCREMENTAL EL" value={formatMoney(stress.incremental_expected_loss)} tone="danger" />
+          <MetricBlock label="MTM IMPACT" value={formatMoney(stress.total_mtm_impact)} tone="danger" />
+          <MetricBlock label="SHOCK SCOPE" value={prettyLabel(stress.shock_scenario?.shock_scope || 'NONE')} note={stress.stress_applied ? 'stress applied' : 'stress not applied'} />
+        </div>
+      ) : (
+        <SectionFrame title="Portfolio Stress Not Applied" meta={<StatusChip label="NO_STRESS" tone="amber" />}>
+          <AlertNote>The pipeline resolved the signal but did not produce genuine portfolio stress outputs.</AlertNote>
+        </SectionFrame>
+      )}
+    </>
+  )
+}
+
+function SimulationRunView({ runId, run, loading, connectionState, streamError, retry }: { runId: string, run: any, loading: boolean, connectionState: string, streamError: Error | null, retry: () => void }) {
+  if (streamError) return <ErrorState title="Stream error" detail={streamError.message} onRetry={retry} />
+  if (loading && !run) return <LoadingState />
+  if (!run) return <EmptyState title="Run not found" detail="The execution may have expired." />
+
+  const isTerminal = run.status === 'COMPLETED' || run.status === 'FAILED'
+  const hasResults = isTerminal && run.final_result
+
+  return (
+    <div className="workspace-stack">
+      <SectionFrame eyebrow="PIPELINE EXECUTION" title={`Run ${runId.slice(0, 8)}`} meta={<StatusChip label={run.status} tone={run.status === 'FAILED' ? 'danger' : run.status === 'COMPLETED' ? 'mint' : 'default'} />}>
+        <div style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1 1 320px' }}>
+            <div className="section-eyebrow" style={{ marginBottom: '16px' }}>EXECUTION TIMELINE</div>
+            <div className="stage-timeline">
+              {run.stages.map((stage: any) => (
+                <div key={stage.name} className={`stage-row stage-row--${stage.status.toLowerCase()}`}>
+                  <div className="stage-row__line" />
+                  <div className="stage-row__indicator" />
+                  <div>
+                    <div className="stage-row__name">{stage.name}</div>
+                    {stage.error && <div style={{ fontSize: '11px', color: '#EF4444', marginTop: '4px' }}>{stage.error}</div>}
+                  </div>
+                  <div style={{ alignSelf: 'center' }}>
+                    <StatusChip label={stage.status} tone={stage.status === 'FAILED' ? 'danger' : stage.status === 'COMPLETED' ? 'mint' : stage.status === 'SKIPPED' ? 'amber' : 'default'} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            {run.error && (
+              <div style={{ marginTop: '16px', padding: '12px', borderLeft: '3px solid #EF4444', background: '#FEF2F2', fontSize: '13px', color: '#B91C1C' }}>
+                <strong>Pipeline Error:</strong> {run.error}
+              </div>
+            )}
+          </div>
+          
+          <div style={{ flex: '1 1 300px' }}>
+            <div className="section-eyebrow" style={{ marginBottom: '16px' }}>CONTEXT</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+              <MetricBlock label="MODE" value={run.request?.mode || 'ANALYST_SIMULATION'} />
+              <MetricBlock label="OBSERVATIONS" value={run.request?.observations?.length || 0} />
+              <MetricBlock label="PROVENANCE" value="SYNTHETIC_FIXTURE" tone="amber" />
+            </div>
+          </div>
+        </div>
+      </SectionFrame>
+
+      {hasResults && <SimulationResultView result={run.final_result} />}
+    </div>
+  )
+}
+
 export function SimulationWorkspace({ state, setState }: { state: SimulationWorkspaceState, setState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>> }) {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const { run, loading, connectionState, error: streamError, retry } = usePipelineStream(state.activeRunId)
 
   const addObservation = () => setState(prev => ({ ...prev, observations: [...prev.observations, { channel: 'NEWS', body: '', headline: '' }] }))
@@ -109,6 +198,7 @@ export function SimulationWorkspace({ state, setState }: { state: SimulationWork
     try {
       const res = await submitAnalystSimulation({ mode: 'ANALYST_SIMULATION', observations: state.observations })
       setState(prev => ({ ...prev, activeRunId: res.run_id }))
+      setIsModalOpen(false)
     } catch (e) {
       setState(prev => ({ ...prev, submitError: e instanceof Error ? e : new Error('Failed to submit simulation') }))
     } finally {
@@ -121,87 +211,158 @@ export function SimulationWorkspace({ state, setState }: { state: SimulationWork
       <WorkspaceTitle 
         eyebrow="INTELLIGENCE LAB / 08" 
         title="Analyst Simulation" 
-        detail="Submit simulated observations to the pipeline. Label explicitly as ANALYST_SIMULATION." 
-        action={<IconBadge tone="amber"><Activity size={16} /></IconBadge>} 
+        detail="Simulate a real-time risk event to observe the execution pipeline." 
+        action={
+          <button 
+            onClick={() => setIsModalOpen(true)}
+            style={{ background: '#111827', color: 'white', padding: '10px 20px', borderRadius: '4px', fontSize: '13px', fontWeight: 'bold', border: '1px solid #374151', cursor: 'pointer' }}
+          >
+            Simulate Test
+          </button>
+        } 
       />
 
-      <div className="workspace-grid workspace-grid--two-one">
-        <SectionFrame eyebrow="INPUT" title="Simulated Observations" meta={<StatusChip label="ANALYST_SIMULATION" tone="amber" />}>
-          <div className="simulation-form">
-            {state.observations.map((obs, index) => (
-              <div key={index} style={{ border: '1px solid #E5E7EB', padding: '16px', marginBottom: '12px', borderRadius: '4px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <div style={{ fontWeight: 'bold' }}>Observation {index + 1}</div>
-                  {state.observations.length > 1 && <button className="text-button text-button--danger" onClick={() => removeObservation(index)}><Trash2 size={14} /> Remove</button>}
+      <AnimatePresence>
+        {isModalOpen && (
+          <div className="modal-backdrop" onClick={() => !state.submitting && setIsModalOpen(false)}>
+            <motion.div 
+              className="modal-content"
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ duration: 0.15 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="modal-header">
+                <h2>Configure Simulation</h2>
+                <button className="topbar-icon" onClick={() => !state.submitting && setIsModalOpen(false)} disabled={state.submitting}><X size={18} /></button>
+              </div>
+              
+              <div className="modal-body">
+                <div style={{ marginBottom: '24px' }}>
+                  <AlertNote>The pipeline expects unstructured text (News, Social Media). Provide a diverse set of inputs to simulate corroboration across channels.</AlertNote>
                 </div>
                 
-                <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>CHANNEL</label>
-                    <select 
-                      value={obs.channel} 
-                      onChange={(e) => updateObservation(index, { channel: e.target.value as 'NEWS' | 'TWITTER_X_STYLE' })}
-                      style={{ width: '100%', padding: '6px 8px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '13px', backgroundColor: 'transparent' }}
+                <div className="simulation-form" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                  {state.observations.map((obs, index) => (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      key={index} 
+                      style={{ 
+                        border: '1px solid var(--line-strong)', 
+                        padding: '24px', 
+                        borderRadius: '12px', 
+                        background: 'var(--bg)', 
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.03)' 
+                      }}
                     >
-                      <option value="NEWS">NEWS</option>
-                      <option value="TWITTER_X_STYLE">TWITTER_X_STYLE</option>
-                    </select>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px', alignItems: 'center' }}>
+                        <div style={{ fontWeight: 600, fontSize: '14px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text)' }}>
+                          <div style={{ width: '24px', height: '24px', borderRadius: '50%', background: 'var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', color: 'var(--text)' }}>
+                            {index + 1}
+                          </div>
+                          Observation Node
+                        </div>
+                        {state.observations.length > 1 && (
+                          <button className="text-button text-button--danger" onClick={() => removeObservation(index)} style={{ padding: '4px 8px', borderRadius: '4px' }}>
+                            <Trash2 size={14} /> Remove
+                          </button>
+                        )}
+                      </div>
+                      
+                      <div style={{ display: 'flex', gap: '16px', marginBottom: '20px', flexWrap: 'wrap' }}>
+                        <div style={{ flex: '1 1 200px' }}>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>SOURCE CHANNEL</label>
+                          <select 
+                            value={obs.channel} 
+                            onChange={(e) => updateObservation(index, { channel: e.target.value as 'NEWS' | 'TWITTER_X_STYLE' })}
+                            style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                          >
+                            <option value="NEWS">Global News Wire</option>
+                            <option value="TWITTER_X_STYLE">Social Media (Twitter/X)</option>
+                          </select>
+                        </div>
+                        <div style={{ flex: '1 1 200px' }}>
+                          <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>AUTHOR / ENTITY (Optional)</label>
+                          <input 
+                            type="text" 
+                            placeholder={obs.channel === 'TWITTER_X_STYLE' ? '@username' : 'e.g. Bloomberg, Reuters'}
+                            value={obs.author || ''} 
+                            onChange={(e) => updateObservation(index, { author: e.target.value })}
+                            style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                          />
+                        </div>
+                      </div>
+
+                      <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>HEADLINE (Optional)</label>
+                        <input 
+                          type="text" 
+                          placeholder="e.g. Major Sovereign Default Event Declared"
+                          value={obs.headline || ''} 
+                          onChange={(e) => updateObservation(index, { headline: e.target.value })}
+                          style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                        />
+                      </div>
+
+                      <div>
+                        <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>OBSERVATION BODY (Required)</label>
+                        <textarea 
+                          placeholder="Paste full text, tweet body, or raw unstructured event data..."
+                          value={obs.body || ''} 
+                          onChange={(e) => updateObservation(index, { body: e.target.value })}
+                          style={{ width: '100%', padding: '12px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', minHeight: '120px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none', resize: 'vertical' }}
+                        />
+                      </div>
+                    </motion.div>
+                  ))}
+                  
+                  <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
+                    <button 
+                      className="text-button" 
+                      onClick={addObservation}
+                      style={{ padding: '10px 20px', background: 'var(--bg-raised)', borderRadius: '8px', border: '1px dashed var(--line-strong)', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text)' }}
+                    >
+                      <Plus size={14} /> Append Observation Node
+                    </button>
                   </div>
-                  {obs.channel === 'TWITTER_X_STYLE' && (
-                    <div style={{ flex: 1 }}>
-                      <AlertNote>User supplies simulated social text. No live Twitter/X ingestion occurs.</AlertNote>
-                    </div>
-                  )}
-                </div>
 
-                <div style={{ marginBottom: '12px' }}>
-                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>HEADLINE (Optional)</label>
-                  <input 
-                    type="text" 
-                    value={obs.headline || ''} 
-                    onChange={(e) => updateObservation(index, { headline: e.target.value })}
-                    style={{ width: '100%', padding: '6px 8px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '13px', backgroundColor: 'transparent' }}
-                  />
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>BODY</label>
-                  <textarea 
-                    value={obs.body || ''} 
-                    onChange={(e) => updateObservation(index, { body: e.target.value })}
-                    style={{ width: '100%', padding: '6px 8px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '13px', minHeight: '80px', backgroundColor: 'transparent' }}
-                  />
+                  {state.submitError && <div style={{ marginTop: '8px' }}><ErrorState title="Submission failed" detail={state.submitError.message} /></div>}
                 </div>
               </div>
-            ))}
-            
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
-              <button className="text-button" onClick={addObservation}><Plus size={14} /> Add observation</button>
-              <button 
-                onClick={handleSubmit} 
-                disabled={state.submitting}
-                style={{ background: '#111827', color: 'white', padding: '8px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 'bold', cursor: state.submitting ? 'not-allowed' : 'pointer', border: 'none' }}
-              >
-                {state.submitting ? 'Submitting...' : 'Submit to Pipeline'}
-              </button>
-            </div>
 
-            {state.submitError && <div style={{ marginTop: '16px' }}><ErrorState title="Submission failed" detail={state.submitError.message} /></div>}
+              <div className="modal-footer" style={{ borderTop: '1px solid var(--line)', background: 'var(--bg-panel)' }}>
+                <button 
+                  onClick={() => setIsModalOpen(false)} 
+                  disabled={state.submitting}
+                  style={{ padding: '10px 18px', borderRadius: '6px', fontSize: '13px', fontWeight: 600, border: '1px solid var(--line-strong)', background: 'transparent', cursor: 'pointer', color: 'var(--text)' }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  onClick={handleSubmit} 
+                  disabled={state.submitting}
+                  style={{ background: 'var(--coral)', color: '#fff', padding: '10px 18px', borderRadius: '6px', fontSize: '13px', fontWeight: 600, cursor: state.submitting ? 'not-allowed' : 'pointer', border: 'none', display: 'flex', alignItems: 'center', gap: '8px', boxShadow: '0 4px 12px rgba(255, 92, 92, 0.2)' }}
+                >
+                  {state.submitting ? 'Submitting...' : 'Run Pipeline Analysis'}
+                </button>
+              </div>
+            </motion.div>
           </div>
-        </SectionFrame>
+        )}
+      </AnimatePresence>
 
-        <PipelineRunViewer
-          activeRunId={state.activeRunId}
-          run={run}
-          loading={loading}
-          connectionState={connectionState}
-          streamError={streamError}
-          retry={retry}
-          emptyStateTitle="No active run"
-          emptyStateDetail="Submit observations to start the pipeline orchestrator."
-          emptyStateIcon={<Workflow size={18} />}
+      {state.activeRunId ? (
+        <SimulationRunView runId={state.activeRunId} run={run} loading={loading} connectionState={connectionState} streamError={streamError} retry={retry} />
+      ) : (
+        <EmptyState 
+          title="No active simulation" 
+          detail="Click 'Simulate Test' to supply synthetic observations and trace their impact through the pipeline." 
+          icon={<Workflow size={18} />} 
         />
-      </div>
+      )}
     </div>
   )
 }

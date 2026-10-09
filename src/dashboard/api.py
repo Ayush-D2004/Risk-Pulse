@@ -18,6 +18,7 @@ from src.integration.runtime_models import PipelineRun, RunStatus, RunMode, Anal
 from src.integration.runtime_store import RuntimeStore
 from src.integration.runtime import RuntimeOrchestrator
 from src.integration.gdelt_service import GDELTIntegrationService
+from src.dashboard.promotion import PromotionRegistry, PromotedRunResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="RiskPulse Dashboard API")
@@ -37,6 +38,7 @@ catalog = build_demo_catalog()
 runtime_store = RuntimeStore()
 runtime_orchestrator = None
 gdelt_service = None
+promotion_registry = PromotionRegistry()
 
 @app.on_event("startup")
 def startup_event():
@@ -67,10 +69,22 @@ def get_events():
         result = catalog.by_event_id.get(s.event_id)
         if result:
             events.append(project_event_overview(result, s))
+            
+    for event_id, s in promotion_registry.signals.items():
+        result = promotion_registry.results.get(event_id)
+        if result:
+            events.append(project_event_overview(result, s, promotion_registry.provenance_map.get(event_id)))
+            
     return events
 
 @app.get("/api/scenarios/{event_id}", response_model=EventStressOverviewResponse)
 def get_scenario_overview(event_id: str):
+    if event_id in promotion_registry.signals:
+        result = promotion_registry.results[event_id]
+        signal = promotion_registry.signals[event_id]
+        prov = promotion_registry.provenance_map.get(event_id)
+        return catalog.service.event_stress_overview(result, signal, provenance=prov)
+        
     if event_id not in catalog.by_event_id:
         raise HTTPException(status_code=404, detail="Scenario not found")
     result = catalog.by_event_id[event_id]
@@ -79,6 +93,10 @@ def get_scenario_overview(event_id: str):
 
 @app.get("/api/scenarios/{event_id}/attribution", response_model=RiskAttributionResponse)
 def get_scenario_attribution(event_id: str):
+    if event_id in promotion_registry.results:
+        result = promotion_registry.results[event_id]
+        return catalog.service.risk_attribution(result)
+        
     if event_id not in catalog.by_event_id:
         raise HTTPException(status_code=404, detail="Scenario not found")
     result = catalog.by_event_id[event_id]
@@ -86,12 +104,28 @@ def get_scenario_attribution(event_id: str):
 
 @app.get("/api/compare/{event_a}/{event_b}", response_model=ScenarioComparisonResponse)
 def get_scenario_comparison(event_a: str, event_b: str):
-    if event_a not in catalog.by_event_id or event_b not in catalog.by_event_id:
-        raise HTTPException(status_code=404, detail="Scenario not found")
-    res_a = catalog.by_event_id[event_a]
-    res_b = catalog.by_event_id[event_b]
-    sig_a = catalog.signal_by_event_id[event_a]
-    sig_b = catalog.signal_by_event_id[event_b]
+    # Lookup A
+    if event_a in promotion_registry.results:
+        res_a = promotion_registry.results[event_a]
+        sig_a = promotion_registry.signals[event_a]
+        setattr(sig_a, "_provenance", promotion_registry.provenance_map.get(event_a))
+    elif event_a in catalog.by_event_id:
+        res_a = catalog.by_event_id[event_a]
+        sig_a = catalog.signal_by_event_id[event_a]
+    else:
+        raise HTTPException(status_code=404, detail=f"Scenario A not found: {event_a}")
+        
+    # Lookup B
+    if event_b in promotion_registry.results:
+        res_b = promotion_registry.results[event_b]
+        sig_b = promotion_registry.signals[event_b]
+        setattr(sig_b, "_provenance", promotion_registry.provenance_map.get(event_b))
+    elif event_b in catalog.by_event_id:
+        res_b = catalog.by_event_id[event_b]
+        sig_b = catalog.signal_by_event_id[event_b]
+    else:
+        raise HTTPException(status_code=404, detail=f"Scenario B not found: {event_b}")
+        
     return catalog.service.scenario_comparison(res_a, res_b, sig_a, sig_b)
 
 # --- Runtime Intelligence Endpoints ---
@@ -176,6 +210,19 @@ async def search_gdelt(req: GDELTSearchRequest):
         raise HTTPException(status_code=400, detail=result["error"])
         
     return result
+
+@app.post("/api/intelligence/runs/{run_id}/promote", response_model=PromotedRunResponse)
+def promote_run(run_id: str):
+    run = runtime_store.get_run(run_id)
+    if not run:
+        raise HTTPException(status_code=404, detail="Run not found")
+    
+    existing_event_ids = frozenset(catalog.by_event_id.keys())
+    try:
+        response = promotion_registry.promote(run, existing_event_ids)
+        return response
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @app.get("/api/intelligence/runs")
 def list_runs():

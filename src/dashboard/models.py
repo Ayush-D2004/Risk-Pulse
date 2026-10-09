@@ -106,6 +106,7 @@ class EventStressOverviewData(FrozenDto):
     mtm_impact: Decimal
     deterministic_rationale: str
     stress_applied: bool
+    provenance: Optional[str] = None
 
 
 class EventStressOverviewResponse(DashboardEnvelope):

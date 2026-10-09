@@ -76,6 +76,7 @@ EVENT_DATA_KEYS = {
     "mtm_impact",
     "deterministic_rationale",
     "stress_applied",
+    "provenance",
 }
 
 ATTRIBUTION_DATA_KEYS = {

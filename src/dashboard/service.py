@@ -102,6 +102,7 @@ def _shock_scope(result: StressScenarioResult) -> Optional[str]:
 def project_event_overview(
     result: StressScenarioResult,
     signal: RiskSignal,
+    provenance: Optional[str] = None,
 ) -> EventStressOverviewData:
     """Copy event-level metrics from a completed stress result + originating signal."""
     return EventStressOverviewData(
@@ -118,6 +119,9 @@ def project_event_overview(
         mtm_impact=result.total_mtm_impact,
         deterministic_rationale=result.rationale,
         stress_applied=result.stress_applied,
+        provenance=provenance or (
+            "HISTORICAL_REPLAY" if signal.source == "REAL PIPELINE EVENT" else "SYNTHETIC_FIXTURE"
+        ),
     )
 
 
@@ -213,8 +217,9 @@ class DashboardReadService:
         result: StressScenarioResult,
         signal: RiskSignal,
         generated_at: Optional[datetime] = None,
+        provenance: Optional[str] = None,
     ) -> EventStressOverviewResponse:
-        data = project_event_overview(result, signal)
+        data = project_event_overview(result, signal, provenance)
         return EventStressOverviewResponse(
             schema_version=DASHBOARD_SCHEMA_VERSION,
             generated_at=_utc_now(generated_at),
@@ -260,8 +265,8 @@ class DashboardReadService:
         attr_a = self._comparison.extract_attribution(result_a)
         attr_b = self._comparison.extract_attribution(result_b)
         data = ScenarioComparisonData(
-            scenario_a=project_event_overview(result_a, signal_a),
-            scenario_b=project_event_overview(result_b, signal_b),
+            scenario_a=project_event_overview(result_a, signal_a, getattr(signal_a, "_provenance", None)),
+            scenario_b=project_event_overview(result_b, signal_b, getattr(signal_b, "_provenance", None)),
             deltas=ComparisonDeltas(
                 affected_ead_difference=pair.deltas.delta_affected_ead,
                 incremental_el_difference=pair.deltas.delta_incremental_expected_loss,
