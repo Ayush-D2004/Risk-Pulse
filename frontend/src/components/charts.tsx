@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 import type { AttributionDeltaRow, AttributionRow, EadSlice, ObligorConcentrationRow } from '../types/api'
-import { formatMoney, formatPct, formatSignedPct, numeric, prettyLabel } from '../lib/format'
+import { formatMoney, formatPct, formatDecimalPct, formatSignedPct, formatDecimalSignedPct, numeric, prettyLabel } from '../lib/format'
 
 function maxOf(values: number[]) {
   const max = Math.max(...values, 0)
@@ -19,17 +19,17 @@ export function ContributionBars({ rows, valueKey = 'incremental_el', limit = 8 
   const selected = rows.slice(0, limit)
   const values = selected.map((row) => Math.abs(numeric(row[valueKey])))
   const max = maxOf(values)
-  return <div className="contribution-bars">{selected.length ? selected.map((row, index) => { const value = numeric(row[valueKey]); const pct = valueKey === 'ead' ? row.ead_pct : valueKey === 'mtm_impact' ? row.mtm_contribution_pct : row.incremental_el_pct; return <div className="contribution-row" key={`${row.dimension_value}-${index}`}><div className="contribution-row__top"><span>{row.dimension_value}</span><strong>{valueKey === 'ead' ? formatMoney(row.ead) : formatMoney(row[valueKey])}</strong></div><div className="contribution-row__bar"><motion.span initial={{ width: 0 }} animate={{ width: `${(Math.abs(value) / max) * 100}%` }} transition={{ duration: 0.5, delay: index * 0.04 }} /></div><div className="contribution-row__foot"><span>{formatPct(pct)} contribution</span><span>{formatPct(row.ead_pct)} of EAD</span></div></div> }) : <div className="chart-empty">No attribution rows returned by the API.</div>}</div>
+  return <div className="contribution-bars">{selected.length ? selected.map((row, index) => { const value = numeric(row[valueKey]); const pct = valueKey === 'ead' ? row.ead_pct : valueKey === 'mtm_impact' ? row.mtm_contribution_pct : row.incremental_el_pct; return <div className="contribution-row" key={`${row.dimension_value}-${index}`}><div className="contribution-row__top"><span>{row.dimension_value}</span><strong>{valueKey === 'ead' ? formatMoney(row.ead) : formatMoney(row[valueKey])}</strong></div><div className="contribution-row__bar"><motion.span initial={{ width: 0 }} animate={{ width: `${(Math.abs(value) / max) * 100}%` }} transition={{ duration: 0.5, delay: index * 0.04 }} /></div><div className="contribution-row__foot"><span>{formatDecimalPct(pct)} contribution</span><span>{formatDecimalPct(row.ead_pct)} of EAD</span></div></div> }) : <div className="chart-empty">No attribution rows returned by the API.</div>}</div>
 }
 
 export function ExposureMatrix({ rows }: { rows: AttributionRow[] }) {
   if (!rows.length) return <div className="chart-empty">No concentration rows returned by the API.</div>
-  return <div className="exposure-matrix">{rows.slice(0, 12).map((row, index) => <div className="matrix-cell" key={`${row.dimension_value}-${index}`} style={{ ['--cell-intensity' as string]: `${Math.max(10, Math.min(100, row.ead_pct))}%` }}><div className="matrix-cell__value">{row.dimension_value}</div><div className="matrix-cell__bar" /><div className="matrix-cell__meta">{formatPct(row.ead_pct)} · {row.exposure_count} exp.</div></div>)}</div>
+  return <div className="exposure-matrix">{rows.slice(0, 12).map((row, index) => <div className="matrix-cell" key={`${row.dimension_value}-${index}`} style={{ ['--cell-intensity' as string]: `${Math.max(10, Math.min(100, row.ead_pct * 100))}%` }}><div className="matrix-cell__value">{row.dimension_value}</div><div className="matrix-cell__bar" /><div className="matrix-cell__meta">{formatDecimalPct(row.ead_pct)} · {row.exposure_count} exp.</div></div>)}</div>
 }
 
 export function ComparisonRows({ rows }: { rows: AttributionDeltaRow[] }) {
   if (!rows.length) return <div className="chart-empty">No attribution differences returned by the API.</div>
-  return <div className="comparison-rows">{rows.slice(0, 8).map((row, index) => <div className="comparison-row" key={`${row.dimension_value}-${index}`}><div><span className="comparison-row__name">{row.dimension_value}</span><span className="comparison-row__meta">EAD {formatSignedPct(row.ead_pct_difference)} · EL {formatSignedPct(row.incremental_el_pct_difference)}</span></div><div className="comparison-row__numbers"><strong>{formatMoney(row.incremental_el_difference)}</strong><span>{formatMoney(row.mtm_impact_difference)} MTM</span></div></div>)}</div>
+  return <div className="comparison-rows">{rows.slice(0, 8).map((row, index) => <div className="comparison-row" key={`${row.dimension_value}-${index}`}><div><span className="comparison-row__name">{row.dimension_value}</span><span className="comparison-row__meta">EAD {formatDecimalSignedPct(row.ead_pct_difference)} · EL {formatDecimalSignedPct(row.incremental_el_pct_difference)}</span></div><div className="comparison-row__numbers"><strong>{formatMoney(row.incremental_el_difference)}</strong><span>{formatMoney(row.mtm_impact_difference)} MTM</span></div></div>)}</div>
 }
 
 export function InlineStack({ rows }: { rows: EadSlice[] }) {

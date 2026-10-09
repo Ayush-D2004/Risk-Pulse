@@ -1,25 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Activity, BarChart3, BellRing, BookOpen, Command, Database, GitCompareArrows, Globe, Layers3, Menu, Network, Search, Settings2, Siren } from 'lucide-react'
+import { Activity, BarChart3, BellRing, Command, Search, Network, Menu, Settings2 } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { fetchEvents, fetchPortfolio, fetchScenarioAttribution, fetchScenarioComparison, fetchScenarioOverview, unwrapEvents, unwrapData } from './lib/api'
+import { fetchEvents, fetchPortfolio, fetchScenarioAttribution, fetchScenarioOverview, unwrapEvents, unwrapData } from './lib/api'
 import { useApiQuery } from './hooks/useApi'
-import type { EventSummary, Workspace } from './types/api'
+import type { Workspace } from './types/api'
 import { prettyLabel } from './lib/format'
 import { AppMark, Kicker } from './components/ui'
-import { AttributionWorkspace, CommandCenter, ComparisonWorkspace, EventsWorkspace, InvestigationWorkspace, PortfolioWorkspace, SidebarBrand, StressLabWorkspace, SimulationWorkspace, GdeltWorkspace, PipelineRunsWorkspace, ProvenanceWorkspace, type SimulationWorkspaceState, type GdeltWorkspaceState } from './components/workspaces'
+import { CommandCenter, EventsWorkspace, InvestigationWorkspace, PortfolioWorkspace, SidebarBrand, IntelligenceWorkspace, type SimulationWorkspaceState, type GdeltWorkspaceState } from './components/workspaces'
 
 const navItems: Array<{ id: Workspace; label: string; code: string; icon: typeof Activity }> = [
   { id: 'command', label: 'Command center', code: '01', icon: Command },
   { id: 'portfolio', label: 'Portfolio overview', code: '02', icon: BarChart3 },
-  { id: 'events', label: 'Event intelligence', code: '03', icon: BellRing },
-  { id: 'investigation', label: 'Investigation', code: '04', icon: Search },
-  { id: 'stress', label: 'Stress lab', code: '05', icon: Siren },
-  { id: 'attribution', label: 'Exposure attribution', code: '06', icon: Layers3 },
-  { id: 'comparison', label: 'Scenario comparison', code: '07', icon: GitCompareArrows },
-  { id: 'simulation', label: 'Analyst simulation', code: '08', icon: Activity },
-  { id: 'gdelt', label: 'Live News Intelligence', code: '09', icon: Globe },
-  { id: 'runs', label: 'Pipeline runs', code: '10', icon: Database },
-  { id: 'provenance', label: 'Data provenance', code: '11', icon: BookOpen },
+  { id: 'intelligence', label: 'Intelligence lab', code: '03', icon: Activity },
+  { id: 'investigation', label: 'Event investigation', code: '04', icon: Search },
+  { id: 'events', label: 'Event intelligence', code: '05', icon: BellRing },
 ]
 
 function initialWorkspace(): Workspace {
@@ -58,14 +52,11 @@ export default function App() {
   }, [eventsQuery.data, selectedEventId])
 
   const selectedEvent = useMemo(() => eventsQuery.data?.find((event) => event.event_id === selectedEventId) ?? null, [eventsQuery.data, selectedEventId])
-  const secondEvent = useMemo(() => eventsQuery.data?.find((event) => event.event_id !== selectedEventId) ?? null, [eventsQuery.data, selectedEventId])
   const overviewRequest = useCallback((signal: AbortSignal) => selectedEventId ? fetchScenarioOverview(selectedEventId, signal).then(unwrapData) : Promise.reject(new Error('No event selected')), [selectedEventId])
   const attributionRequest = useCallback((signal: AbortSignal) => selectedEventId ? fetchScenarioAttribution(selectedEventId, signal).then(unwrapData) : Promise.reject(new Error('No event selected')), [selectedEventId])
-  const comparisonRequest = useCallback((signal: AbortSignal) => selectedEventId && secondEvent ? fetchScenarioComparison(selectedEventId, secondEvent.event_id, signal).then(unwrapData) : Promise.reject(new Error('Two events are required')), [secondEvent, selectedEventId])
 
-  const overviewQuery = useApiQuery(`scenario-${selectedEventId ?? 'none'}`, overviewRequest, Boolean(selectedEventId) && ['investigation', 'stress'].includes(activeWorkspace))
-  const attributionQuery = useApiQuery(`attribution-${selectedEventId ?? 'none'}`, attributionRequest, Boolean(selectedEventId) && ['investigation', 'attribution'].includes(activeWorkspace))
-  const comparisonQuery = useApiQuery(`comparison-${selectedEventId ?? 'none'}-${secondEvent?.event_id ?? 'none'}`, comparisonRequest, activeWorkspace === 'comparison' && Boolean(selectedEventId && secondEvent))
+  const overviewQuery = useApiQuery(`scenario-${selectedEventId ?? 'none'}`, overviewRequest, Boolean(selectedEventId) && activeWorkspace === 'investigation')
+  const attributionQuery = useApiQuery(`attribution-${selectedEventId ?? 'none'}`, attributionRequest, Boolean(selectedEventId) && activeWorkspace === 'investigation')
 
   const navigate = useCallback((workspace: Workspace) => {
     setActiveWorkspace(workspace)
@@ -91,7 +82,7 @@ export default function App() {
         event.preventDefault()
         navigate('events')
       }
-      if (event.key >= '1' && event.key <= '7' && !event.metaKey && !event.ctrlKey && !(event.target instanceof HTMLInputElement)) {
+      if (event.key >= '1' && event.key <= '5' && !event.metaKey && !event.ctrlKey && !(event.target instanceof HTMLInputElement)) {
         const target = navItems[Number(event.key) - 1]
         if (target) navigate(target.id)
       }
@@ -105,13 +96,7 @@ export default function App() {
       case 'portfolio': return <PortfolioWorkspace portfolio={portfolioQuery.data} loading={portfolioQuery.loading} error={portfolioQuery.error} retry={portfolioQuery.reload} />
       case 'events': return <EventsWorkspace events={eventsQuery.data ?? []} loading={eventsQuery.loading} error={eventsQuery.error} retry={eventsQuery.reload} selectedId={selectedEventId} onSelect={selectEvent} />
       case 'investigation': return <InvestigationWorkspace event={selectedEvent} overview={overviewQuery.data} overviewLoading={overviewQuery.loading} overviewError={overviewQuery.error} overviewRetry={overviewQuery.reload} attribution={attributionQuery.data} attributionLoading={attributionQuery.loading} attributionError={attributionQuery.error} attributionRetry={attributionQuery.reload} onNavigate={navigate} />
-      case 'stress': return <StressLabWorkspace event={selectedEvent} overview={overviewQuery.data} loading={overviewQuery.loading} error={overviewQuery.error} retry={overviewQuery.reload} />
-      case 'attribution': return <AttributionWorkspace event={selectedEvent} attribution={attributionQuery.data} loading={attributionQuery.loading} error={attributionQuery.error} retry={attributionQuery.reload} />
-      case 'comparison': return <ComparisonWorkspace eventA={selectedEvent} eventB={secondEvent} comparison={comparisonQuery.data} loading={comparisonQuery.loading} error={comparisonQuery.error} retry={comparisonQuery.reload} onSelectPair={() => navigate('events')} />
-      case 'simulation': return <SimulationWorkspace state={simulationState} setState={setSimulationState} />
-      case 'gdelt': return <GdeltWorkspace state={gdeltState} setState={setGdeltState} />
-      case 'runs': return <PipelineRunsWorkspace />
-      case 'provenance': return <ProvenanceWorkspace />
+      case 'intelligence': return <IntelligenceWorkspace simulationState={simulationState} setSimulationState={setSimulationState} gdeltState={gdeltState} setGdeltState={setGdeltState} />
       default: return <CommandCenter portfolio={portfolioQuery.data} portfolioLoading={portfolioQuery.loading} portfolioError={portfolioQuery.error} portfolioRetry={portfolioQuery.reload} events={eventsQuery.data ?? []} eventsLoading={eventsQuery.loading} eventsError={eventsQuery.error} eventsRetry={eventsQuery.reload} onSelectEvent={selectEvent} onNavigate={navigate} />
     }
   })()

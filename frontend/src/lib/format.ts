@@ -21,6 +21,11 @@ export function formatPct(value: number | null | undefined): string {
   return `${value.toFixed(1)}%`
 }
 
+export function formatDecimalPct(value: number | null | undefined): string {
+  if (value == null || Number.isNaN(value)) return '—'
+  return `${(value * 100).toFixed(1)}%`
+}
+
 export function formatScore(value: number | null | undefined): string {
   if (value == null || Number.isNaN(value)) return '—'
   return value.toFixed(2)
@@ -29,6 +34,11 @@ export function formatScore(value: number | null | undefined): string {
 export function formatSignedPct(value: number | null | undefined): string {
   if (value == null || Number.isNaN(value)) return '—'
   return `${value > 0 ? '+' : ''}${value.toFixed(1)}%`
+}
+
+export function formatDecimalSignedPct(value: number | null | undefined): string {
+  if (value == null || Number.isNaN(value)) return '—'
+  return `${value > 0 ? '+' : ''}${(value * 100).toFixed(1)}%`
 }
 
 export function prettyLabel(value: string | null | undefined): string {

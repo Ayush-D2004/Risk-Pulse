@@ -5,7 +5,7 @@ import type { AnalystObservation, EventStressOverviewData, EventSummary, Portfol
 import { useApiQuery } from '../hooks/useApi'
 import { submitAnalystSimulation, submitGdeltSearch, fetchPipelineRuns, promotePipelineRun } from '../lib/api'
 import { usePipelineStream } from '../hooks/usePipelineStream'
-import { formatMoney, formatPct, formatScore, formatSignedPct, impactTone, numeric, prettyLabel, sentimentLabel } from '../lib/format'
+import { formatMoney, formatPct, formatDecimalPct, formatScore, formatSignedPct, impactTone, numeric, prettyLabel, sentimentLabel } from '../lib/format'
 import { ContributionBars, ComparisonRows, DataTable, ExposureMatrix, InlineStack, RankedBars } from './charts'
 import { AlertNote, AppMark, ArrowNote, EmptyState, ErrorState, IconBadge, Kicker, LoadingState, MetricBlock, RiskGauge, SectionFrame, SignalLine, StatusChip } from './ui'
 import { PipelineRunViewer } from './pipeline'
@@ -60,7 +60,7 @@ export function PortfolioWorkspace({ portfolio, loading, error, retry }: { portf
 }
 
 export function InvestigationWorkspace({ event, overview, overviewLoading, overviewError, overviewRetry, attribution, attributionLoading, attributionError, attributionRetry, onNavigate }: { event: EventSummary | null; overview: EventStressOverviewData | null; overviewLoading: boolean; overviewError: Error | null; overviewRetry: () => void; attribution: RiskAttributionData | null; attributionLoading: boolean; attributionError: Error | null; attributionRetry: () => void; onNavigate: (workspace: Workspace) => void }) {
-  return <div className="workspace-stack"><WorkspaceTitle eyebrow="CASE FILE / 04" title={event ? `${event.entity} — investigation` : 'Open a research case.'} detail={event ? `${prettyLabel(event.event_type)} · event ${event.event_id}` : 'Select a risk event from the feed to load its scenario overview.'} action={event && <StatusChip label={event.impact_tier} />} />{!event ? <EmptyState title="No case selected" detail="Open an event from Event Intelligence to populate the investigation workspace." icon={<Search size={18} />} /> : <><DataGate loading={overviewLoading} error={overviewError} empty={!overview} retry={overviewRetry}>{overview && <div className="investigation-hero"><div className="investigation-hero__narrative"><div className="section-eyebrow">DETERMINISTIC RATIONALE</div><p>{overview.deterministic_rationale}</p><div className="narrative-meta"><span><b>ENTITY</b>{overview.entity}</span><span><b>EVENT TYPE</b>{prettyLabel(overview.event_type)}</span><span><b>SENTIMENT</b>{prettyLabel(sentimentLabel(overview.sentiment))}</span></div></div><RiskGauge score={overview.impact_score} tier={overview.impact_tier} /></div>}</DataGate><DataGate loading={overviewLoading} error={overviewError} empty={!overview} retry={overviewRetry}>{overview && <><div className="metric-grid metric-grid--four"><MetricBlock label="AFFECTED EAD" value={formatMoney(overview.affected_ead)} note={formatPct(overview.affected_ead_pct)} tone="amber" /><MetricBlock label="INCREMENTAL EL" value={formatMoney(overview.incremental_el)} note="stress output" tone="danger" /><MetricBlock label="MTM IMPACT" value={formatMoney(overview.mtm_impact)} note="valuation output" tone="danger" /><MetricBlock label="SHOCK SCOPE" value={prettyLabel(overview.shock_scope)} note={overview.stress_applied ? 'stress applied' : 'stress not applied'} /></div><SectionFrame eyebrow="IMPACT TRACE" title="What moved, and where." meta={<button className="text-button" onClick={() => onNavigate('stress')}>Open Stress Lab <ArrowRight size={14} /></button>}><div className="impact-trace"><div><span>EVENT</span><strong>{prettyLabel(overview.event_type)}</strong><small>{formatScore(overview.impact_score)} impact</small></div><ArrowRight /><div><span>PORTFOLIO</span><strong>{formatPct(overview.affected_ead_pct)} EAD</strong><small>{formatMoney(overview.affected_ead)} affected</small></div><ArrowRight /><div><span>LOSS</span><strong>{formatMoney(overview.incremental_el)}</strong><small>incremental EL</small></div><ArrowRight /><div><span>VALUATION</span><strong>{formatMoney(overview.mtm_impact)}</strong><small>MTM impact</small></div></div></SectionFrame></>}</DataGate><div className="workspace-grid workspace-grid--two-one"><SectionFrame eyebrow="EXPOSURE ATTRIBUTION" title="Primary contributors" meta={<button className="text-button" onClick={() => onNavigate('attribution')}>Full attribution <ArrowRight size={14} /></button>}><DataGate loading={attributionLoading} error={attributionError} empty={!attribution} retry={attributionRetry}>{attribution && <ContributionBars rows={attribution.by_sector} valueKey="incremental_el" limit={5} />}</DataGate></SectionFrame><SectionFrame eyebrow="RESEARCH CONTEXT" title="Affected book"><DataGate loading={attributionLoading} error={attributionError} empty={!attribution} retry={attributionRetry}>{attribution && <div className="affected-stack"><div className="affected-stack__headline">{attribution.by_exposure.filter((row) => row.is_affected).length}<span> affected exposures</span></div><div className="affected-stack__meta">{attribution.by_exposure.length} rows returned · API-linked only</div><div className="affected-stack__line"><SignalLine variant="coral" /></div></div>}</DataGate></SectionFrame></div></>}</div>
+  return <div className="workspace-stack"><WorkspaceTitle eyebrow="CASE FILE / 04" title={event ? `${event.entity} — investigation` : 'Open a research case.'} detail={event ? `${prettyLabel(event.event_type)} · event ${event.event_id}` : 'Select a risk event from the feed to load its scenario overview.'} action={event && <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}><StatusChip label={event.impact_tier} /><SourceStamp provenance={event.provenance || overview?.provenance} /></div>} />{!event ? <EmptyState title="No case selected" detail="Open an event from Event Intelligence to populate the investigation workspace." icon={<Search size={18} />} /> : <><DataGate loading={overviewLoading} error={overviewError} empty={!overview} retry={overviewRetry}>{overview && <><div className="investigation-hero"><div className="investigation-hero__narrative"><div className="section-eyebrow">DETERMINISTIC RATIONALE</div><p>{overview.deterministic_rationale}</p><div className="narrative-meta"><span><b>ENTITY</b>{overview.entity}</span><span><b>EVENT TYPE</b>{prettyLabel(overview.event_type)}</span><span><b>SENTIMENT</b>{prettyLabel(sentimentLabel(overview.sentiment))}</span></div></div><RiskGauge score={overview.impact_score} tier={overview.impact_tier} /></div><SectionFrame eyebrow="STRESS PATHWAY" title="Trace the shock."><div className="causality-flow"><div className="flow-node flow-node--event"><span>01 / EVENT</span><strong>{prettyLabel(overview.event_type)}</strong><small>{prettyLabel(overview.entity)} · {formatScore(overview.impact_score)} impact</small></div><div className="flow-connector"><span>shock applied</span><ArrowDownRight /></div><div className="flow-node"><span>02 / SHOCK</span><strong>{prettyLabel(overview.shock_scope)}</strong><small>{overview.stress_applied ? 'scenario applied' : 'scenario not applied'}</small></div><div className="flow-connector"><span>portfolio consequence</span><ArrowDownRight /></div><div className="flow-node"><span>03 / PORTFOLIO</span><strong>{formatMoney(overview.affected_ead)}</strong><small>{formatDecimalPct(overview.affected_ead_pct)} affected EAD</small></div><div className="flow-connector"><span>loss creation</span><ArrowDownRight /></div><div className="flow-node flow-node--loss"><span>04 / LOSS</span><strong>{formatMoney(overview.incremental_el)}</strong><small>incremental expected loss</small></div><div className="flow-connector"><span>valuation</span><ArrowDownRight /></div><div className="flow-node flow-node--mtm"><span>05 / VALUATION</span><strong>{formatMoney(overview.mtm_impact)}</strong><small>mark-to-market impact</small></div></div><div className="stress-footnote"><AlertNote>Scope is API-defined as <strong>{prettyLabel(overview.shock_scope)}</strong>. The frontend does not broaden or reinterpret the stress.</AlertNote><div className="stress-readout"><span>RISK OUTPUT / READ-ONLY</span><SignalLine variant="coral" /></div></div></SectionFrame><div className="metric-grid metric-grid--four"><MetricBlock label="AFFECTED EAD" value={formatMoney(overview.affected_ead)} note={`${formatDecimalPct(overview.affected_ead_pct)} of portfolio`} tone="amber" /><MetricBlock label="INCREMENTAL EL" value={formatMoney(overview.incremental_el)} note="stress output" tone="danger" /><MetricBlock label="MTM IMPACT" value={formatMoney(overview.mtm_impact)} note="valuation output" tone="danger" /><MetricBlock label="SHOCK SCOPE" value={prettyLabel(overview.shock_scope)} note={overview.stress_applied ? 'stress applied' : 'stress not applied'} /></div></>}</DataGate><DataGate loading={attributionLoading} error={attributionError} empty={!attribution} retry={attributionRetry}>{attribution && <><SectionFrame eyebrow="EXPOSURE REGISTER" title="Affected exposures" meta={<span className="meta-code">{attribution.by_exposure.length} ROWS</span>}><DataTable headers={['OBLIGOR', 'ASSET TYPE', 'SECTOR', 'GEOGRAPHY', 'EAD', 'INCREMENTAL EL', 'MTM', 'STATE']} rows={attribution.by_exposure.slice(0, 12).map((row) => [row.obligor, prettyLabel(row.asset_type), row.sector, row.geography, formatMoney(row.ead), formatMoney(row.incremental_el), formatMoney(row.mtm_impact), row.is_affected ? 'AFFECTED' : 'NOT AFFECTED'])} /></SectionFrame><div className="workspace-grid workspace-grid--three"><SectionFrame eyebrow="BY SECTOR" title="Expected loss contribution"><ContributionBars rows={attribution.by_sector} valueKey="incremental_el" limit={6} /></SectionFrame><SectionFrame eyebrow="BY GEOGRAPHY" title="EAD intensity"><ContributionBars rows={attribution.by_geography} valueKey="ead" limit={6} /></SectionFrame><SectionFrame eyebrow="BY ASSET TYPE" title="MTM contribution"><ContributionBars rows={attribution.by_asset_type} valueKey="mtm_impact" limit={6} /></SectionFrame></div><SectionFrame eyebrow="CONCENTRATION MAP" title="Dimension × exposure intensity" meta={<span className="meta-code">EAD PCT / EXPOSURE COUNT</span>}><ExposureMatrix rows={attribution.by_sector} /></SectionFrame></>}</DataGate></>}</div>
 }
 
 export function StressLabWorkspace({ event, overview, loading, error, retry }: { event: EventSummary | null; overview: EventStressOverviewData | null; loading: boolean; error: Error | null; retry: () => void }) {
@@ -170,7 +170,7 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
   )
 }
 
-export function SimulationWorkspace({ state, setState }: { state: SimulationWorkspaceState, setState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>> }) {
+export function SimulationWorkspace({ state, setState, hideTitle }: { state: SimulationWorkspaceState, setState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>>, hideTitle?: boolean }) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { run, loading, connectionState, error: streamError, retry } = usePipelineStream(state.activeRunId)
 
@@ -207,20 +207,33 @@ export function SimulationWorkspace({ state, setState }: { state: SimulationWork
   }
 
   return (
-    <div className="workspace-stack">
-      <WorkspaceTitle 
-        eyebrow="INTELLIGENCE LAB / 08" 
-        title="Analyst Simulation" 
-        detail="Simulate a real-time risk event to observe the execution pipeline." 
-        action={
+    <div className={hideTitle ? "" : "workspace-stack"}>
+      {!hideTitle && (
+        <WorkspaceTitle 
+          eyebrow="INTELLIGENCE LAB / 08" 
+          title="Analyst Simulation" 
+          detail="Simulate a real-time risk event to observe the execution pipeline." 
+          action={
+            <button 
+              onClick={() => setIsModalOpen(true)}
+              style={{ background: '#111827', color: 'white', padding: '10px 20px', borderRadius: '4px', fontSize: '13px', fontWeight: 'bold', border: '1px solid #374151', cursor: 'pointer' }}
+            >
+              Simulate Test
+            </button>
+          } 
+        />
+      )}
+      
+      {hideTitle && (
+        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '20px' }}>
           <button 
             onClick={() => setIsModalOpen(true)}
             style={{ background: '#111827', color: 'white', padding: '10px 20px', borderRadius: '4px', fontSize: '13px', fontWeight: 'bold', border: '1px solid #374151', cursor: 'pointer' }}
           >
             Simulate Test
           </button>
-        } 
-      />
+        </div>
+      )}
 
       <AnimatePresence>
         {isModalOpen && (
@@ -376,7 +389,7 @@ export interface GdeltWorkspaceState {
   resultCount: number | null
 }
 
-export function GdeltWorkspace({ state, setState }: { state: GdeltWorkspaceState, setState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>> }) {
+export function GdeltWorkspace({ state, setState, hideTitle }: { state: GdeltWorkspaceState, setState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>>, hideTitle?: boolean }) {
   const { run, loading, connectionState, error: streamError, retry } = usePipelineStream(state.activeRunId)
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -399,15 +412,17 @@ export function GdeltWorkspace({ state, setState }: { state: GdeltWorkspaceState
   }
 
   return (
-    <div className="workspace-stack">
-      <WorkspaceTitle 
-        eyebrow="LIVE INTELLIGENCE / 09" 
-        title="Live News Intelligence" 
-        detail="Search the Global Database of Events, Language, and Tone (GDELT) 2.0 API. Records are normalized and processed through the NLP pipeline." 
-        action={<IconBadge tone="mint"><Globe size={16} /></IconBadge>} 
-      />
+    <div className={hideTitle ? "" : "workspace-stack"}>
+      {!hideTitle && (
+        <WorkspaceTitle 
+          eyebrow="LIVE INTELLIGENCE / 09" 
+          title="Live News Intelligence" 
+          detail="Search the Global Database of Events, Language, and Tone (GDELT) 2.0 API. Records are normalized and processed through the NLP pipeline." 
+          action={<IconBadge tone="mint"><Globe size={16} /></IconBadge>} 
+        />
+      )}
 
-      <div className="workspace-grid workspace-grid--two-one">
+      <div className="workspace-grid workspace-grid--two-one" style={{ marginTop: hideTitle ? 0 : undefined }}>
         <SectionFrame eyebrow="SEARCH" title="News Query" meta={<StatusChip label="LIVE_GDELT" tone="mint" />}>
           <form className="simulation-form" onSubmit={handleSubmit}>
             <div style={{ border: '1px solid #E5E7EB', padding: '16px', marginBottom: '16px', borderRadius: '4px' }}>
@@ -694,6 +709,49 @@ export function ProvenanceWorkspace() {
           </SectionFrame>
         )}
       </DataGate>
+    </div>
+  )
+}
+
+export function IntelligenceWorkspace({ 
+  simulationState, setSimulationState, 
+  gdeltState, setGdeltState 
+}: { 
+  simulationState: SimulationWorkspaceState, setSimulationState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>>,
+  gdeltState: GdeltWorkspaceState, setGdeltState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>>
+}) {
+  const [activeTab, setActiveTab] = useState<'sandbox' | 'gdelt'>('sandbox')
+
+  return (
+    <div className="workspace-stack">
+      <WorkspaceTitle 
+        eyebrow="INTELLIGENCE LAB / 03" 
+        title="Intelligence Lab" 
+        detail="Unified workspace for Analyst Simulation Sandbox and Live News Search (GDELT)." 
+        action={
+          <div style={{ display: 'flex', gap: '8px', background: 'var(--bg-raised)', padding: '4px', borderRadius: '8px', border: '1px solid var(--line-strong)' }}>
+            <button 
+              onClick={() => setActiveTab('sandbox')} 
+              style={{ padding: '6px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 600, border: 'none', background: activeTab === 'sandbox' ? 'var(--bg-panel)' : 'transparent', color: activeTab === 'sandbox' ? 'var(--text)' : 'var(--muted)', cursor: 'pointer', boxShadow: activeTab === 'sandbox' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none' }}
+            >
+              Analyst Sandbox
+            </button>
+            <button 
+              onClick={() => setActiveTab('gdelt')} 
+              style={{ padding: '6px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 600, border: 'none', background: activeTab === 'gdelt' ? 'var(--bg-panel)' : 'transparent', color: activeTab === 'gdelt' ? 'var(--text)' : 'var(--muted)', cursor: 'pointer', boxShadow: activeTab === 'gdelt' ? '0 1px 3px rgba(0,0,0,0.1)' : 'none' }}
+            >
+              News Search (GDELT)
+            </button>
+          </div>
+        } 
+      />
+      <div style={{ marginTop: '8px' }}>
+        {activeTab === 'sandbox' ? (
+          <SimulationWorkspace state={simulationState} setState={setSimulationState} hideTitle />
+        ) : (
+          <GdeltWorkspace state={gdeltState} setState={setGdeltState} hideTitle />
+        )}
+      </div>
     </div>
   )
 }

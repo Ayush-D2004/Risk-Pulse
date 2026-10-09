@@ -140,7 +140,7 @@ export interface ScenarioComparisonResponse extends DashboardEnvelope {
   data: ScenarioComparisonData
 }
 
-export type Workspace = 'command' | 'portfolio' | 'events' | 'investigation' | 'stress' | 'attribution' | 'comparison' | 'simulation' | 'gdelt' | 'runs' | 'provenance'
+export type Workspace = 'command' | 'portfolio' | 'events' | 'investigation' | 'intelligence'
 
 export interface PromotedRunResponse {
   run_id: string
