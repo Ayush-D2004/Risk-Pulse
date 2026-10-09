@@ -61,13 +61,18 @@ class RuntimeOrchestrator:
         # ingestion
         stage_ingest = PipelineStage(name="ingestion", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
         run.stages.append(stage_ingest)
+        self.store.update_run(run)
+        
         stage_ingest.output = {"count": len(observations), "mode": mode.value}
         stage_ingest.status = StageStatus.COMPLETED
         stage_ingest.completed_at = datetime.now(timezone.utc)
+        self.store.update_run(run)
         
         # preprocessing
         stage_pre = PipelineStage(name="preprocessing", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
         run.stages.append(stage_pre)
+        self.store.update_run(run)
+        
         valid_obs = []
         for obs in observations:
             if obs.text.strip():
@@ -75,6 +80,15 @@ class RuntimeOrchestrator:
         stage_pre.output = {"valid_count": len(valid_obs)}
         stage_pre.status = StageStatus.COMPLETED
         stage_pre.completed_at = datetime.now(timezone.utc)
+        self.store.update_run(run)
+        
+        # Define NLP stages
+        stage_ent = PipelineStage(name="entity_resolution", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
+        stage_sent = PipelineStage(name="sentiment", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
+        stage_ev = PipelineStage(name="event_classification", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
+        stage_mat = PipelineStage(name="materiality", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
+        run.stages.extend([stage_ent, stage_sent, stage_ev, stage_mat])
+        self.store.update_run(run)
         
         signals = []
         for obs in valid_obs:
@@ -136,40 +150,57 @@ class RuntimeOrchestrator:
             )
             signals.append(sig)
             
-        stage_ent = PipelineStage(name="entity_resolution", status=StageStatus.COMPLETED, started_at=datetime.now(timezone.utc), completed_at=datetime.now(timezone.utc), output={"processed": len(signals)})
-        run.stages.append(stage_ent)
-        stage_sent = PipelineStage(name="sentiment", status=StageStatus.COMPLETED, started_at=datetime.now(timezone.utc), completed_at=datetime.now(timezone.utc), output={"processed": len(signals)})
-        run.stages.append(stage_sent)
-        stage_ev = PipelineStage(name="event_classification", status=StageStatus.COMPLETED, started_at=datetime.now(timezone.utc), completed_at=datetime.now(timezone.utc), output={"processed": len(signals)})
-        run.stages.append(stage_ev)
-        stage_mat = PipelineStage(name="materiality", status=StageStatus.COMPLETED, started_at=datetime.now(timezone.utc), completed_at=datetime.now(timezone.utc), output={"processed": len(signals)})
-        run.stages.append(stage_mat)
+        stage_ent.status = StageStatus.COMPLETED
+        stage_ent.completed_at = datetime.now(timezone.utc)
+        stage_ent.output = {"processed": len(signals)}
+        
+        stage_sent.status = StageStatus.COMPLETED
+        stage_sent.completed_at = datetime.now(timezone.utc)
+        stage_sent.output = {"processed": len(signals)}
+        
+        stage_ev.status = StageStatus.COMPLETED
+        stage_ev.completed_at = datetime.now(timezone.utc)
+        stage_ev.output = {"processed": len(signals)}
+        
+        stage_mat.status = StageStatus.COMPLETED
+        stage_mat.completed_at = datetime.now(timezone.utc)
+        stage_mat.output = {"processed": len(signals)}
+        self.store.update_run(run)
         
         # impact
         stage_impact = PipelineStage(name="impact", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
         run.stages.append(stage_impact)
+        self.store.update_run(run)
+        
         for sig in signals:
             self.impact_scorer.score(sig, in_place=True)
+            
         stage_impact.output = {"processed": len(signals)}
         stage_impact.status = StageStatus.COMPLETED
         stage_impact.completed_at = datetime.now(timezone.utc)
+        self.store.update_run(run)
         
         # clustering
         stage_cluster = PipelineStage(name="clustering", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
         run.stages.append(stage_cluster)
+        self.store.update_run(run)
+        
         canonical_signals = []
         with self.inference_lock:
             for sig in signals:
                 clustered_sig = self.clusterer.process_signal(sig)
                 if clustered_sig not in canonical_signals:
                     canonical_signals.append(clustered_sig)
+                    
         stage_cluster.output = {"clusters_formed": len(canonical_signals)}
         stage_cluster.status = StageStatus.COMPLETED
         stage_cluster.completed_at = datetime.now(timezone.utc)
+        self.store.update_run(run)
         
         # market_context
         stage_market = PipelineStage(name="market_context", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
         run.stages.append(stage_market)
+        self.store.update_run(run)
         
         for sig in canonical_signals:
             if mode in (RunMode.LIVE_GDELT, RunMode.ANALYST_SIMULATION):
@@ -192,10 +223,12 @@ class RuntimeOrchestrator:
         if stage_market.status == StageStatus.RUNNING:
             stage_market.status = StageStatus.COMPLETED
         stage_market.completed_at = datetime.now(timezone.utc)
+        self.store.update_run(run)
         
         # portfolio_stress
         stage_stress = PipelineStage(name="portfolio_stress", status=StageStatus.RUNNING, started_at=datetime.now(timezone.utc))
         run.stages.append(stage_stress)
+        self.store.update_run(run)
         
         stress_results = []
         for sig in canonical_signals:
@@ -207,9 +240,11 @@ class RuntimeOrchestrator:
         }
         stage_stress.status = StageStatus.COMPLETED
         stage_stress.completed_at = datetime.now(timezone.utc)
+        self.store.update_run(run)
         
         # Final Run Output
         run.final_result = {
             "signals": [s.to_dict() for s in canonical_signals],
             "stress_results": [r.model_dump(mode="json") for r in stress_results]
         }
+        # Not calling store.update_run here because process_run calls it immediately after.

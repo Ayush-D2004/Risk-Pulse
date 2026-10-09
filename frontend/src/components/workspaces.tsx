@@ -1,9 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { Activity, ArrowDownRight, ArrowRight, BarChart3, BookOpen, Check, ChevronRight, Database, Filter, Focus, GitCompareArrows, Globe, Layers3, Network, Plus, Search, Siren, Sparkles, Target, Trash2, TrendingDown, Workflow, X } from 'lucide-react'
-import { useCallback, useState, type ReactNode } from 'react'
+import { useCallback, useState, useEffect, type ReactNode } from 'react'
 import type { AnalystObservation, EventStressOverviewData, EventSummary, PortfolioOverviewData, RiskAttributionData, ScenarioComparisonData, Workspace, PipelineRun, ObservationInput } from '../types/api'
 import { useApiQuery } from '../hooks/useApi'
-import { submitAnalystSimulation, submitGdeltSearch, fetchPipelineRuns, promotePipelineRun } from '../lib/api'
+import { submitAnalystSimulation, submitGdeltSearch, fetchPipelineRuns, promotePipelineRun, fetchHistoricalMarketData } from '../lib/api'
 import { usePipelineStream } from '../hooks/usePipelineStream'
 import { formatMoney, formatPct, formatDecimalPct, formatScore, formatSignedPct, impactTone, numeric, prettyLabel, sentimentLabel } from '../lib/format'
 import { ContributionBars, ComparisonRows, DataTable, ExposureMatrix, InlineStack, RankedBars } from './charts'
@@ -114,42 +114,209 @@ export function ComparisonWorkspace({ eventA, eventB, comparison, loading, error
 }
 
 export interface SimulationWorkspaceState {
+  companyName?: string
+  ticker?: string
+  eventDate?: string
+  eventTime?: string
+  timezone?: string
   observations: AnalystObservation[]
   submitting: boolean
   submitError: Error | null
   activeRunId: string | null
 }
 
-function SimulationResultView({ result }: { result: any }) {
+function formatDateTime(timestamp: string, timezone: string) {
+  try {
+    const d = new Date(timestamp)
+    return `${d.toLocaleDateString()} ${d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} ${timezone}`
+  } catch {
+    return timestamp
+  }
+}
+
+function MarketChart({ ticker, timestamp, timezone }: { ticker: string, timestamp: string, timezone: string }) {
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<Error | null>(null)
+
+  useEffect(() => {
+    const controller = new AbortController()
+    setLoading(true)
+    fetchHistoricalMarketData(ticker, timestamp, timezone, controller.signal)
+      .then(res => {
+        setData(res)
+        setLoading(false)
+      })
+      .catch(err => {
+        if (!controller.signal.aborted) {
+          setError(err)
+          setLoading(false)
+        }
+      })
+    return () => controller.abort()
+  }, [ticker, timestamp, timezone])
+
+  if (loading) return <div style={{ padding: '24px', textAlign: 'center', color: 'var(--muted)', fontSize: '13px' }}>Loading market data...</div>
+  if (error) return <div style={{ padding: '24px', color: 'var(--danger)', fontSize: '13px' }}>Error loading market data: {error.message}</div>
+  if (!data || data.status !== 'success') return <div style={{ padding: '24px', color: 'var(--amber)', fontSize: '13px' }}>Market data unavailable for this window.</div>
+
+  const points: { timestamp: string, close: number }[] = data.points
+  if (!points || points.length === 0) return null
+
+  const minPrice = Math.min(...points.map(p => p.close))
+  const maxPrice = Math.max(...points.map(p => p.close))
+  const range = maxPrice - minPrice || 1
+  
+  // Chart dimensions
+  const w = 600
+  const h = 160
+  
+  const minTime = new Date(points[0].timestamp).getTime()
+  const maxTime = new Date(points[points.length - 1].timestamp).getTime()
+  const timeRange = maxTime - minTime || 1
+  const eventTimeMs = new Date(data.event_timestamp).getTime()
+  
+  // X coordinates
+  const eventX = ((eventTimeMs - minTime) / timeRange) * w
+  const eventIsOutOfBounds = eventX < 0 || eventX > w
+
+  // We map the points strictly by their observation timestamp to prevent interpolation errors
+  const pathData = points.map((p, i) => {
+    const pTime = new Date(p.timestamp).getTime()
+    const x = ((pTime - minTime) / timeRange) * w
+    const y = h - ((p.close - minPrice) / range) * h
+    return `${i === 0 ? 'M' : 'L'} ${x} ${y}`
+  }).join(' ')
+
+  const isPositive = data.metrics.change_pct >= 0
+  const pctStr = data.metrics.change_pct.toFixed(2)
+  const isPostPositive = data.metrics.post_event_change_pct >= 0
+  
+  const formattedEventDate = formatDateTime(data.event_timestamp, timezone)
+  
+  const preLabel = data.metrics.event_obs_time ? `Pre-event (${new Date(data.metrics.event_obs_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})` : "First"
+  const prePrice = data.metrics.event_price ?? data.metrics.first_price
+  const hasPostEvent = data.metrics.post_event_time != null
+
+  return (
+    <SectionFrame 
+      eyebrow="OBSERVED MARKET RESPONSE" 
+      title={ticker}
+      meta={
+        <div style={{ color: 'var(--muted)', fontSize: '13px' }}>
+          ±4h window • {timezone}
+        </div>
+      }
+    >
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginBottom: '16px' }}>
+        <MetricBlock label={preLabel} value={`$${prePrice.toFixed(2)}`} />
+        {hasPostEvent ? (
+          <MetricBlock label={`Post-event (${new Date(data.metrics.post_event_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})`} value={`$${data.metrics.post_event_price.toFixed(2)}`} />
+        ) : (
+          <MetricBlock label="Last observed" value={`$${data.metrics.last_price.toFixed(2)}`} />
+        )}
+        
+        {hasPostEvent ? (
+          <MetricBlock 
+            label="Post-event Return (1h)" 
+            value={`${isPostPositive ? '+' : ''}${data.metrics.post_event_change_pct.toFixed(2)}%`} 
+            tone={isPostPositive ? 'mint' : 'danger'} 
+          />
+        ) : (
+          <MetricBlock 
+            label="Window Return" 
+            value={`${isPositive ? '+' : ''}${pctStr}%`} 
+            tone={isPositive ? 'mint' : 'danger'} 
+          />
+        )}
+        
+        <MetricBlock label="Min/Max" value={`$${data.metrics.low_price.toFixed(2)} / $${data.metrics.high_price.toFixed(2)}`} />
+      </div>
+      
+      <div style={{ padding: '16px', border: '1px solid var(--line-strong)', borderRadius: '8px', background: 'var(--surface)' }}>
+        <div style={{ position: 'relative', width: '100%', height: `${h}px` }}>
+          {eventIsOutOfBounds && (
+             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, textAlign: 'center', fontSize: '11px', color: 'var(--amber)', background: 'rgba(255, 200, 0, 0.1)', padding: '4px' }}>
+               The event time ({formattedEventDate}) is outside the available trading session points.
+             </div>
+          )}
+          <svg viewBox={`0 -10 ${w} ${h + 20}`} style={{ width: '100%', height: '100%', overflow: 'visible' }} preserveAspectRatio="none">
+            <line x1="0" y1="0" x2={w} y2="0" stroke="var(--line-strong)" strokeWidth="1" strokeDasharray="4 4" />
+            <line x1="0" y1={h} x2={w} y2={h} stroke="var(--line-strong)" strokeWidth="1" strokeDasharray="4 4" />
+            
+            {/* Vertical event line */}
+            {!eventIsOutOfBounds && (
+              <>
+                <line x1={eventX} y1="0" x2={eventX} y2={h} stroke="var(--coral)" strokeWidth="1" strokeDasharray="4 4" />
+                <text x={eventX + 4} y="10" fontSize="10" fill="var(--coral)" fontFamily="monospace">Event Time</text>
+              </>
+            )}
+            
+            <path d={pathData} fill="none" stroke={isPositive ? 'var(--mint)' : 'var(--danger)'} strokeWidth="2" strokeLinejoin="round" />
+          </svg>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px', fontSize: '11px', color: 'var(--muted)', fontFamily: 'monospace' }}>
+          <span>{formatDateTime(points[0].timestamp, timezone)}</span>
+          <span>{formatDateTime(points[points.length-1].timestamp, timezone)}</span>
+        </div>
+      </div>
+    </SectionFrame>
+  )
+}
+
+function SimulationResultView({ result, run }: { result: any, run: any }) {
   const signal = result.signals?.[0]
   const stress = result.stress_results?.[0]
 
   if (!signal) return <EmptyState title="No Risk Signal Produced" detail="The pipeline did not generate a canonical risk signal." />
 
+  const meta = run?.request?.observations?.[0]?.metadata || {}
+  const hasMarketData = meta.ticker && meta.event_datetime && meta.timezone
+
   return (
     <>
-      <div className="investigation-hero">
-        <div className="investigation-hero__narrative">
-          <div className="section-eyebrow">PIPELINE RESULT</div>
-          <h2 style={{ fontSize: '24px', margin: '8px 0 16px' }}>{signal.entity} · {prettyLabel(signal.event_type)}</h2>
-          <div className="narrative-meta">
-            <span><b>MATERIALITY</b>{prettyLabel(signal.materiality)}</span>
-            <span><b>SENTIMENT</b>{signal.sentiment_score?.toFixed(2) || '0.00'}</span>
+      <SectionFrame eyebrow="AI EVENT ANALYSIS" title={`${signal.entity} · ${prettyLabel(signal.event_type)}`}>
+        <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+          <div style={{ flex: '1 1 200px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+               <MetricBlock label="MATERIALITY" value={prettyLabel(signal.materiality)} />
+               <MetricBlock label="SENTIMENT SCORE" value={signal.sentiment_score?.toFixed(2) || '0.00'} />
+            </div>
+          </div>
+          <div style={{ flex: '0 0 auto', alignSelf: 'center' }}>
+            <RiskGauge score={signal.impact_score} tier={signal.impact_tier || 'UNKNOWN'} />
           </div>
         </div>
-        <RiskGauge score={signal.impact_score} tier={signal.impact_tier || 'UNKNOWN'} />
-      </div>
+      </SectionFrame>
 
-      {stress ? (
-        <div className="metric-grid metric-grid--four">
-          <MetricBlock label="AFFECTED EAD" value={formatMoney(stress.affected_ead)} tone="amber" />
-          <MetricBlock label="INCREMENTAL EL" value={formatMoney(stress.incremental_expected_loss)} tone="danger" />
-          <MetricBlock label="MTM IMPACT" value={formatMoney(stress.total_mtm_impact)} tone="danger" />
-          <MetricBlock label="SHOCK SCOPE" value={prettyLabel(stress.shock_scenario?.shock_scope || 'NONE')} note={stress.stress_applied ? 'stress applied' : 'stress not applied'} />
-        </div>
+      {hasMarketData && (
+        <MarketChart 
+          ticker={meta.ticker} 
+          timestamp={meta.event_datetime} 
+          timezone={meta.timezone} 
+        />
+      )}
+
+      {!stress ? (
+        <SectionFrame eyebrow="PORTFOLIO STRESS ASSESSMENT" title="Stress Output Unavailable" meta={<StatusChip label="UNAVAILABLE" tone="amber" />}>
+          <AlertNote>No portfolio stress data was returned by the pipeline.</AlertNote>
+        </SectionFrame>
+      ) : stress.error ? (
+        <SectionFrame eyebrow="PORTFOLIO STRESS ASSESSMENT" title="Stress Calculation Failed" meta={<StatusChip label="FAILED" tone="danger" />}>
+          <AlertNote>The stress engine encountered an error: {stress.error}</AlertNote>
+        </SectionFrame>
+      ) : !stress.stress_applied ? (
+        <SectionFrame eyebrow="PORTFOLIO STRESS ASSESSMENT" title="No Portfolio Stress Triggered" meta={<StatusChip label="NO_STRESS" tone="amber" />}>
+          <AlertNote>{stress.rationale || "No applicable shock mapping for this event."}</AlertNote>
+        </SectionFrame>
       ) : (
-        <SectionFrame title="Portfolio Stress Not Applied" meta={<StatusChip label="NO_STRESS" tone="amber" />}>
-          <AlertNote>The pipeline resolved the signal but did not produce genuine portfolio stress outputs.</AlertNote>
+        <SectionFrame eyebrow="PORTFOLIO STRESS ASSESSMENT" title="Stress Applied">
+          <div className="metric-grid metric-grid--four">
+            <MetricBlock label="AFFECTED EAD" value={formatMoney(stress.affected_ead)} tone="amber" />
+            <MetricBlock label="INCREMENTAL EL" value={formatMoney(stress.incremental_expected_loss)} tone="danger" />
+            <MetricBlock label="MTM IMPACT" value={formatMoney(stress.total_mtm_impact)} tone="danger" />
+            <MetricBlock label="SHOCK SCOPE" value={prettyLabel(stress.shock_scenario?.shock_scope || 'NONE')} note={stress.rationale} />
+          </div>
         </SectionFrame>
       )}
     </>
@@ -249,7 +416,7 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
         </div>
       </SectionFrame>
 
-      {hasResults && <SimulationResultView result={run.final_result} />}
+      {hasResults && <SimulationResultView result={run.final_result} run={run} />}
     </div>
   )
 }
@@ -277,10 +444,23 @@ export function SimulationWorkspace({ state, setState, hideTitle, onPromoteSucce
       return
     }
 
+    if (!state.companyName || !state.ticker || !state.eventDate || !state.eventTime || !state.timezone) {
+      setState(prev => ({ ...prev, submitError: new Error('Company Name, Ticker, Event Date, Event Time, and Timezone are required.') }))
+      return
+    }
+
     setState(prev => ({ ...prev, submitting: true, submitError: null, activeRunId: null }))
 
     try {
-      const res = await submitAnalystSimulation({ mode: 'ANALYST_SIMULATION', observations: state.observations })
+      const event_datetime = `${state.eventDate}T${state.eventTime}:00`
+      const res = await submitAnalystSimulation({ 
+        mode: 'ANALYST_SIMULATION', 
+        company_name: state.companyName,
+        ticker: state.ticker,
+        event_datetime,
+        timezone: state.timezone,
+        observations: state.observations 
+      })
       setState(prev => ({ ...prev, activeRunId: res.run_id }))
       setIsModalOpen(false)
     } catch (e) {
@@ -340,6 +520,68 @@ export function SimulationWorkspace({ state, setState, hideTitle, onPromoteSucce
                   <AlertNote>The pipeline expects unstructured text (News, Social Media). Provide a diverse set of inputs to simulate corroboration across channels.</AlertNote>
                 </div>
                 
+                <div style={{ marginBottom: '32px', padding: '24px', borderRadius: '12px', border: '1px solid var(--line-strong)', background: 'var(--bg)' }}>
+                  <div className="section-eyebrow" style={{ marginBottom: '16px' }}>EVENT CONTEXT (GLOBAL)</div>
+                  
+                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '16px' }}>
+                    <div style={{ flex: '1 1 200px' }}>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>COMPANY NAME</label>
+                      <input 
+                        type="text" 
+                        placeholder="e.g. Apple Inc."
+                        value={state.companyName || ''} 
+                        onChange={(e) => setState(prev => ({ ...prev, companyName: e.target.value }))}
+                        style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                      />
+                    </div>
+                    <div style={{ flex: '1 1 120px' }}>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>TICKER</label>
+                      <input 
+                        type="text" 
+                        placeholder="e.g. AAPL"
+                        value={state.ticker || ''} 
+                        onChange={(e) => setState(prev => ({ ...prev, ticker: e.target.value }))}
+                        style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                    <div style={{ flex: '1 1 150px' }}>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>EVENT DATE</label>
+                      <input 
+                        type="date" 
+                        value={state.eventDate || ''} 
+                        onChange={(e) => setState(prev => ({ ...prev, eventDate: e.target.value }))}
+                        style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                      />
+                    </div>
+                    <div style={{ flex: '1 1 150px' }}>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>EVENT TIME</label>
+                      <input 
+                        type="time" 
+                        value={state.eventTime || ''} 
+                        onChange={(e) => setState(prev => ({ ...prev, eventTime: e.target.value }))}
+                        style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                      />
+                    </div>
+                    <div style={{ flex: '1 1 150px' }}>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 600, color: 'var(--muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>TIMEZONE</label>
+                      <select 
+                        value={state.timezone || 'UTC'} 
+                        onChange={(e) => setState(prev => ({ ...prev, timezone: e.target.value }))}
+                        style={{ width: '100%', padding: '10px 14px', border: '1px solid var(--line-strong)', borderRadius: '8px', fontSize: '13px', backgroundColor: 'var(--bg-raised)', color: 'var(--text)', outline: 'none' }}
+                      >
+                        <option value="UTC">UTC</option>
+                        <option value="America/New_York">US Eastern (ET)</option>
+                        <option value="America/Los_Angeles">US Pacific (PT)</option>
+                        <option value="Europe/London">London</option>
+                        <option value="Asia/Tokyo">Tokyo</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="simulation-form" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                   {state.observations.map((obs, index) => (
                     <motion.div 

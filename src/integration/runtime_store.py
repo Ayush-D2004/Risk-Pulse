@@ -56,6 +56,7 @@ class RuntimeStore:
         conn = self.db._get_conn()
         c = conn.execute("SELECT payload FROM pipeline_runs WHERE run_id = ?", (run_id,))
         row = c.fetchone()
+        conn.commit()
         if not row:
             return None
         return PipelineRun.model_validate_json(row[0])

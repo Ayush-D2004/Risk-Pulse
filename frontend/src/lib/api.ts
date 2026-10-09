@@ -89,3 +89,6 @@ export const promotePipelineRun = (runId: string, signal?: AbortSignal) =>
     signal,
     headers: { 'Content-Type': 'application/json' }
   })
+
+export const fetchHistoricalMarketData = (ticker: string, timestamp: string, timezone: string, signal?: AbortSignal) =>
+  fetchJson<any>(`/market/historical?ticker=${encodeURIComponent(ticker)}&timestamp=${encodeURIComponent(timestamp)}&timezone=${encodeURIComponent(timezone)}`, { signal })

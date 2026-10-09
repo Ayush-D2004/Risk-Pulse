@@ -168,10 +168,15 @@ class AnalystObservation(BaseModel):
     body: Optional[str] = None
     timestamp: Optional[datetime] = None
     url: Optional[str] = None
+    entity: Optional[str] = None
     metadata: Optional[Dict[str, Any]] = None
 
 class AnalystSimulationRequest(BaseModel):
     mode: RunMode = RunMode.ANALYST_SIMULATION
+    company_name: Optional[str] = None
+    ticker: Optional[str] = None
+    event_datetime: Optional[str] = None  # ISO format string or similar
+    timezone: Optional[str] = None
     observations: List[AnalystObservation]
 
 @app.post("/api/intelligence/simulate")
@@ -194,16 +199,29 @@ async def simulate_runs(req: AnalystSimulationRequest):
         if not text.strip():
             raise HTTPException(status_code=400, detail="Observation must have text (headline or body)")
             
+        # Merge global metadata into observation metadata
+        merged_meta = dict(obs.metadata) if obs.metadata is not None else None
+        if req.company_name or req.ticker or req.event_datetime or req.timezone:
+            merged_meta = merged_meta or {}
+            if req.company_name:
+                merged_meta["company_name"] = req.company_name
+            if req.ticker:
+                merged_meta["ticker"] = req.ticker
+            if req.event_datetime:
+                merged_meta["event_datetime"] = req.event_datetime
+            if req.timezone:
+                merged_meta["timezone"] = req.timezone
+            
         obs_inputs.append(ObservationInput(
             text=text,
             headline=obs.headline,
             url=obs.url,
             author=obs.author,
-            entity=None,
+            entity=req.company_name or obs.entity,
             source=ObservationSource.ANALYST_SIMULATION,
             timestamp=obs.timestamp,
             channel=obs.channel,
-            metadata=obs.metadata
+            metadata=merged_meta
         ))
         
     run_req = PipelineRunRequest(
@@ -250,6 +268,31 @@ def promote_run(run_id: str):
         return response
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
+from src.market.yfinance_client import MarketDataService
+
+@app.get("/api/market/historical")
+async def get_historical_market_data(
+    ticker: str,
+    timestamp: str,
+    timezone: str = "UTC",
+    window_hours: int = 4
+):
+    """Fetch historical intraday/daily stock prices around an event."""
+    if not ticker or not timestamp:
+        raise HTTPException(status_code=400, detail="Ticker and timestamp are required")
+        
+    result = await MarketDataService.fetch_historical_window(
+        ticker=ticker,
+        event_dt_str=timestamp,
+        tz_name=timezone,
+        window_hours=window_hours
+    )
+    
+    if result.get("status") == "error":
+        raise HTTPException(status_code=502, detail=result.get("reason", "Unknown error"))
+        
+    return result
 
 @app.get("/api/intelligence/runs")
 def list_runs():

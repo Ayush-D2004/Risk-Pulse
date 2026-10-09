@@ -205,6 +205,10 @@ export interface AnalystObservation {
 
 export interface AnalystSimulationRequest {
   mode?: RunMode
+  company_name?: string | null
+  ticker?: string | null
+  event_datetime?: string | null
+  timezone?: string | null
   observations: AnalystObservation[]
 }
 
