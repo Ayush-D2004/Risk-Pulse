@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Activity, BarChart3, BellRing, Command, Search, Network, Menu, Settings2 } from 'lucide-react'
+import { Activity, BarChart3, BellRing, Command, Search, Network, Menu } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { fetchEvents, fetchPortfolio, fetchScenarioAttribution, fetchScenarioOverview, unwrapEvents, unwrapData } from './lib/api'
 import { useApiQuery } from './hooks/useApi'
 import type { Workspace } from './types/api'
 import { prettyLabel } from './lib/format'
-import { AppMark, Kicker } from './components/ui'
+import { AppMark, Kicker, GithubIcon, LinkedinIcon } from './components/ui'
 import { CommandCenter, EventsWorkspace, InvestigationWorkspace, PortfolioWorkspace, SidebarBrand, IntelligenceWorkspace, type SimulationWorkspaceState, type GdeltWorkspaceState } from './components/workspaces'
 
 const navItems: Array<{ id: Workspace; label: string; code: string; icon: typeof Activity }> = [
@@ -107,7 +107,34 @@ export default function App() {
       <SidebarBrand />
       <div className="sidebar-section-label">WORKSPACES</div>
       <nav className="sidebar-nav" aria-label="Primary navigation">{navItems.map((item) => { const Icon = item.icon; return <button key={item.id} className={`nav-item ${activeWorkspace === item.id ? 'nav-item--active' : ''}`} onClick={() => navigate(item.id)}><Icon size={16} /><span>{item.label}</span><kbd>{item.code}</kbd></button> })}</nav>
-      <div className="sidebar-bottom"><div className="sidebar-status"><span className="live-dot" />API LINK <span>·</span> {portfolioQuery.error || eventsQuery.error ? 'DEGRADED' : 'STANDBY'}</div><div className="sidebar-utilities"><button title="Open command palette" onClick={() => navigate('events')}><Search size={15} /><span>Command search</span><kbd>⌘K</kbd></button><button title="Settings"><Settings2 size={15} /><span>System settings</span></button></div></div>
+      <div className="sidebar-author-box">
+        <div className="sidebar-author-text">
+          <span>Project made by</span>
+          <strong>Ayush Dhoble</strong>
+        </div>
+        <div className="sidebar-author-links">
+          <a
+            href="https://github.com/Ayush-D2004"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Ayush Dhoble on GitHub"
+            className="sidebar-author-link sidebar-author-link--github"
+          >
+            <GithubIcon size={14} />
+            <span>GitHub</span>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/ayush-dhoble-7363b2290/"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="Ayush Dhoble on LinkedIn"
+            className="sidebar-author-link sidebar-author-link--linkedin"
+          >
+            <LinkedinIcon size={14} />
+            <span>LinkedIn</span>
+          </a>
+        </div>
+      </div>
     </aside>
     <main className="main-canvas">
       <div className="hackathon-strip"><div className="hackathon-strip__brand"><span className="partner-mark" style={{marginRight: '12px', paddingTop: '5px'}}>Code to Connect</span><span className="partner-mark partner-mark--sp">S&amp;P Global</span><span className="partner-divider" /><span className="partner-mark partner-mark--crisil">Crisil</span></div><div className="hackathon-strip__status"><span className="live-dot" /> CASE STUDY / RESEARCH SYSTEM</div></div>
