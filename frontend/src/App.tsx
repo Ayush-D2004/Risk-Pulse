@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Activity, BarChart3, BellRing, Command, GitCompareArrows, Layers3, Menu, Network, Search, Settings2, Siren } from 'lucide-react'
+import { Activity, BarChart3, BellRing, BookOpen, Command, Database, GitCompareArrows, Globe, Layers3, Menu, Network, Search, Settings2, Siren } from 'lucide-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { fetchEvents, fetchPortfolio, fetchScenarioAttribution, fetchScenarioComparison, fetchScenarioOverview, unwrapEvents, unwrapData } from './lib/api'
 import { useApiQuery } from './hooks/useApi'
 import type { EventSummary, Workspace } from './types/api'
 import { prettyLabel } from './lib/format'
 import { AppMark, Kicker } from './components/ui'
-import { AttributionWorkspace, CommandCenter, ComparisonWorkspace, EventsWorkspace, InvestigationWorkspace, PortfolioWorkspace, SidebarBrand, StressLabWorkspace } from './components/workspaces'
+import { AttributionWorkspace, CommandCenter, ComparisonWorkspace, EventsWorkspace, InvestigationWorkspace, PortfolioWorkspace, SidebarBrand, StressLabWorkspace, SimulationWorkspace, GdeltWorkspace, PipelineRunsWorkspace, ProvenanceWorkspace, type SimulationWorkspaceState, type GdeltWorkspaceState } from './components/workspaces'
 
 const navItems: Array<{ id: Workspace; label: string; code: string; icon: typeof Activity }> = [
   { id: 'command', label: 'Command center', code: '01', icon: Command },
@@ -16,6 +16,10 @@ const navItems: Array<{ id: Workspace; label: string; code: string; icon: typeof
   { id: 'stress', label: 'Stress lab', code: '05', icon: Siren },
   { id: 'attribution', label: 'Exposure attribution', code: '06', icon: Layers3 },
   { id: 'comparison', label: 'Scenario comparison', code: '07', icon: GitCompareArrows },
+  { id: 'simulation', label: 'Analyst simulation', code: '08', icon: Activity },
+  { id: 'gdelt', label: 'Live News Intelligence', code: '09', icon: Globe },
+  { id: 'runs', label: 'Pipeline runs', code: '10', icon: Database },
+  { id: 'provenance', label: 'Data provenance', code: '11', icon: BookOpen },
 ]
 
 function initialWorkspace(): Workspace {
@@ -27,6 +31,22 @@ export default function App() {
   const [activeWorkspace, setActiveWorkspace] = useState<Workspace>(initialWorkspace)
   const [selectedEventId, setSelectedEventId] = useState<string | null>(null)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+
+  const [simulationState, setSimulationState] = useState<SimulationWorkspaceState>({
+    observations: [{ channel: 'NEWS', body: '', headline: '' }],
+    submitting: false,
+    submitError: null,
+    activeRunId: null
+  })
+
+  const [gdeltState, setGdeltState] = useState<GdeltWorkspaceState>({
+    query: '',
+    maxRecords: 50,
+    submitting: false,
+    submitError: null,
+    activeRunId: null,
+    resultCount: null
+  })
 
   const portfolioRequest = useCallback((signal: AbortSignal) => fetchPortfolio(signal), [])
   const eventsRequest = useCallback((signal: AbortSignal) => fetchEvents(signal).then(unwrapEvents), [])
@@ -88,6 +108,10 @@ export default function App() {
       case 'stress': return <StressLabWorkspace event={selectedEvent} overview={overviewQuery.data} loading={overviewQuery.loading} error={overviewQuery.error} retry={overviewQuery.reload} />
       case 'attribution': return <AttributionWorkspace event={selectedEvent} attribution={attributionQuery.data} loading={attributionQuery.loading} error={attributionQuery.error} retry={attributionQuery.reload} />
       case 'comparison': return <ComparisonWorkspace eventA={selectedEvent} eventB={secondEvent} comparison={comparisonQuery.data} loading={comparisonQuery.loading} error={comparisonQuery.error} retry={comparisonQuery.reload} onSelectPair={() => navigate('events')} />
+      case 'simulation': return <SimulationWorkspace state={simulationState} setState={setSimulationState} />
+      case 'gdelt': return <GdeltWorkspace state={gdeltState} setState={setGdeltState} />
+      case 'runs': return <PipelineRunsWorkspace />
+      case 'provenance': return <ProvenanceWorkspace />
       default: return <CommandCenter portfolio={portfolioQuery.data} portfolioLoading={portfolioQuery.loading} portfolioError={portfolioQuery.error} portfolioRetry={portfolioQuery.reload} events={eventsQuery.data ?? []} eventsLoading={eventsQuery.loading} eventsError={eventsQuery.error} eventsRetry={eventsQuery.reload} onSelectEvent={selectEvent} onNavigate={navigate} />
     }
   })()

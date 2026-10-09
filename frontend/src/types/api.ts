@@ -47,6 +47,7 @@ export interface EventStressOverviewData {
   mtm_impact: string | number
   deterministic_rationale: string
   stress_applied: boolean
+  provenance?: string
 }
 
 export interface EventStressOverviewResponse extends DashboardEnvelope {
@@ -64,6 +65,7 @@ export interface EventSummary extends Partial<EventStressOverviewData> {
   affected_ead?: string | number
   incremental_el?: string | number
   mtm_impact?: string | number
+  provenance?: string
 }
 
 export interface EventsResponse extends DashboardEnvelope {
@@ -138,4 +140,90 @@ export interface ScenarioComparisonResponse extends DashboardEnvelope {
   data: ScenarioComparisonData
 }
 
-export type Workspace = 'command' | 'portfolio' | 'events' | 'investigation' | 'stress' | 'attribution' | 'comparison'
+export type Workspace = 'command' | 'portfolio' | 'events' | 'investigation' | 'stress' | 'attribution' | 'comparison' | 'simulation' | 'gdelt' | 'runs' | 'provenance'
+
+export interface PromotedRunResponse {
+  run_id: string
+  status: 'SUCCESS' | 'ALREADY_PROMOTED'
+  promoted_event_ids: string[]
+  count: number
+}
+
+export type RunStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED'
+export type RunMode = 'HISTORICAL_REPLAY' | 'LIVE_GDELT' | 'ANALYST_SIMULATION' | 'SYNTHETIC_FIXTURE'
+export type ObservationSource = 'GDELT' | 'HISTORICAL_SOCIAL' | 'ANALYST_SIMULATION' | 'OTHER'
+export type AnalystChannel = 'TWITTER_X_STYLE' | 'NEWS'
+export type StageStatus = 'PENDING' | 'RUNNING' | 'COMPLETED' | 'FAILED' | 'SKIPPED'
+
+export interface PipelineStage {
+  name: string
+  status: StageStatus
+  started_at?: string | null
+  completed_at?: string | null
+  error?: string | null
+  output?: Record<string, unknown> | null
+}
+
+export interface ObservationInput {
+  text: string
+  headline?: string | null
+  url?: string | null
+  author?: string | null
+  entity?: string | null
+  source: ObservationSource
+  timestamp?: string | null
+  channel?: AnalystChannel | null
+  metadata?: Record<string, unknown> | null
+}
+
+export interface PipelineRunRequest {
+  mode: RunMode
+  observations: ObservationInput[]
+}
+
+export interface PipelineRun {
+  run_id: string
+  status: RunStatus
+  request: PipelineRunRequest
+  stages: PipelineStage[]
+  created_at: string
+  completed_at?: string | null
+  error?: string | null
+  final_result?: Record<string, unknown> | null
+}
+
+export interface AnalystObservation {
+  source?: ObservationSource
+  channel: AnalystChannel
+  author?: string | null
+  headline?: string | null
+  body?: string | null
+  timestamp?: string | null
+  url?: string | null
+  metadata?: Record<string, unknown> | null
+}
+
+export interface AnalystSimulationRequest {
+  mode?: RunMode
+  observations: AnalystObservation[]
+}
+
+export interface GDELTSearchRequest {
+  query: string
+  max_records?: number
+}
+
+export interface RunSubmissionResponse {
+  run_id: string
+  status: RunStatus
+}
+
+export interface GDELTSearchResponse {
+  run_id: string
+  status: RunStatus
+  count: number
+}
+
+export interface PipelineRunsResponse {
+  runs: PipelineRun[]
+}

@@ -1,17 +1,22 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { ArrowDownRight, ArrowRight, BarChart3, BookOpen, Check, ChevronRight, Database, Filter, Focus, GitCompareArrows, Layers3, Network, Search, Siren, Sparkles, Target, TrendingDown, Workflow } from 'lucide-react'
-import type { ReactNode } from 'react'
-import type { EventStressOverviewData, EventSummary, PortfolioOverviewData, RiskAttributionData, ScenarioComparisonData, Workspace } from '../types/api'
+import { Activity, ArrowDownRight, ArrowRight, BarChart3, BookOpen, Check, ChevronRight, Database, Filter, Focus, GitCompareArrows, Globe, Layers3, Network, Plus, Search, Siren, Sparkles, Target, Trash2, TrendingDown, Workflow } from 'lucide-react'
+import { useCallback, useState, type ReactNode } from 'react'
+import type { AnalystObservation, EventStressOverviewData, EventSummary, PortfolioOverviewData, RiskAttributionData, ScenarioComparisonData, Workspace, PipelineRun, ObservationInput } from '../types/api'
+import { useApiQuery } from '../hooks/useApi'
+import { submitAnalystSimulation, submitGdeltSearch, fetchPipelineRuns, promotePipelineRun } from '../lib/api'
+import { usePipelineStream } from '../hooks/usePipelineStream'
 import { formatMoney, formatPct, formatScore, formatSignedPct, impactTone, numeric, prettyLabel, sentimentLabel } from '../lib/format'
 import { ContributionBars, ComparisonRows, DataTable, ExposureMatrix, InlineStack, RankedBars } from './charts'
 import { AlertNote, AppMark, ArrowNote, EmptyState, ErrorState, IconBadge, Kicker, LoadingState, MetricBlock, RiskGauge, SectionFrame, SignalLine, StatusChip } from './ui'
+import { PipelineRunViewer } from './pipeline'
 
 export function WorkspaceTitle({ eyebrow, title, detail, action }: { eyebrow: string; title: string; detail: string; action?: ReactNode }) {
   return <div className="workspace-title"><div><Kicker>{eyebrow}</Kicker><h1>{title}</h1><p>{detail}</p></div>{action && <div className="workspace-title__action">{action}</div>}</div>
 }
 
-function SourceStamp({ generatedAt, schema }: { generatedAt?: string; schema?: string }) {
-  return <div className="source-stamp"><span>API-LINKED</span><span>{schema ? `SCHEMA ${schema}` : 'LIVE CONTRACT'}</span>{generatedAt && <span>{generatedAt}</span>}</div>
+function SourceStamp({ generatedAt, schema, provenance }: { generatedAt?: string; schema?: string; provenance?: string }) {
+  const isLive = provenance && provenance !== 'SYNTHETIC_FIXTURE' && provenance !== 'HISTORICAL_REPLAY'
+  return <div className="source-stamp"><span>{isLive ? 'LIVE RUNTIME' : 'API-LINKED'}</span><span>{schema ? `SCHEMA ${schema}` : provenance || 'FIXTURE CATALOG'}</span>{generatedAt && <span>{generatedAt}</span>}</div>
 }
 
 function DataGate({ loading, error, empty, retry, children }: { loading: boolean; error: Error | null; empty: boolean; retry: () => void; children: ReactNode }) {
@@ -46,7 +51,7 @@ export function CommandCenter({ portfolio, portfolioLoading, portfolioError, por
 }
 
 export function EventsWorkspace({ events, loading, error, retry, selectedId, onSelect }: { events: EventSummary[]; loading: boolean; error: Error | null; retry: () => void; selectedId: string | null; onSelect: (id: string) => void }) {
-  return <div className="workspace-stack"><WorkspaceTitle eyebrow="EVENT INTELLIGENCE / 03" title="Risk, in sequence." detail="A research feed for material signals. Open a case to trace its stress path through the book." action={<button className="filter-button"><Filter size={14} /> Filter view</button>} /><SectionFrame eyebrow="LIVE EVENT REGISTER" title="Risk event feed" meta={<SourceStamp schema="EVENTS" />}><DataGate loading={loading} error={error} empty={!events.length} retry={retry}>{<div className="event-feed">{events.map((event, index) => <motion.button initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }} className={`event-row ${selectedId === event.event_id ? 'event-row--selected' : ''}`} key={event.event_id} onClick={() => onSelect(event.event_id)}><div className="event-row__index">{String(index + 1).padStart(2, '0')}</div><div className={`event-row__score event-row__score--${impactTone(event.impact_tier)}`}><span>{formatScore(event.impact_score)}</span><small>IMPACT</small></div><div className="event-row__main"><div className="event-row__headline"><strong>{event.entity}</strong><span>{prettyLabel(event.event_type)}</span><StatusChip label={event.impact_tier} /></div><div className="event-row__detail">{event.deterministic_rationale || 'Deterministic rationale not returned by the API.'}</div></div><div className="event-row__facts"><span>{prettyLabel(sentimentLabel(event.sentiment))} SENTIMENT</span><span>{event.shock_scope ? prettyLabel(event.shock_scope) : 'SCOPE NOT RETURNED'}</span></div><ChevronRight className="event-row__arrow" size={16} /></motion.button>)}</div>}</DataGate></SectionFrame></div>
+  return <div className="workspace-stack"><WorkspaceTitle eyebrow="EVENT INTELLIGENCE / 03" title="Risk, in sequence." detail="A research feed for material signals. Open a case to trace its stress path through the book." action={<button className="filter-button"><Filter size={14} /> Filter view</button>} /><SectionFrame eyebrow="LIVE EVENT REGISTER" title="Risk event feed" meta={<SourceStamp schema="EVENTS" />}><DataGate loading={loading} error={error} empty={!events.length} retry={retry}>{<div className="event-feed">{events.map((event, index) => <motion.button initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.04 }} className={`event-row ${selectedId === event.event_id ? 'event-row--selected' : ''}`} key={event.event_id} onClick={() => onSelect(event.event_id)}><div className="event-row__index">{String(index + 1).padStart(2, '0')}</div><div className={`event-row__score event-row__score--${impactTone(event.impact_tier)}`}><span>{formatScore(event.impact_score)}</span><small>IMPACT</small></div><div className="event-row__main"><div className="event-row__headline"><strong>{event.entity}</strong><span>{prettyLabel(event.event_type)}</span><StatusChip label={event.impact_tier} />{event.provenance && <span style={{ marginLeft: '8px', fontSize: '10px', padding: '2px 4px', background: '#F3F4F6', color: '#6B7280', borderRadius: '4px' }}>{event.provenance}</span>}</div><div className="event-row__detail">{event.deterministic_rationale || 'Deterministic rationale not returned by the API.'}</div></div><div className="event-row__facts"><span>{prettyLabel(sentimentLabel(event.sentiment))} SENTIMENT</span><span>{event.shock_scope ? prettyLabel(event.shock_scope) : 'SCOPE NOT RETURNED'}</span></div><ChevronRight className="event-row__arrow" size={16} /></motion.button>)}</div>}</DataGate></SectionFrame></div>
 }
 
 export function PortfolioWorkspace({ portfolio, loading, error, retry }: { portfolio: { data: PortfolioOverviewData; generated_at?: string; schema_version?: string } | null; loading: boolean; error: Error | null; retry: () => void }) {
@@ -70,6 +75,464 @@ export function ComparisonWorkspace({ eventA, eventB, comparison, loading, error
   return <div className="workspace-stack"><WorkspaceTitle eyebrow="COMPARISON / 07" title="Two cases. One book." detail="A compact research view for comparing API-backed scenarios and the contribution delta between them." action={<button className="filter-button" onClick={onSelectPair}><GitCompareArrows size={14} /> Change pair</button>} />{!eventA || !eventB ? <EmptyState title="Comparison pair not ready" detail="Choose two distinct events from the event feed to load the comparison endpoint." icon={<GitCompareArrows size={18} />} /> : <DataGate loading={loading} error={error} empty={!comparison} retry={retry}>{comparison && <><div className="comparison-head"><div className="comparison-head__case"><span>SCENARIO A</span><strong>{comparison.scenario_a.entity}</strong><small>{prettyLabel(comparison.scenario_a.event_type)} · {formatScore(comparison.scenario_a.impact_score)} impact</small></div><div className="comparison-head__vs">VS</div><div className="comparison-head__case comparison-head__case--b"><span>SCENARIO B</span><strong>{comparison.scenario_b.entity}</strong><small>{prettyLabel(comparison.scenario_b.event_type)} · {formatScore(comparison.scenario_b.impact_score)} impact</small></div></div><div className="comparison-metrics"><div className="comparison-metrics__header"><span>METRIC</span><span>SCENARIO A</span><span>SCENARIO B</span><span>DELTA</span></div>{[['IMPACT', formatScore(comparison.scenario_a.impact_score), formatScore(comparison.scenario_b.impact_score), formatSignedPct(comparison.scenario_b.impact_score - comparison.scenario_a.impact_score)], ['AFFECTED EAD', formatMoney(comparison.scenario_a.affected_ead), formatMoney(comparison.scenario_b.affected_ead), formatMoney(comparison.deltas.affected_ead_difference)], ['INCREMENTAL EL', formatMoney(comparison.scenario_a.incremental_el), formatMoney(comparison.scenario_b.incremental_el), formatMoney(comparison.deltas.incremental_el_difference)], ['MTM IMPACT', formatMoney(comparison.scenario_a.mtm_impact), formatMoney(comparison.scenario_b.mtm_impact), formatMoney(comparison.deltas.absolute_mtm_difference)]].map((row) => <div className="comparison-metrics__row" key={row[0]}><span>{row[0]}</span><strong>{row[1]}</strong><strong>{row[2]}</strong><strong className="comparison-metrics__delta">{row[3]}</strong></div>)}</div><SectionFrame eyebrow="ATTRIBUTION DIFFERENCES" title="Where the scenarios diverge"><div className="workspace-grid workspace-grid--three"><div><div className="mini-section-label">SECTOR</div><ComparisonRows rows={comparison.attribution_differences.by_sector} /></div><div><div className="mini-section-label">GEOGRAPHY</div><ComparisonRows rows={comparison.attribution_differences.by_geography} /></div><div><div className="mini-section-label">ASSET TYPE</div><ComparisonRows rows={comparison.attribution_differences.by_asset_type} /></div></div></SectionFrame></>}</DataGate>}</div>
 }
 
+export interface SimulationWorkspaceState {
+  observations: AnalystObservation[]
+  submitting: boolean
+  submitError: Error | null
+  activeRunId: string | null
+}
+
+export function SimulationWorkspace({ state, setState }: { state: SimulationWorkspaceState, setState: React.Dispatch<React.SetStateAction<SimulationWorkspaceState>> }) {
+  const { run, loading, connectionState, error: streamError, retry } = usePipelineStream(state.activeRunId)
+
+  const addObservation = () => setState(prev => ({ ...prev, observations: [...prev.observations, { channel: 'NEWS', body: '', headline: '' }] }))
+  
+  const removeObservation = (index: number) => setState(prev => ({ ...prev, observations: prev.observations.filter((_, i) => i !== index) }))
+
+  const updateObservation = (index: number, updates: Partial<AnalystObservation>) => {
+    setState(prev => {
+      const next = [...prev.observations]
+      next[index] = { ...next[index], ...updates }
+      return { ...prev, observations: next }
+    })
+  }
+
+  const handleSubmit = async () => {
+    const valid = state.observations.every(o => o.headline?.trim() || o.body?.trim())
+    if (!valid) {
+      setState(prev => ({ ...prev, submitError: new Error('Each observation must have text in the headline or body.') }))
+      return
+    }
+
+    setState(prev => ({ ...prev, submitting: true, submitError: null, activeRunId: null }))
+
+    try {
+      const res = await submitAnalystSimulation({ mode: 'ANALYST_SIMULATION', observations: state.observations })
+      setState(prev => ({ ...prev, activeRunId: res.run_id }))
+    } catch (e) {
+      setState(prev => ({ ...prev, submitError: e instanceof Error ? e : new Error('Failed to submit simulation') }))
+    } finally {
+      setState(prev => ({ ...prev, submitting: false }))
+    }
+  }
+
+  return (
+    <div className="workspace-stack">
+      <WorkspaceTitle 
+        eyebrow="INTELLIGENCE LAB / 08" 
+        title="Analyst Simulation" 
+        detail="Submit simulated observations to the pipeline. Label explicitly as ANALYST_SIMULATION." 
+        action={<IconBadge tone="amber"><Activity size={16} /></IconBadge>} 
+      />
+
+      <div className="workspace-grid workspace-grid--two-one">
+        <SectionFrame eyebrow="INPUT" title="Simulated Observations" meta={<StatusChip label="ANALYST_SIMULATION" tone="amber" />}>
+          <div className="simulation-form">
+            {state.observations.map((obs, index) => (
+              <div key={index} style={{ border: '1px solid #E5E7EB', padding: '16px', marginBottom: '12px', borderRadius: '4px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                  <div style={{ fontWeight: 'bold' }}>Observation {index + 1}</div>
+                  {state.observations.length > 1 && <button className="text-button text-button--danger" onClick={() => removeObservation(index)}><Trash2 size={14} /> Remove</button>}
+                </div>
+                
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>CHANNEL</label>
+                    <select 
+                      value={obs.channel} 
+                      onChange={(e) => updateObservation(index, { channel: e.target.value as 'NEWS' | 'TWITTER_X_STYLE' })}
+                      style={{ width: '100%', padding: '6px 8px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '13px', backgroundColor: 'transparent' }}
+                    >
+                      <option value="NEWS">NEWS</option>
+                      <option value="TWITTER_X_STYLE">TWITTER_X_STYLE</option>
+                    </select>
+                  </div>
+                  {obs.channel === 'TWITTER_X_STYLE' && (
+                    <div style={{ flex: 1 }}>
+                      <AlertNote>User supplies simulated social text. No live Twitter/X ingestion occurs.</AlertNote>
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ marginBottom: '12px' }}>
+                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>HEADLINE (Optional)</label>
+                  <input 
+                    type="text" 
+                    value={obs.headline || ''} 
+                    onChange={(e) => updateObservation(index, { headline: e.target.value })}
+                    style={{ width: '100%', padding: '6px 8px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '13px', backgroundColor: 'transparent' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>BODY</label>
+                  <textarea 
+                    value={obs.body || ''} 
+                    onChange={(e) => updateObservation(index, { body: e.target.value })}
+                    style={{ width: '100%', padding: '6px 8px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '13px', minHeight: '80px', backgroundColor: 'transparent' }}
+                  />
+                </div>
+              </div>
+            ))}
+            
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '16px' }}>
+              <button className="text-button" onClick={addObservation}><Plus size={14} /> Add observation</button>
+              <button 
+                onClick={handleSubmit} 
+                disabled={state.submitting}
+                style={{ background: '#111827', color: 'white', padding: '8px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 'bold', cursor: state.submitting ? 'not-allowed' : 'pointer', border: 'none' }}
+              >
+                {state.submitting ? 'Submitting...' : 'Submit to Pipeline'}
+              </button>
+            </div>
+
+            {state.submitError && <div style={{ marginTop: '16px' }}><ErrorState title="Submission failed" detail={state.submitError.message} /></div>}
+          </div>
+        </SectionFrame>
+
+        <PipelineRunViewer
+          activeRunId={state.activeRunId}
+          run={run}
+          loading={loading}
+          connectionState={connectionState}
+          streamError={streamError}
+          retry={retry}
+          emptyStateTitle="No active run"
+          emptyStateDetail="Submit observations to start the pipeline orchestrator."
+          emptyStateIcon={<Workflow size={18} />}
+        />
+      </div>
+    </div>
+  )
+}
+
+export interface GdeltWorkspaceState {
+  query: string
+  maxRecords: number
+  submitting: boolean
+  submitError: Error | null
+  activeRunId: string | null
+  resultCount: number | null
+}
+
+export function GdeltWorkspace({ state, setState }: { state: GdeltWorkspaceState, setState: React.Dispatch<React.SetStateAction<GdeltWorkspaceState>> }) {
+  const { run, loading, connectionState, error: streamError, retry } = usePipelineStream(state.activeRunId)
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!state.query.trim()) {
+      setState(prev => ({ ...prev, submitError: new Error('Search query is required.') }))
+      return
+    }
+
+    setState(prev => ({ ...prev, submitting: true, submitError: null, activeRunId: null, resultCount: null }))
+
+    try {
+      const res = await submitGdeltSearch({ query: state.query, max_records: state.maxRecords })
+      setState(prev => ({ ...prev, activeRunId: res.run_id, resultCount: res.count }))
+    } catch (err) {
+      setState(prev => ({ ...prev, submitError: err instanceof Error ? err : new Error('Failed to submit GDELT search') }))
+    } finally {
+      setState(prev => ({ ...prev, submitting: false }))
+    }
+  }
+
+  return (
+    <div className="workspace-stack">
+      <WorkspaceTitle 
+        eyebrow="LIVE INTELLIGENCE / 09" 
+        title="Live News Intelligence" 
+        detail="Search the Global Database of Events, Language, and Tone (GDELT) 2.0 API. Records are normalized and processed through the NLP pipeline." 
+        action={<IconBadge tone="mint"><Globe size={16} /></IconBadge>} 
+      />
+
+      <div className="workspace-grid workspace-grid--two-one">
+        <SectionFrame eyebrow="SEARCH" title="News Query" meta={<StatusChip label="LIVE_GDELT" tone="mint" />}>
+          <form className="simulation-form" onSubmit={handleSubmit}>
+            <div style={{ border: '1px solid #E5E7EB', padding: '16px', marginBottom: '16px', borderRadius: '4px' }}>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>QUERY</label>
+                <input 
+                  type="text" 
+                  value={state.query} 
+                  onChange={(e) => setState(prev => ({ ...prev, query: e.target.value }))}
+                  placeholder='e.g., "supply chain" OR "chip shortage"'
+                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '14px', backgroundColor: 'transparent' }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '4px' }}>MAX RECORDS (1-250)</label>
+                <input 
+                  type="number" 
+                  min={1}
+                  max={250}
+                  value={state.maxRecords} 
+                  onChange={(e) => setState(prev => ({ ...prev, maxRecords: Number(e.target.value) }))}
+                  style={{ width: '100%', padding: '8px 12px', border: '1px solid #D1D5DB', borderRadius: '4px', fontSize: '14px', backgroundColor: 'transparent' }}
+                />
+                <p style={{ fontSize: '11px', color: '#6B7280', marginTop: '6px' }}>GDELT 2.0 DOC API limit is 250 records per request.</p>
+              </div>
+            </div>
+            
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <button 
+                type="submit"
+                disabled={state.submitting}
+                style={{ background: '#111827', color: 'white', padding: '8px 16px', borderRadius: '4px', fontSize: '13px', fontWeight: 'bold', cursor: state.submitting ? 'not-allowed' : 'pointer', border: 'none' }}
+              >
+                {state.submitting ? 'Searching GDELT...' : 'Search and Analyze'}
+              </button>
+            </div>
+
+            {state.submitError && <div style={{ marginTop: '16px' }}><ErrorState title="Search failed" detail={state.submitError.message} /></div>}
+          </form>
+        </SectionFrame>
+
+        <PipelineRunViewer
+          activeRunId={state.activeRunId}
+          run={run}
+          loading={loading}
+          connectionState={connectionState}
+          streamError={streamError}
+          retry={retry}
+          emptyStateTitle="No active run"
+          emptyStateDetail="Submit a query to fetch and process live news records."
+          emptyStateIcon={<Search size={18} />}
+          headerRight={state.resultCount !== null ? (
+            <div style={{ textAlign: 'right' }}>
+              <div style={{ fontSize: '11px', fontWeight: 'bold', color: '#6B7280' }}>DOCUMENTS</div>
+              <div style={{ fontSize: '13px', fontWeight: 'bold' }}>{state.resultCount}</div>
+            </div>
+          ) : undefined}
+        />
+      </div>
+    </div>
+  )
+}
+
 export function SidebarBrand() {
   return <div className="sidebar-brand"><AppMark /><div className="sidebar-brand__meta"></div></div>
+}
+
+function PipelineRunViewerWrapper({ activeRunId }: { activeRunId: string }) {
+  const { run, loading, connectionState, error, retry } = usePipelineStream(activeRunId)
+  
+  const [promoting, setPromoting] = useState(false)
+  const [promotedData, setPromotedData] = useState<{ count: number, eventIds: string[] } | null>(null)
+  const [promoteError, setPromoteError] = useState<Error | null>(null)
+
+  const handlePromote = async () => {
+    if (!activeRunId) return
+    setPromoting(true)
+    setPromoteError(null)
+    try {
+      const res = await promotePipelineRun(activeRunId)
+      if (res.status === 'SUCCESS' || res.status === 'ALREADY_PROMOTED') {
+        setPromotedData({ count: res.count, eventIds: res.promoted_event_ids })
+      }
+    } catch (e) {
+      setPromoteError(e instanceof Error ? e : new Error('Promotion failed'))
+    } finally {
+      setPromoting(false)
+    }
+  }
+
+  const isEligible = run?.status === 'COMPLETED' && run.final_result && Array.isArray((run.final_result as any).signals) && (run.final_result as any).signals.length > 0 && Array.isArray((run.final_result as any).stress_results) && (run.final_result as any).stress_results.length > 0
+
+  return (
+    <div>
+      <PipelineRunViewer
+        activeRunId={activeRunId}
+        run={run}
+        loading={loading}
+        connectionState={connectionState}
+        streamError={error}
+        retry={retry}
+        emptyStateTitle="Run not found"
+        emptyStateDetail="This run could not be found or has expired."
+        emptyStateIcon={<Search size={18} />}
+        headerRight={isEligible && (
+          <div style={{ textAlign: 'right' }}>
+            {promotedData ? (
+              <span style={{ fontSize: '12px', color: '#10B981', fontWeight: 'bold' }}><Check size={14} style={{ display: 'inline', verticalAlign: 'text-bottom' }} /> PROMOTED ({promotedData.count})</span>
+            ) : (
+              <button 
+                className="text-button" 
+                onClick={handlePromote} 
+                disabled={promoting}
+                style={{ padding: '6px 12px', background: '#E5E7EB', borderRadius: '4px', color: '#374151', fontWeight: 'bold', fontSize: '11px', border: 'none', cursor: promoting ? 'not-allowed' : 'pointer' }}
+              >
+                {promoting ? 'PROMOTING...' : 'PROMOTE TO COMMAND CENTER'}
+              </button>
+            )}
+          </div>
+        )}
+      />
+      {promoteError && <div style={{ marginTop: '12px' }}><ErrorState title="Promotion Failed" detail={promoteError.message} /></div>}
+    </div>
+  )
+}
+
+export function PipelineRunsWorkspace() {
+  const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
+  const runsRequest = useCallback((signal: AbortSignal) => fetchPipelineRuns(signal), [])
+  const { data, loading, error, reload } = useApiQuery('pipeline-runs', runsRequest)
+
+  if (selectedRunId) {
+    return (
+      <div className="workspace-stack">
+        <WorkspaceTitle 
+          eyebrow="PIPELINE RUNS / 10" 
+          title="Run Inspector" 
+          detail={`Inspecting run ${selectedRunId.slice(0, 8)}... Returning to list retains run execution history.`} 
+          action={<button className="text-button" onClick={() => setSelectedRunId(null)}><ArrowRight size={14} style={{transform: 'rotate(180deg)'}} /> Back to runs</button>} 
+        />
+        <PipelineRunViewerWrapper activeRunId={selectedRunId} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="workspace-stack">
+      <WorkspaceTitle 
+        eyebrow="PIPELINE RUNS / 10" 
+        title="Runtime History" 
+        detail="A list of pipeline runs retained by the current backend runtime." 
+        action={<button className="text-button" onClick={reload}><Workflow size={14} /> Refresh list</button>} 
+      />
+      <DataGate loading={loading} error={error} empty={!data?.runs?.length} retry={reload}>
+        {data && (
+          <SectionFrame eyebrow="ALL RUNS" title="Execution Register" meta={<span className="meta-code">{data.runs.length} ROWS</span>}>
+            <div className="event-feed">
+              {data.runs.map((run: PipelineRun, index: number) => {
+                const observations = run.request.observations?.length || 0;
+                const source = run.request.observations?.[0]?.source || 'OTHER';
+                const channel = run.request.observations?.[0]?.channel || '';
+                const date = new Date(run.created_at).toLocaleString();
+
+                return (
+                  <button className="event-row" key={run.run_id} onClick={() => setSelectedRunId(run.run_id)}>
+                    <div className="event-row__index">{String(index + 1).padStart(2, '0')}</div>
+                    <div className="event-row__main">
+                      <div className="event-row__headline">
+                        <strong style={{fontFamily: 'monospace'}} title={run.run_id}>{run.run_id.slice(0, 8)}...</strong>
+                        <span style={{ fontSize: '11px', padding: '2px 6px', background: '#E5E7EB', borderRadius: '4px' }}>{run.request.mode}</span>
+                        <StatusChip label={run.status} tone={run.status === 'FAILED' ? 'danger' : run.status === 'COMPLETED' ? 'mint' : 'default'} />
+                      </div>
+                      <div className="event-row__detail">
+                        {date} • {observations} observation{observations === 1 ? '' : 's'} ({source}{channel ? ` / ${channel}` : ''})
+                      </div>
+                    </div>
+                    <ChevronRight className="event-row__arrow" size={16} />
+                  </button>
+                )
+              })}
+            </div>
+          </SectionFrame>
+        )}
+      </DataGate>
+    </div>
+  )
+}
+
+export function ProvenanceWorkspace() {
+  const [selectedRunId, setSelectedRunId] = useState<string | null>(null)
+  const runsRequest = useCallback((signal: AbortSignal) => fetchPipelineRuns(signal), [])
+  const { data, loading, error, reload } = useApiQuery('pipeline-provenance', runsRequest)
+
+  if (selectedRunId) {
+    return (
+      <div className="workspace-stack">
+        <WorkspaceTitle 
+          eyebrow="DATA PROVENANCE / 11" 
+          title="Run Inspector" 
+          detail={`Inspecting execution context for run ${selectedRunId.slice(0, 8)}...`} 
+          action={<button className="text-button" onClick={() => setSelectedRunId(null)}><ArrowRight size={14} style={{transform: 'rotate(180deg)'}} /> Back to provenance</button>} 
+        />
+        <PipelineRunViewerWrapper activeRunId={selectedRunId} />
+      </div>
+    )
+  }
+
+  return (
+    <div className="workspace-stack">
+      <WorkspaceTitle 
+        eyebrow="DATA PROVENANCE / 11" 
+        title="Execution Provenance" 
+        detail="Traceability and metadata for actual pipeline executions. Records are retained in active memory and will be cleared on process restart." 
+        action={<button className="text-button" onClick={reload}><Workflow size={14} /> Refresh list</button>} 
+      />
+
+      <SectionFrame eyebrow="PROVENANCE TAXONOMY" title="Source & Integration Mapping">
+        <div className="workspace-grid workspace-grid--two">
+          <div>
+            <h4 style={{ fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '8px' }}>EXECUTION MODE</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>LIVE_GDELT</strong> Run initiated through the live GDELT API integration. Does not guarantee exhaustive news coverage.</div>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>ANALYST_SIMULATION</strong> User-supplied observations manually processed through the NLP pipeline.</div>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>HISTORICAL_REPLAY</strong> Historical-replay provenance. Launching replays is not currently supported in this UI.</div>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>SYNTHETIC_FIXTURE</strong> Synthetic fixture mode for testing portfolio impact behaviors.</div>
+            </div>
+          </div>
+          <div>
+            <h4 style={{ fontSize: '11px', fontWeight: 'bold', color: '#6B7280', marginBottom: '8px' }}>OBSERVATION SOURCE & CHANNEL</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '13px' }}>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>GDELT</strong> Data sourced from the GDELT Project.</div>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>HISTORICAL_SOCIAL</strong> Historical social media records.</div>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>ANALYST_SIMULATION</strong> Authored manually by an analyst.</div>
+              <div><strong style={{ display: 'inline-block', width: '150px' }}>OTHER</strong> Other uncategorized observation sources.</div>
+              <div style={{ marginTop: '8px', paddingTop: '8px', borderTop: '1px solid #E5E7EB' }}>
+                <div><strong style={{ display: 'inline-block', width: '150px' }}>TWITTER_X_STYLE</strong> Describes a channel/style constraint. <em>Not evidence of live Twitter/X ingestion.</em></div>
+                <div><strong style={{ display: 'inline-block', width: '150px' }}>NEWS</strong> Traditional news channel style constraint.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </SectionFrame>
+
+      <DataGate loading={loading} error={error} empty={!data?.runs?.length} retry={reload}>
+        {data && (
+          <SectionFrame eyebrow="TRACEABILITY LOG" title="Retained Executions" meta={<span className="meta-code">{data.runs.length} RECORDS</span>}>
+            <div className="event-feed">
+              {data.runs.map((run: PipelineRun) => {
+                const observations = run.request.observations?.length || 0;
+                
+                const sources = Array.from(new Set(run.request.observations?.map((o: ObservationInput) => o.source).filter(Boolean)));
+                const channels = Array.from(new Set(run.request.observations?.map((o: ObservationInput) => o.channel).filter(Boolean)));
+                
+                const date = new Date(run.created_at).toLocaleString();
+                
+                let durationStr = '';
+                if (run.completed_at && run.created_at) {
+                  const durationMs = new Date(run.completed_at).getTime() - new Date(run.created_at).getTime();
+                  durationStr = ` • ${(durationMs / 1000).toFixed(1)}s execution`;
+                }
+
+                return (
+                  <button className="event-row" key={run.run_id} onClick={() => setSelectedRunId(run.run_id)} style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'flex-start', height: 'auto' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        <strong style={{fontFamily: 'monospace', fontSize: '13px'}} title={run.run_id}>{run.run_id.slice(0, 12)}...</strong>
+                        <span style={{ fontSize: '11px', padding: '2px 6px', background: '#F3F4F6', color: '#374151', borderRadius: '4px', fontWeight: 'bold' }}>{run.request.mode}</span>
+                        <StatusChip label={run.status} tone={run.status === 'FAILED' ? 'danger' : run.status === 'COMPLETED' ? 'mint' : 'default'} />
+                      </div>
+                      <ChevronRight size={16} color="#9CA3AF" />
+                    </div>
+                    
+                    <div style={{ fontSize: '12px', color: '#6B7280', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+                      <span><strong>CREATED:</strong> {date}{durationStr}</span>
+                      <span><strong>OBSERVATIONS:</strong> {observations}</span>
+                      {sources.length > 0 && <span><strong>SOURCE:</strong> {sources.join(', ')}</span>}
+                      {channels.length > 0 && <span><strong>CHANNEL:</strong> {channels.join(', ')}</span>}
+                    </div>
+                  </button>
+                )
+              })}
+            </div>
+          </SectionFrame>
+        )}
+      </DataGate>
+    </div>
+  )
 }
