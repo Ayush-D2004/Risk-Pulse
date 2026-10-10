@@ -14,13 +14,19 @@ event_materiality_v3.py
 *.nogit
 *.pkl
 historical_eval_results_rows.parquet
-data/processed/market_cache/
-data/pipeline_output_dryrun/
 docs/
-data/pipeline_output
 final_event_level_validation.parquet
 final_validation_stats.json
 CODEBASE_ANALYSIS.md
-pipeline_output_test
-quickstart.md
-data/
+
+# Data directories
+data/raw/
+data/pipeline_output/
+data/pipeline_output_dryrun/
+data/pipeline_output_test/
+data/processed/market_cache/
+
+# Databases
+*.db
+*.db-shm
+*.db-wal
