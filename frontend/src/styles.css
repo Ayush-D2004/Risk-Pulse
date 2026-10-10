@@ -412,6 +412,7 @@ kbd { font: 500 9px var(--mono); color: #626a76; border: 1px solid rgba(255,255,
   align-items: flex-start;
   position: relative;
   padding-bottom: 16px;
+  transition: all 0.25s ease;
 }
 .stage-row:last-child {
   padding-bottom: 0;
@@ -419,10 +420,11 @@ kbd { font: 500 9px var(--mono); color: #626a76; border: 1px solid rgba(255,255,
 .stage-row__line {
   position: absolute;
   left: 9px;
-  top: 18px;
+  top: 20px;
   bottom: -2px;
   width: 2px;
   background: var(--line);
+  transition: background 0.3s ease;
 }
 .stage-row:last-child .stage-row__line {
   display: none;
@@ -435,19 +437,60 @@ kbd { font: 500 9px var(--mono); color: #626a76; border: 1px solid rgba(255,255,
   background: var(--bg-panel);
   position: relative;
   z-index: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-sizing: border-box;
 }
+
+/* Stage status states */
+.stage-row--pending {
+  opacity: 0.55;
+}
+.stage-row--pending .stage-row__indicator {
+  border: 2px dashed var(--line-strong);
+  background: transparent;
+}
+
+.stage-row--running {
+  opacity: 1;
+}
+.stage-row--running .stage-row__indicator {
+  border-color: #f59e0b;
+  background: #f59e0b;
+  animation: pulse-ring 1.3s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+}
+.stage-row--running .stage-row__name {
+  color: #f59e0b;
+  font-weight: 700;
+}
+.stage-row--running .stage-row__line {
+  background: linear-gradient(to bottom, var(--mint), #f59e0b);
+}
+
 .stage-row--completed .stage-row__indicator {
   border-color: var(--mint);
   background: var(--mint);
 }
-.stage-row--running .stage-row__indicator {
-  border-color: var(--amber);
-  background: var(--amber);
-  animation: pulse 1.5s infinite;
+.stage-row--completed .stage-row__indicator::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid #041019;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
+.stage-row--completed .stage-row__line {
+  background: var(--mint);
+}
+
 .stage-row--failed .stage-row__indicator {
   border-color: var(--coral);
   background: var(--coral);
+}
+.stage-row--skipped {
+  opacity: 0.65;
 }
 .stage-row--skipped .stage-row__indicator {
   border-color: var(--line-strong);
@@ -457,10 +500,21 @@ kbd { font: 500 9px var(--mono); color: #626a76; border: 1px solid rgba(255,255,
   font-size: 13px;
   font-weight: 600;
   color: var(--text);
-  margin-top: 2px;
+  margin-top: 1px;
+  letter-spacing: 0.02em;
 }
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(243,184,93,0.4); }
-  70% { box-shadow: 0 0 0 6px rgba(243,184,93,0); }
-  100% { box-shadow: 0 0 0 0 rgba(243,184,93,0); }
+
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+    transform: scale(0.96);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(245, 158, 11, 0);
+    transform: scale(1.06);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0);
+    transform: scale(0.96);
+  }
 }

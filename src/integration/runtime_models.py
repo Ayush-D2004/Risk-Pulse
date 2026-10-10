@@ -55,11 +55,27 @@ class PipelineRunRequest(BaseModel):
     mode: RunMode = RunMode.ANALYST_SIMULATION
     observations: List[ObservationInput]
 
+PIPELINE_STAGE_NAMES: List[str] = [
+    "ingestion",
+    "preprocessing",
+    "entity_resolution",
+    "sentiment",
+    "event_classification",
+    "materiality",
+    "impact",
+    "clustering",
+    "market_context",
+    "portfolio_stress",
+]
+
+def create_initial_pipeline_stages() -> List[PipelineStage]:
+    return [PipelineStage(name=name, status=StageStatus.PENDING) for name in PIPELINE_STAGE_NAMES]
+
 class PipelineRun(BaseModel):
     run_id: str
     status: RunStatus = RunStatus.PENDING
     request: PipelineRunRequest
-    stages: List[PipelineStage] = Field(default_factory=list)
+    stages: List[PipelineStage] = Field(default_factory=create_initial_pipeline_stages)
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
     error: Optional[str] = None

@@ -313,6 +313,8 @@ async def stream_run(run_id: str, request: Request):
         raise HTTPException(status_code=404, detail="Run not found")
         
     async def event_generator():
+        last_dump = None
+        heartbeat_counter = 0
         while True:
             if await request.is_disconnected():
                 break
@@ -321,14 +323,23 @@ async def stream_run(run_id: str, request: Request):
             if not current_run:
                 break
                 
-            # Yield full current state
+            # Yield full current state on change or periodic heartbeat
             data = current_run.model_dump(mode="json")
-            yield f"data: {json.dumps(data)}\n\n"
+            dump_str = json.dumps(data)
+            heartbeat_counter += 1
+
+            if dump_str != last_dump or heartbeat_counter >= 15:
+                yield f"data: {dump_str}\n\n"
+                last_dump = dump_str
+                heartbeat_counter = 0
             
             if current_run.status in (RunStatus.COMPLETED, RunStatus.FAILED):
+                # Ensure terminal state is yielded
+                if dump_str != last_dump:
+                    yield f"data: {dump_str}\n\n"
                 break
                 
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(0.1)
             
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 

@@ -559,19 +559,34 @@ function SimulationRunView({ runId, run, loading, connectionState, streamError, 
           <div style={{ flex: '1 1 320px' }}>
             <div className="section-eyebrow" style={{ marginBottom: '16px' }}>EXECUTION TIMELINE</div>
             <div className="stage-timeline">
-              {run.stages.map((stage: any) => (
-                <div key={stage.name} className={`stage-row stage-row--${stage.status.toLowerCase()}`}>
-                  <div className="stage-row__line" />
-                  <div className="stage-row__indicator" />
-                  <div>
-                    <div className="stage-row__name">{stage.name}</div>
-                    {stage.error && <div style={{ fontSize: '11px', color: '#EF4444', marginTop: '4px' }}>{stage.error}</div>}
+              {run.stages.map((stage: any) => {
+                const statusLower = (stage.status || 'pending').toLowerCase()
+                const tone = 
+                  stage.status === 'FAILED' ? 'danger' : 
+                  stage.status === 'COMPLETED' ? 'mint' : 
+                  stage.status === 'RUNNING' ? 'amber' : 
+                  stage.status === 'SKIPPED' ? 'neutral' : 
+                  'default'
+
+                return (
+                  <div key={stage.name} className={`stage-row stage-row--${statusLower}`}>
+                    <div className="stage-row__line" />
+                    <div className="stage-row__indicator" />
+                    <div>
+                      <div className="stage-row__name">{stage.name.replace(/_/g, ' ').toUpperCase()}</div>
+                      {stage.output && (
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '2px', fontFamily: 'monospace' }}>
+                          {Object.entries(stage.output).map(([k, v]) => `${k}: ${v}`).join(' · ')}
+                        </div>
+                      )}
+                      {stage.error && <div style={{ fontSize: '11px', color: '#EF4444', marginTop: '4px' }}>{stage.error}</div>}
+                    </div>
+                    <div style={{ alignSelf: 'center' }}>
+                      <StatusChip label={stage.status} tone={tone} />
+                    </div>
                   </div>
-                  <div style={{ alignSelf: 'center' }}>
-                    <StatusChip label={stage.status} tone={stage.status === 'FAILED' ? 'danger' : stage.status === 'COMPLETED' ? 'mint' : stage.status === 'SKIPPED' ? 'amber' : 'default'} />
-                  </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
             {run.error && (
               <div style={{ marginTop: '16px', padding: '12px', borderLeft: '3px solid #EF4444', background: '#FEF2F2', fontSize: '13px', color: '#B91C1C' }}>

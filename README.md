@@ -4,7 +4,7 @@
 - **College Email ID:** bt23cse204@iiitn.ac.in
 - **College / Campus:** Indian Institute of Information Technology, Nagpur
 - **Demo Video Link:** 
-- **Slide Deck Link:**
+- **Slide Deck Link:** https://canva.link/vaznidqngfzg8b1
  
 ## 1. Project Overview / Problem Statement & Approach
 Modern financial markets move at the speed of information, but the sheer volume of unstructured data from social feeds (like Twitter) and global news networks (like GDELT) creates immense noise. Analysts and risk managers struggle to differentiate between genuine material financial events and false alarms or duplicates, leading to alert fatigue and delayed decision-making. 
@@ -19,6 +19,8 @@ RiskPulse relies on three primary data sources to capture, enrich, and validate 
 - **Twitter Data (Historical & Simulated):** We use historical financial tweets to simulate rapid, high-volume social media chatter. Twitter data often contains early warnings of market-moving events but is highly noisy. We use this dataset to stress-test our NLP pipeline's ability to filter out spam and correctly identify sentiment.
 - **GDELT (Global Database of Events, Language, and Tone):** GDELT serves as our live news ingestion engine. It provides a massive, real-time stream of global news articles. RiskPulse queries GDELT to capture broader geopolitical, macroeconomic, and corporate news, converting these unstructured articles into structured risk observations.
 - **Yahoo Finance (`yfinance`):** Real-world market context is crucial. Once an event is identified, we query `yfinance` to fetch live or historical market data for the affected entity. This allows us to see if the stock price or trading volume is actively reacting to the news, acting as a reality check to amplify or dampen the event's impact score.
+
+> 📖 **Deep Dive into Datasets & Storage:** For complete details on directory structure, schemas, runtime SQLite databases, and manual data links, see [data/README.md](data/README.md).
 
 ## 3. Architecture & Data Pipeline
 The RiskPulse architecture operates on a robust, multi-stage pipeline that transitions data from raw ingestion to actionable insights on a dashboard. 
@@ -48,7 +50,7 @@ Our pipeline executes in a strict, sequential funnel to turn noise into intellig
 ## 4. Quickstart & Installation
 Runtime: Python 3.11+ / Node.js 20+ on Windows / Linux / macOS.
  
-Step-by-step commands to set up the environment and run the code locally:
+Step-by-step commands to set up the environment, prepare data, and run the code locally:
 
 ```bash
 # 1. Clone the repository
@@ -60,18 +62,22 @@ python -m venv .venv
 # On Windows: .venv\Scripts\activate
 # On Mac/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-pip install faiss-cpu sentence-transformers  # Required for the clustering engine
 
-# 3. Terminal 1: Start the FastAPI Backend
+# 3. Download & Reconstruct Historical Datasets
+# Automatically downloads the historical package from Google Drive and places files into data/processed/ & data/pipeline_output/
+# (For details or manual download options, refer to data/README.md)
+python download_data.py
+
+# 4. Terminal 1: Start the FastAPI Backend
 uvicorn src.dashboard.api:app --host 0.0.0.0 --port 8000 --reload
 
-# 4. Terminal 2: Start the React Frontend
+# 5. Terminal 2: Start the React Frontend
 cd frontend
 npm install
 npm run dev
 
-# 5. Terminal 3 (Optional): Run the Pipeline manually on a dataset
-python src/pipeline/run_pipeline.py --input <path_to_input.csv> --output-dir <path_to_output_dir>
+# 6. Terminal 3 (Optional): Re-run Offline NLP Pipeline on Full Historical Data
+python src/pipeline/run_pipeline.py --input data/processed/full_dataset-release.csv --output-dir data/pipeline_output
 ```
  
 ## 5. Key Results & Domain Impact
